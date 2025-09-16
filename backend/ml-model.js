@@ -6,7 +6,7 @@ const path = require('path');
 const { getCourseRecommendations } = require('./course-recommendations');
 
 // Load and parse CSV data
-const csvPath = path.join(__dirname, '../expanded_career_quiz_questions.csv');
+
 let questions = [];
 let riasecScores = {};
 

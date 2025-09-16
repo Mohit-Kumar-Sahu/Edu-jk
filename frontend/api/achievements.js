@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = '/api/achievements';
+const API_BASE = 'https://edu2career-backend.onrender.com/api/achievements';
 
-export async function getUserAchievements(userId: string) {
+export async function getUserAchievements(userId) {
   try {
     const response = await axios.get(`${API_BASE}/user/${userId}`);
     return response.data;
@@ -22,7 +22,7 @@ export async function getLeaderboard() {
   }
 }
 
-export async function addAchievement(userId: string, achievement: any) {
+export async function addAchievement(userId, achievement) {
   try {
     const response = await axios.post(`${API_BASE}/user/${userId}/add`, achievement);
     return response.data;
@@ -32,7 +32,7 @@ export async function addAchievement(userId: string, achievement: any) {
   }
 }
 
-export async function updatePoints(userId: string, points: number) {
+export async function updatePoints(userId, points) {
   try {
     const response = await axios.post(`${API_BASE}/user/${userId}/points`, { points });
     return response.data;

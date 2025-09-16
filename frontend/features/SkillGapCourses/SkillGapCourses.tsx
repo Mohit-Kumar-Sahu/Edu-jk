@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion'; // Assuming 'motion/react' is a typo
 import { BookOpen, ExternalLink, Clock, Award, Users } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
@@ -39,6 +39,9 @@ export function SkillGapCourses() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Get the base API URL from the environment variable
+  const API_BASE = import.meta.env.VITE_API_BASE;
+
   useEffect(() => {
     const fetchSkillGapCourses = async () => {
       if (!user) return;
@@ -46,13 +49,13 @@ export function SkillGapCourses() {
       try {
         setLoading(true);
 
-        // Fetch user profile
-        const profileResponse = await fetch(`http://localhost:3001/api/users/${user.id}`);
+        // Fetch user profile from the live backend
+        const profileResponse = await fetch(`${API_BASE}/users/${user.id}`);
         if (!profileResponse.ok) throw new Error('Failed to fetch user profile');
         const userProfile = await profileResponse.json();
 
-        // Fetch quiz results
-        const quizResponse = await fetch(`http://localhost:3001/api/quiz-results/${user.id}`);
+        // Fetch quiz results from the live backend
+        const quizResponse = await fetch(`${API_BASE}/quiz-results/${user.id}`);
         if (!quizResponse.ok) throw new Error('Failed to fetch quiz results');
         const quizResults = await quizResponse.json();
 
@@ -61,8 +64,8 @@ export function SkillGapCourses() {
           return;
         }
 
-        // Get skill gap courses
-        const skillGapResponse = await fetch('http://localhost:3001/api/skill-gap-courses', {
+        // Get skill gap courses from the live backend
+        const skillGapResponse = await fetch(`${API_BASE}/skill-gap-courses`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -86,7 +89,7 @@ export function SkillGapCourses() {
     };
 
     fetchSkillGapCourses();
-  }, [user]);
+  }, [user, API_BASE]);
 
   if (loading) {
     return (

@@ -1,12 +1,16 @@
-// Script to add sample latitude and longitude coordinates to colleges
-// This is a utility script to populate college data with location coordinates
+// Add this line at the very top of your script
+require('dotenv').config();
 
 const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb://localhost:27017';
+// Get connection details from environment variables
+const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
-const dbName = 'EDU2CAREER';
-const collectionName = 'EDU2CAREER_DB';
+const dbName = process.env.DB_NAME;
+const collectionName = process.env.COLLECTION_NAME;
+
+// Script to add sample latitude and longitude coordinates to colleges
+// This is a utility script to populate college data with location coordinates
 
 // Sample coordinates for J&K districts (approximate)
 const districtCoordinates = {

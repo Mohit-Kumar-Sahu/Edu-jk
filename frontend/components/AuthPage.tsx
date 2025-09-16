@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion'; // Assuming 'motion/react' is a typo and should be 'framer-motion'
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, GraduationCap, Mail, Lock, User, Phone, MapPin } from 'lucide-react';
+import { Eye, EyeOff, GraduationCap, Mail, Lock, User, Phone } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -14,17 +14,10 @@ export function AuthPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, forgotPassword } = useAuth();
-
-  // Add user metadata state for Firebase
-  const [userMetadata, setUserMetadata] = useState({
-    name: '',
-    phone: '',
-    district: '',
-    currentClass: '',
-    stream: '',
-    schoolCollege: ''
-  });
   const navigate = useNavigate();
+
+  // Define API base URL using environment variable
+  const API_BASE = import.meta.env.VITE_API_BASE;
 
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -84,7 +77,7 @@ export function AuthPage() {
 
       // Store user data in MongoDB
       try {
-        const response = await fetch('http://localhost:3001/api/users', {
+        const response = await fetch(`${API_BASE}/users`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -108,7 +101,7 @@ export function AuthPage() {
 
       // Send welcome SMS
       try {
-        const smsResponse = await fetch('http://localhost:3001/api/send-sms', {
+        const smsResponse = await fetch(`${API_BASE}/send-sms`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

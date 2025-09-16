@@ -32,10 +32,14 @@ export function CareerQuiz({ onComplete }: CareerQuizProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Get the base API URL from the environment variable
+  const API_BASE = import.meta.env.VITE_API_BASE;
+
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/career-questions');
+        // Use the API_BASE variable here
+        const response = await fetch(`${API_BASE}/career-questions`);
         if (response.ok) {
           const data = await response.json();
           setQuestions(data.questions);
@@ -50,7 +54,7 @@ export function CareerQuiz({ onComplete }: CareerQuizProps) {
     };
 
     fetchQuestions();
-  }, []);
+  }, [API_BASE]); // Added API_BASE to dependency array
 
   const handleAnswer = async (optionId: string) => {
     const newAnswers = [...answers, optionId];
@@ -61,7 +65,8 @@ export function CareerQuiz({ onComplete }: CareerQuizProps) {
     } else {
       // Quiz completed, get ML recommendations from API
       try {
-        const response = await fetch('http://localhost:3001/api/career-recommendations', {
+        // Use the API_BASE variable here
+        const response = await fetch(`${API_BASE}/career-recommendations`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
