@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduPath Navigator - Offline</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      text-align: center;
+      max-width: 400px;
+      padding: 2rem;
+    }
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    .features {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+    .features h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+    .features ul {
+      list-style: none;
+      padding: 0;
+    }
+    .features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .features li:last-child {
+      border-bottom: none;
+    }
+    .retry-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .retry-btn:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📚</div>
+    <h1>EduPath Navigator</h1>
+    <p>You're currently offline, but you can still access some features!</p>
+
+    <div class="features">
+      <h3>Available Offline:</h3>
+      <ul>
+        <li>✅ View your saved quiz results</li>
+        <li>✅ Browse cached college information</li>
+        <li>✅ Access your achievements</li>
+        <li>✅ Review completed courses</li>
+        <li>✅ Use the career chatbot (limited)</li>
+      </ul>
+    </div>
+
+    <button class="retry-btn" onclick="window.location.reload()">
+      🔄 Try Again
+    </button>
+  </div>
+
+  <script>
+    // Auto-retry when connection is restored
+    window.addEventListener('online', function() {
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

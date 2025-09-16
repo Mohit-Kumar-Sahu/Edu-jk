@@ -1,0 +1,151 @@
+questionId,questionText,category,optionId,optionText,R,I,A,S,E,C
+r1,I enjoy working with tools and machines,psychometric,r1_a,Strongly Agree,5,0,0,0,0,1
+r1,I enjoy working with tools and machines,psychometric,r1_b,Agree,3,0,0,0,0,1
+r1,I enjoy working with tools and machines,psychometric,r1_c,Neutral,1,0,0,0,0,0
+r1,I enjoy working with tools and machines,psychometric,r1_d,Disagree,0,0,0,0,0,0
+r1,I enjoy working with tools and machines,psychometric,r1_e,Strongly Disagree,0,0,0,1,0,0
+r2,I prefer working outdoors rather than in an office,psychometric,r2_a,Strongly Agree,4,0,1,0,0,0
+r2,I prefer working outdoors rather than in an office,psychometric,r2_b,Agree,3,0,1,0,0,0
+r2,I prefer working outdoors rather than in an office,psychometric,r2_c,Neutral,1,0,0,0,0,0
+r2,I prefer working outdoors rather than in an office,psychometric,r2_d,Disagree,0,1,0,0,1,2
+r2,I prefer working outdoors rather than in an office,psychometric,r2_e,Strongly Disagree,0,2,0,0,2,3
+r3,I like building or fixing things with my hands,psychometric,r3_a,Strongly Agree,5,1,1,0,0,0
+r3,I like building or fixing things with my hands,psychometric,r3_b,Agree,4,1,1,0,0,0
+r3,I like building or fixing things with my hands,psychometric,r3_c,Neutral,2,0,0,0,0,0
+r3,I like building or fixing things with my hands,psychometric,r3_d,Disagree,0,0,0,1,1,1
+r3,I like building or fixing things with my hands,psychometric,r3_e,Strongly Disagree,0,0,0,2,2,2
+r4,I enjoy physical activities and sports,psychometric,r4_a,Strongly Agree,3,0,0,2,1,0
+r4,I enjoy physical activities and sports,psychometric,r4_b,Agree,2,0,0,1,1,0
+r4,I enjoy physical activities and sports,psychometric,r4_c,Neutral,1,0,0,0,0,0
+r4,I enjoy physical activities and sports,psychometric,r4_d,Disagree,0,1,1,0,0,1
+r4,I enjoy physical activities and sports,psychometric,r4_e,Strongly Disagree,0,2,1,0,0,2
+r5,I prefer practical solutions over theoretical ones,psychometric,r5_a,Strongly Agree,4,0,0,0,2,1
+r5,I prefer practical solutions over theoretical ones,psychometric,r5_b,Agree,3,0,0,0,1,1
+r5,I prefer practical solutions over theoretical ones,psychometric,r5_c,Neutral,1,1,0,0,0,0
+r5,I prefer practical solutions over theoretical ones,psychometric,r5_d,Disagree,0,3,1,0,0,0
+r5,I prefer practical solutions over theoretical ones,psychometric,r5_e,Strongly Disagree,0,4,2,0,0,0
+i1,I enjoy solving complex puzzles and problems,aptitude,i1_a,Strongly Agree,0,5,1,0,0,1
+i1,I enjoy solving complex puzzles and problems,aptitude,i1_b,Agree,0,4,1,0,0,1
+i1,I enjoy solving complex puzzles and problems,aptitude,i1_c,Neutral,0,2,0,0,0,0
+i1,I enjoy solving complex puzzles and problems,aptitude,i1_d,Disagree,1,0,0,1,1,0
+i1,I enjoy solving complex puzzles and problems,aptitude,i1_e,Strongly Disagree,2,0,0,2,2,0
+i2,I like to understand how things work,aptitude,i2_a,Strongly Agree,1,5,0,0,0,0
+i2,I like to understand how things work,aptitude,i2_b,Agree,1,4,0,0,0,0
+i2,I like to understand how things work,aptitude,i2_c,Neutral,0,2,0,0,0,0
+i2,I like to understand how things work,aptitude,i2_d,Disagree,0,0,1,1,1,1
+i2,I like to understand how things work,aptitude,i2_e,Strongly Disagree,0,0,2,2,2,2
+i3,I prefer to work independently on research projects,psychometric,i3_a,Strongly Agree,1,4,2,0,0,1
+i3,I prefer to work independently on research projects,psychometric,i3_b,Agree,1,3,1,0,0,1
+i3,I prefer to work independently on research projects,psychometric,i3_c,Neutral,0,1,0,0,0,0
+i3,I prefer to work independently on research projects,psychometric,i3_d,Disagree,0,0,0,3,2,0
+i3,I prefer to work independently on research projects,psychometric,i3_e,Strongly Disagree,0,0,0,4,3,0
+i4,I enjoy reading scientific articles and journals,academic,i4_a,Strongly Agree,0,5,0,0,0,0
+i4,I enjoy reading scientific articles and journals,academic,i4_b,Agree,0,4,0,0,0,0
+i4,I enjoy reading scientific articles and journals,academic,i4_c,Neutral,0,2,0,0,0,0
+i4,I enjoy reading scientific articles and journals,academic,i4_d,Disagree,1,0,1,1,1,1
+i4,I enjoy reading scientific articles and journals,academic,i4_e,Strongly Disagree,2,0,2,2,2,2
+i5,I like analyzing data and finding patterns,aptitude,i5_a,Strongly Agree,0,5,0,0,1,2
+i5,I like analyzing data and finding patterns,aptitude,i5_b,Agree,0,4,0,0,1,2
+i5,I like analyzing data and finding patterns,aptitude,i5_c,Neutral,0,2,0,0,0,1
+i5,I like analyzing data and finding patterns,aptitude,i5_d,Disagree,1,0,2,1,0,0
+i5,I like analyzing data and finding patterns,aptitude,i5_e,Strongly Disagree,2,0,3,2,0,0
+a1,I enjoy creative activities like drawing writing or music,psychometric,a1_a,Strongly Agree,0,0,5,1,0,0
+a1,I enjoy creative activities like drawing writing or music,psychometric,a1_b,Agree,0,0,4,1,0,0
+a1,I enjoy creative activities like drawing writing or music,psychometric,a1_c,Neutral,0,0,2,0,0,0
+a1,I enjoy creative activities like drawing writing or music,psychometric,a1_d,Disagree,1,1,0,0,1,1
+a1,I enjoy creative activities like drawing writing or music,psychometric,a1_e,Strongly Disagree,2,2,0,0,2,2
+a2,I prefer flexible work environments over structured ones,psychometric,a2_a,Strongly Agree,1,1,4,0,2,0
+a2,I prefer flexible work environments over structured ones,psychometric,a2_b,Agree,1,1,3,0,1,0
+a2,I prefer flexible work environments over structured ones,psychometric,a2_c,Neutral,0,0,1,0,0,0
+a2,I prefer flexible work environments over structured ones,psychometric,a2_d,Disagree,0,0,0,1,0,3
+a2,I prefer flexible work environments over structured ones,psychometric,a2_e,Strongly Disagree,0,0,0,2,0,4
+a3,I like to express my ideas through creative mediums,psychometric,a3_a,Strongly Agree,0,0,5,1,1,0
+a3,I like to express my ideas through creative mediums,psychometric,a3_b,Agree,0,0,4,1,1,0
+a3,I like to express my ideas through creative mediums,psychometric,a3_c,Neutral,0,0,2,0,0,0
+a3,I like to express my ideas through creative mediums,psychometric,a3_d,Disagree,1,1,0,0,0,1
+a3,I like to express my ideas through creative mediums,psychometric,a3_e,Strongly Disagree,2,2,0,0,0,2
+a4,I enjoy designing and creating new things,psychometric,a4_a,Strongly Agree,1,1,5,0,1,0
+a4,I enjoy designing and creating new things,psychometric,a4_b,Agree,1,1,4,0,1,0
+a4,I enjoy designing and creating new things,psychometric,a4_c,Neutral,0,0,2,0,0,0
+a4,I enjoy designing and creating new things,psychometric,a4_d,Disagree,0,0,0,1,0,2
+a4,I enjoy designing and creating new things,psychometric,a4_e,Strongly Disagree,0,0,0,2,0,3
+a5,I appreciate beauty in art nature and design,psychometric,a5_a,Strongly Agree,0,0,4,1,0,0
+a5,I appreciate beauty in art nature and design,psychometric,a5_b,Agree,0,0,3,1,0,0
+a5,I appreciate beauty in art nature and design,psychometric,a5_c,Neutral,0,0,1,0,0,0
+a5,I appreciate beauty in art nature and design,psychometric,a5_d,Disagree,1,1,0,0,1,1
+a5,I appreciate beauty in art nature and design,psychometric,a5_e,Strongly Disagree,2,2,0,0,2,2
+s1,I enjoy helping others solve their problems,psychometric,s1_a,Strongly Agree,0,0,0,5,1,0
+s1,I enjoy helping others solve their problems,psychometric,s1_b,Agree,0,0,0,4,1,0
+s1,I enjoy helping others solve their problems,psychometric,s1_c,Neutral,0,0,0,2,0,0
+s1,I enjoy helping others solve their problems,psychometric,s1_d,Disagree,1,1,1,0,0,1
+s1,I enjoy helping others solve their problems,psychometric,s1_e,Strongly Disagree,2,2,2,0,0,2
+s2,I like working in teams and collaborating with others,psychometric,s2_a,Strongly Agree,0,0,1,4,3,0
+s2,I like working in teams and collaborating with others,psychometric,s2_b,Agree,0,0,1,3,2,0
+s2,I like working in teams and collaborating with others,psychometric,s2_c,Neutral,0,0,0,1,1,0
+s2,I like working in teams and collaborating with others,psychometric,s2_d,Disagree,1,2,1,0,0,1
+s2,I like working in teams and collaborating with others,psychometric,s2_e,Strongly Disagree,2,3,2,0,0,2
+s3,I find satisfaction in teaching or mentoring others,aspiration,s3_a,Strongly Agree,0,1,1,5,2,0
+s3,I find satisfaction in teaching or mentoring others,aspiration,s3_b,Agree,0,1,1,4,1,0
+s3,I find satisfaction in teaching or mentoring others,aspiration,s3_c,Neutral,0,0,0,2,0,0
+s3,I find satisfaction in teaching or mentoring others,aspiration,s3_d,Disagree,1,0,0,0,0,1
+s3,I find satisfaction in teaching or mentoring others,aspiration,s3_e,Strongly Disagree,2,0,0,0,0,2
+s4,I am good at understanding and relating to people,psychometric,s4_a,Strongly Agree,0,0,1,5,2,0
+s4,I am good at understanding and relating to people,psychometric,s4_b,Agree,0,0,1,4,2,0
+s4,I am good at understanding and relating to people,psychometric,s4_c,Neutral,0,0,0,2,1,0
+s4,I am good at understanding and relating to people,psychometric,s4_d,Disagree,1,1,0,0,0,1
+s4,I am good at understanding and relating to people,psychometric,s4_e,Strongly Disagree,2,2,0,0,0,2
+s5,I would enjoy working in healthcare or social services,aspiration,s5_a,Strongly Agree,0,1,0,5,0,0
+s5,I would enjoy working in healthcare or social services,aspiration,s5_b,Agree,0,1,0,4,0,0
+s5,I would enjoy working in healthcare or social services,aspiration,s5_c,Neutral,0,0,0,2,0,0
+s5,I would enjoy working in healthcare or social services,aspiration,s5_d,Disagree,1,0,1,0,1,1
+s5,I would enjoy working in healthcare or social services,aspiration,s5_e,Strongly Disagree,2,0,2,0,2,2
+e1,I enjoy leading projects and managing teams,psychometric,e1_a,Strongly Agree,0,0,0,2,5,1
+e1,I enjoy leading projects and managing teams,psychometric,e1_b,Agree,0,0,0,1,4,1
+e1,I enjoy leading projects and managing teams,psychometric,e1_c,Neutral,0,0,0,0,2,0
+e1,I enjoy leading projects and managing teams,psychometric,e1_d,Disagree,1,1,1,0,0,0
+e1,I enjoy leading projects and managing teams,psychometric,e1_e,Strongly Disagree,2,2,2,0,0,0
+e2,I like persuading others and selling ideas,psychometric,e2_a,Strongly Agree,0,0,1,1,5,0
+e2,I like persuading others and selling ideas,psychometric,e2_b,Agree,0,0,1,1,4,0
+e2,I like persuading others and selling ideas,psychometric,e2_c,Neutral,0,0,0,0,2,0
+e2,I like persuading others and selling ideas,psychometric,e2_d,Disagree,1,1,0,0,0,1
+e2,I like persuading others and selling ideas,psychometric,e2_e,Strongly Disagree,2,2,0,0,0,2
+e3,I am comfortable taking risks for potential rewards,psychometric,e3_a,Strongly Agree,1,0,1,0,5,0
+e3,I am comfortable taking risks for potential rewards,psychometric,e3_b,Agree,1,0,1,0,4,0
+e3,I am comfortable taking risks for potential rewards,psychometric,e3_c,Neutral,0,0,0,0,2,0
+e3,I am comfortable taking risks for potential rewards,psychometric,e3_d,Disagree,0,1,0,1,0,2
+e3,I am comfortable taking risks for potential rewards,psychometric,e3_e,Strongly Disagree,0,2,0,2,0,3
+e4,I enjoy competitive environments,psychometric,e4_a,Strongly Agree,1,0,0,0,4,0
+e4,I enjoy competitive environments,psychometric,e4_b,Agree,1,0,0,0,3,0
+e4,I enjoy competitive environments,psychometric,e4_c,Neutral,0,0,0,0,1,0
+e4,I enjoy competitive environments,psychometric,e4_d,Disagree,0,1,1,2,0,1
+e4,I enjoy competitive environments,psychometric,e4_e,Strongly Disagree,0,2,2,3,0,2
+e5,I would like to start my own business someday,aspiration,e5_a,Strongly Agree,0,0,1,0,5,0
+e5,I would like to start my own business someday,aspiration,e5_b,Agree,0,0,1,0,4,0
+e5,I would like to start my own business someday,aspiration,e5_c,Neutral,0,0,0,0,2,0
+e5,I would like to start my own business someday,aspiration,e5_d,Disagree,0,1,0,1,0,2
+e5,I would like to start my own business someday,aspiration,e5_e,Strongly Disagree,0,2,0,2,0,3
+c1,I prefer organized and structured work environments,psychometric,c1_a,Strongly Agree,0,0,0,1,0,5
+c1,I prefer organized and structured work environments,psychometric,c1_b,Agree,0,0,0,1,0,4
+c1,I prefer organized and structured work environments,psychometric,c1_c,Neutral,0,0,0,0,0,2
+c1,I prefer organized and structured work environments,psychometric,c1_d,Disagree,1,1,2,0,1,0
+c1,I prefer organized and structured work environments,psychometric,c1_e,Strongly Disagree,2,2,3,0,2,0
+c2,I enjoy working with numbers and data,aptitude,c2_a,Strongly Agree,0,2,0,0,1,5
+c2,I enjoy working with numbers and data,aptitude,c2_b,Agree,0,2,0,0,1,4
+c2,I enjoy working with numbers and data,aptitude,c2_c,Neutral,0,1,0,0,0,2
+c2,I enjoy working with numbers and data,aptitude,c2_d,Disagree,1,0,2,1,0,0
+c2,I enjoy working with numbers and data,aptitude,c2_e,Strongly Disagree,2,0,3,2,0,0
+c3,I like following established procedures and guidelines,psychometric,c3_a,Strongly Agree,1,0,0,1,0,5
+c3,I like following established procedures and guidelines,psychometric,c3_b,Agree,1,0,0,1,0,4
+c3,I like following established procedures and guidelines,psychometric,c3_c,Neutral,0,0,0,0,0,2
+c3,I like following established procedures and guidelines,psychometric,c3_d,Disagree,0,1,2,0,2,0
+c3,I like following established procedures and guidelines,psychometric,c3_e,Strongly Disagree,0,2,3,0,3,0
+c4,I am detail-oriented and careful with my work,psychometric,c4_a,Strongly Agree,1,2,0,1,0,4
+c4,I am detail-oriented and careful with my work,psychometric,c4_b,Agree,1,2,0,1,0,3
+c4,I am detail-oriented and careful with my work,psychometric,c4_c,Neutral,0,1,0,0,0,1
+c4,I am detail-oriented and careful with my work,psychometric,c4_d,Disagree,0,0,2,0,2,0
+c4,I am detail-oriented and careful with my work,psychometric,c4_e,Strongly Disagree,0,0,3,0,3,0
+c5,I prefer jobs with clear expectations and responsibilities,psychometric,c5_a,Strongly Agree,1,0,0,2,0,4
+c5,I prefer jobs with clear expectations and responsibilities,psychometric,c5_b,Agree,1,0,0,2,0,3
+c5,I prefer jobs with clear expectations and responsibilities,psychometric,c5_c,Neutral,0,0,0,1,0,1
+c5,I prefer jobs with clear expectations and responsibilities,psychometric,c5_d,Disagree,0,1,2,0,1,0
+c5,I prefer jobs with clear expectations and responsibilities,psychometric,c5_e,Strongly Disagree,0,2,3,0,2,0

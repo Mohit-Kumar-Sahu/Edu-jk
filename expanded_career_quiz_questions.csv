@@ -1,0 +1,20 @@
+questionId,questionText,category,optionId,optionText,R,I,A,S,E,C
+q1,I enjoy working with tools and machines,psychometric,q1_a,Strongly Agree,5,0,0,0,0,1
+q1,I enjoy working with tools and machines,psychometric,q1_b,Agree,3,0,0,0,0,1
+q1,I enjoy working with tools and machines,psychometric,q1_c,Neutral,1,0,0,0,0,0
+q1,I enjoy working with tools and machines,psychometric,q1_d,Disagree,0,0,0,0,0,0
+a1,What is your current education level?,academic,a1_a,10th Class,0,0,0,0,0,0
+a1,What is your current education level?,academic,a1_b,12th Class (Arts),0,0,0,0,0,0
+a1,What is your current education level?,academic,a1_c,12th Class (Science),0,0,0,0,0,0
+a1,What is your current education level?,academic,a1_d,12th Class (Commerce),0,0,0,0,0,0
+a1,What is your current education level?,academic,a1_e,Undergraduate,0,0,0,0,0,0
+ap1,Are you comfortable solving logical puzzles?,aptitude,ap1_a,"Yes, very confident",0,3,0,0,0,2
+ap1,Are you comfortable solving logical puzzles?,aptitude,ap1_b,Somewhat confident,0,2,0,0,0,1
+ap1,Are you comfortable solving logical puzzles?,aptitude,ap1_c,Not confident,0,0,0,0,0,0
+s1,Would you prefer studying in your home district or relocating?,socioeconomic,s1_a,Home District only,0,0,0,0,0,0
+s1,Would you prefer studying in your home district or relocating?,socioeconomic,s1_b,Anywhere within J&K,0,0,0,0,0,0
+s1,Would you prefer studying in your home district or relocating?,socioeconomic,s1_c,Open to outside J&K,0,0,0,0,0,0
+c1,What type of career do you prefer?,aspiration,c1_a,Government Job,0,0,0,2,0,3
+c1,What type of career do you prefer?,aspiration,c1_b,Private Sector,0,2,0,0,3,0
+c1,What type of career do you prefer?,aspiration,c1_c,Entrepreneurship,0,0,0,0,5,0
+c1,What type of career do you prefer?,aspiration,c1_d,Creative Career,0,0,5,0,0,0

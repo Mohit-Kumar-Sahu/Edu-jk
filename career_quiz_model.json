@@ -1,0 +1,377 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "text": "I enjoy working with tools and machines",
+      "category": "psychometric",
+      "options": [
+        {
+          "id": "q1_a",
+          "text": "Strongly Agree",
+          "scores": {
+            "R": 5,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 1
+          }
+        },
+        {
+          "id": "q1_b",
+          "text": "Agree",
+          "scores": {
+            "R": 3,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 1
+          }
+        },
+        {
+          "id": "q1_c",
+          "text": "Neutral",
+          "scores": {
+            "R": 1,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "q1_d",
+          "text": "Disagree",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "a1",
+      "text": "What is your current education level?",
+      "category": "academic",
+      "options": [
+        {
+          "id": "a1_a",
+          "text": "10th Class",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "a1_b",
+          "text": "12th Class (Arts)",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "a1_c",
+          "text": "12th Class (Science)",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "a1_d",
+          "text": "12th Class (Commerce)",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "a1_e",
+          "text": "Undergraduate",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "ap1",
+      "text": "Are you comfortable solving logical puzzles?",
+      "category": "aptitude",
+      "options": [
+        {
+          "id": "ap1_a",
+          "text": "Yes, very confident",
+          "scores": {
+            "R": 0,
+            "I": 3,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 2
+          }
+        },
+        {
+          "id": "ap1_b",
+          "text": "Somewhat confident",
+          "scores": {
+            "R": 0,
+            "I": 2,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 1
+          }
+        },
+        {
+          "id": "ap1_c",
+          "text": "Not confident",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "text": "Would you prefer studying in your home district or relocating?",
+      "category": "socioeconomic",
+      "options": [
+        {
+          "id": "s1_a",
+          "text": "Home District only",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "s1_b",
+          "text": "Anywhere within J&K",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        },
+        {
+          "id": "s1_c",
+          "text": "Open to outside J&K",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "c1",
+      "text": "What type of career do you prefer?",
+      "category": "aspiration",
+      "options": [
+        {
+          "id": "c1_a",
+          "text": "Government Job",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 2,
+            "E": 0,
+            "C": 3
+          }
+        },
+        {
+          "id": "c1_b",
+          "text": "Private Sector",
+          "scores": {
+            "R": 0,
+            "I": 2,
+            "A": 0,
+            "S": 0,
+            "E": 3,
+            "C": 0
+          }
+        },
+        {
+          "id": "c1_c",
+          "text": "Entrepreneurship",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 0,
+            "S": 0,
+            "E": 5,
+            "C": 0
+          }
+        },
+        {
+          "id": "c1_d",
+          "text": "Creative Career",
+          "scores": {
+            "R": 0,
+            "I": 0,
+            "A": 5,
+            "S": 0,
+            "E": 0,
+            "C": 0
+          }
+        }
+      ]
+    }
+  ],
+  "riasec_careers": {
+    "R": {
+      "name": "Realistic",
+      "description": "Practical, hands-on, mechanical",
+      "careers": [
+        "Mechanical Engineer",
+        "Electrician",
+        "Carpenter",
+        "Pilot",
+        "Automotive Technician",
+        "Civil Engineer",
+        "Architect",
+        "Agricultural Engineer",
+        "Construction Manager",
+        "Surveyor"
+      ]
+    },
+    "I": {
+      "name": "Investigative",
+      "description": "Analytical, scientific, research-oriented",
+      "careers": [
+        "Data Scientist",
+        "Research Scientist",
+        "Software Engineer",
+        "Doctor",
+        "Pharmacist",
+        "Laboratory Technician",
+        "Statistician",
+        "Biologist",
+        "Chemist",
+        "Physicist"
+      ]
+    },
+    "A": {
+      "name": "Artistic",
+      "description": "Creative, expressive, innovative",
+      "careers": [
+        "Graphic Designer",
+        "Writer",
+        "Musician",
+        "Artist",
+        "Interior Designer",
+        "Fashion Designer",
+        "Photographer",
+        "Film Director",
+        "Art Therapist",
+        "Creative Director"
+      ]
+    },
+    "S": {
+      "name": "Social",
+      "description": "Helping, teaching, caring for others",
+      "careers": [
+        "Teacher",
+        "Counselor",
+        "Social Worker",
+        "Nurse",
+        "Therapist",
+        "Human Resources Manager",
+        "Community Worker",
+        "Psychologist",
+        "Rehabilitation Counselor",
+        "School Principal"
+      ]
+    },
+    "E": {
+      "name": "Enterprising",
+      "description": "Leading, persuading, managing",
+      "careers": [
+        "Business Manager",
+        "Sales Representative",
+        "Entrepreneur",
+        "Marketing Manager",
+        "Lawyer",
+        "Real Estate Agent",
+        "Financial Advisor",
+        "Project Manager",
+        "CEO",
+        "Politician"
+      ]
+    },
+    "C": {
+      "name": "Conventional",
+      "description": "Organizing, detail-oriented, systematic",
+      "careers": [
+        "Accountant",
+        "Bookkeeper",
+        "Administrative Assistant",
+        "Bank Teller",
+        "Data Entry Clerk",
+        "Office Manager",
+        "Auditor",
+        "Tax Preparer",
+        "Secretary",
+        "Librarian"
+      ]
+    }
+  },
+  "model_info": {
+    "version": "1.0",
+    "total_questions": 5,
+    "categories": [
+      "psychometric",
+      "aspiration",
+      "socioeconomic",
+      "aptitude",
+      "academic"
+    ],
+    "created_date": "2024-01-01T00:00:00"
+  }
+}

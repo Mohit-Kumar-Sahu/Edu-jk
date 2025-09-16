@@ -1,0 +1,207 @@
+[
+  {
+    "careerId": "c1",
+    "title": "Mechanical Engineer",
+    "description": "Designs, builds, and maintains mechanical systems.",
+    "requiredScores": {
+      "R": {
+        "min": 30,
+        "max": 50
+      },
+      "I": {
+        "min": 20,
+        "max": 40
+      },
+      "A": {
+        "min": 0,
+        "max": 15
+      },
+      "S": {
+        "min": 0,
+        "max": 20
+      },
+      "E": {
+        "min": 0,
+        "max": 20
+      },
+      "C": {
+        "min": 10,
+        "max": 30
+      }
+    },
+    "educationRequirements": [
+      "B.Sc Physics",
+      "B.Sc Mathematics",
+      "B.Sc Computer Science",
+      "B.Tech (outside GDCs)"
+    ],
+    "salaryRange": "\u20b94-12 LPA",
+    "jobOutlook": "High demand in manufacturing and robotics",
+    "linkedGDCStreams": [
+      "Science"
+    ]
+  },
+  {
+    "careerId": "c2",
+    "title": "Teacher",
+    "description": "Educates students in academic subjects at schools and colleges.",
+    "requiredScores": {
+      "R": {
+        "min": 0,
+        "max": 15
+      },
+      "I": {
+        "min": 10,
+        "max": 30
+      },
+      "A": {
+        "min": 10,
+        "max": 30
+      },
+      "S": {
+        "min": 30,
+        "max": 50
+      },
+      "E": {
+        "min": 10,
+        "max": 25
+      },
+      "C": {
+        "min": 10,
+        "max": 30
+      }
+    },
+    "educationRequirements": [
+      "BA English",
+      "BA Education",
+      "B.Ed"
+    ],
+    "salaryRange": "\u20b93-8 LPA",
+    "jobOutlook": "Stable demand in schools & higher education",
+    "linkedGDCStreams": [
+      "Arts",
+      "Science"
+    ]
+  },
+  {
+    "careerId": "c3",
+    "title": "Chartered Accountant",
+    "description": "Handles accounting, auditing, and financial planning for organizations.",
+    "requiredScores": {
+      "R": {
+        "min": 0,
+        "max": 15
+      },
+      "I": {
+        "min": 10,
+        "max": 25
+      },
+      "A": {
+        "min": 0,
+        "max": 10
+      },
+      "S": {
+        "min": 0,
+        "max": 20
+      },
+      "E": {
+        "min": 20,
+        "max": 40
+      },
+      "C": {
+        "min": 30,
+        "max": 50
+      }
+    },
+    "educationRequirements": [
+      "B.Com",
+      "M.Com"
+    ],
+    "salaryRange": "\u20b96-20 LPA",
+    "jobOutlook": "Strong demand in finance, banking, taxation",
+    "linkedGDCStreams": [
+      "Commerce"
+    ]
+  },
+  {
+    "careerId": "c4",
+    "title": "Journalist",
+    "description": "Investigates, reports, and writes for media outlets.",
+    "requiredScores": {
+      "R": {
+        "min": 0,
+        "max": 15
+      },
+      "I": {
+        "min": 10,
+        "max": 30
+      },
+      "A": {
+        "min": 20,
+        "max": 40
+      },
+      "S": {
+        "min": 20,
+        "max": 35
+      },
+      "E": {
+        "min": 10,
+        "max": 25
+      },
+      "C": {
+        "min": 0,
+        "max": 20
+      }
+    },
+    "educationRequirements": [
+      "BA English",
+      "BA Political Science"
+    ],
+    "salaryRange": "\u20b92-10 LPA",
+    "jobOutlook": "Growing opportunities in digital journalism",
+    "linkedGDCStreams": [
+      "Arts"
+    ]
+  },
+  {
+    "careerId": "c5",
+    "title": "Civil Services Officer (IAS/JKAS)",
+    "description": "Administrative roles in government, managing policies and governance.",
+    "requiredScores": {
+      "R": {
+        "min": 10,
+        "max": 30
+      },
+      "I": {
+        "min": 20,
+        "max": 40
+      },
+      "A": {
+        "min": 0,
+        "max": 20
+      },
+      "S": {
+        "min": 30,
+        "max": 50
+      },
+      "E": {
+        "min": 20,
+        "max": 40
+      },
+      "C": {
+        "min": 20,
+        "max": 40
+      }
+    },
+    "educationRequirements": [
+      "Any Bachelor's Degree (BA, B.Sc, B.Com)"
+    ],
+    "salaryRange": "\u20b98-20 LPA",
+    "jobOutlook": "Prestigious government service with stable demand",
+    "linkedGDCStreams": [
+      "Arts",
+      "Science",
+      "Commerce"
+    ]
+  }
+]
