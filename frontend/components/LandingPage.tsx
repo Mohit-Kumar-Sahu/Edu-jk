@@ -3,29 +3,24 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap, MapPin, Award, Users, BookOpen, TrendingUp, X, Sparkles, Zap, DollarSign, CheckCircle } from 'lucide-react';
 
-// You will need to import your images and videos.
-// Make sure the paths are correct based on your project structure.
-// Assuming your assets are in `src/assets/images/` and `src/assets/videos/`
-import promoImage from '../images/image1.png'; // Example image for hero or general promo
-import statsImage from '../images/image2.png'; // Example image for stats section
-import heroVideo from '../videos/video1.mp4'; // Main hero background video
-import ctaImage from '../images/image3.png'; // CTA section background image
+// Import all assets from your local directories
+import promoImage from '../images/image1.png'; 
+import statsImage from '../images/image2.png'; 
+import heroVideo from '../videos/video1.mp4';
+import ctaImage from '../images/image3.png';
+import textureImage from '../images/image4.png';
+import videoChatbot from '../videos/video2.mp4';
+import videoTracker from '../videos/video3.mp4';
 
-// New imports
-import textureImage from '../images/image4.png'; // Subtle page background texture
-import successImage from '../images/image5.png'; // Image for a visual break in features
-import videoChatbot from '../videos/video2.mp4'; // Video for AI Chatbot showcase
-import videoTracker from '../videos/video3.mp4'; // Video for Application Tracker showcase
-
-// Define a consistent color palette with turquoise focus
+// Define a monochromatic turquoise color palette
 const primaryTurquoise = '#20c997'; // A vibrant turquoise
 const lightTurquoise = '#e6fff7'; // Very light for backgrounds
 const darkTurquoise = '#16916b'; // Darker for accents/buttons
-const accentGray = '#4a5568'; // For text that needs to stand out on light bg
-const textGray = '#6b7280'; // For general body text
+const accentGray = '#2d3748'; // For text that needs to stand out on light bg
+const textGray = '#4a5568'; // For general body text
 const bgColor = '#f8fafc'; // Off-white for overall page background
 
-// Animation variants for Framer Motion
+// Animation variants for a consistent, professional feel
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -41,7 +36,7 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 }
 };
 
-// Component for the promotional banner (Enhanced)
+// Component for the enhanced promotional banner
 const PromoBanner = () => {
   const [isVisible, setIsVisible] = React.useState(true);
 
@@ -118,17 +113,17 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bgColor }}>
-      {/* Textured background finish using image4.png */}
+      {/* Textured background finish that won't interfere with content */}
       <div 
         className="absolute inset-0 z-0 bg-repeat bg-fixed opacity-5 pointer-events-none" 
         style={{ backgroundImage: `url(${textureImage})` }}
       ></div>
 
-      {/* Main content wrapper with relative z-index to stay on top of the texture */}
+      {/* Main content container ensures no overlap */}
       <div className="relative z-10">
         <PromoBanner />
         
-        {/* Header */}
+        {/* Header Section */}
         <header className="bg-white shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-6">
@@ -141,7 +136,7 @@ export function LandingPage() {
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-gray-900">Edu2Career J&K</h1>
+                  <h1 className="text-xl font-bold" style={{ color: accentGray }}>Edu2Career J&K</h1>
                   <p className="text-xs" style={{ color: textGray }}>Career & Education Navigator</p>
                 </div>
               </motion.div>
@@ -168,18 +163,20 @@ export function LandingPage() {
           </div>
         </header>
 
-        {/* Hero Section with Video Background and Image Overlay */}
+        {/* Hero Section with Video & Promo Image */}
         <section className="relative py-20 px-4 overflow-hidden min-h-[70vh] flex items-center justify-center">
+          {/* Background video that fills the section without cropping */}
           <video 
-            className="absolute inset-0 w-full h-full object-cover opacity-20" 
+            className="absolute inset-0 w-full h-full object-contain opacity-20" 
             src={heroVideo} 
             autoPlay 
             loop 
             muted 
-            playsInline // Added for better mobile support
+            playsInline
           />
           
           <div className="max-w-7xl mx-auto text-center relative z-10 grid md:grid-cols-2 items-center gap-12">
+            {/* Text and CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -209,16 +206,18 @@ export function LandingPage() {
                 </button>
               </div>
             </motion.div>
+            
+            {/* Promo Image to showcase the UI - not cropped */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="hidden md:block" // Hide on small screens
+              className="hidden md:block"
             >
               <img 
                 src={promoImage} 
                 alt="Students achieving success" 
-                className="w-full h-auto object-contain rounded-xl shadow-2xl"
+                className="w-full h-auto rounded-xl shadow-2xl"
               />
             </motion.div>
           </div>
@@ -227,7 +226,6 @@ export function LandingPage() {
         {/* Stats Section with Dedicated Cards and Image */}
         <section className="py-16" style={{ backgroundColor: lightTurquoise }}>
           <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
-            {/* Stats content */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -252,7 +250,8 @@ export function LandingPage() {
                 </motion.div>
               ))}
             </motion.div>
-            {/* Image */}
+            
+            {/* Stats Image - not cropped */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -263,13 +262,13 @@ export function LandingPage() {
               <img 
                 src={statsImage} 
                 alt="Students collaborating" 
-                className="w-full rounded-xl shadow-lg object-cover"
+                className="w-full h-auto rounded-xl shadow-lg"
               />
             </motion.div>
           </div>
         </section>
 
-        {/* New Video Showcase Section - Enhanced UI */}
+        {/* New Video Showcase Section - with enhanced cards */}
         <section className="py-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -292,7 +291,7 @@ export function LandingPage() {
               viewport={{ once: true, amount: 0.5 }}
               className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
             >
-              <video src={videoChatbot} autoPlay loop muted playsInline className="w-full h-auto object-cover" />
+              <video src={videoChatbot} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
                 <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryTurquoise }}>AI Career Chatbot 🤖</h3>
                 <p className="text-base" style={{ color: textGray }}>
@@ -307,7 +306,7 @@ export function LandingPage() {
               viewport={{ once: true, amount: 0.5 }}
               className="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-shadow duration-300"
             >
-              <video src={videoTracker} autoPlay loop muted playsInline className="w-full h-auto object-cover" />
+              <video src={videoTracker} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
                 <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryTurquoise }}>Application Tracker 📝</h3>
                 <p className="text-base" style={{ color: textGray }}>
@@ -318,7 +317,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section with new image5.png - Outstanding Design */}
+        {/* Features Section - with outstanding card design */}
         <section className="py-20 px-4" style={{ backgroundColor: lightTurquoise }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -341,34 +340,9 @@ export function LandingPage() {
             viewport={{ once: true, amount: 0.3 }}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
           >
-            {features.slice(0, 3).map((feature, index) => (
+            {features.map((feature, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
-                className="bg-white p-8 rounded-xl shadow-lg transition-all duration-300 border-b-4"
-                style={{ borderColor: primaryTurquoise }}
-              >
-                <div className="mb-4" style={{ color: primaryTurquoise }}>{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-3" style={{ color: accentGray }}>{feature.title}</h3>
-                <p className="text-base" style={{ color: textGray }}>{feature.description}</p>
-              </motion.div>
-            ))}
-            
-            {/* Image5.png inserted here as a full-width compelling visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              viewport={{ once: true, amount: 0.5 }}
-              className="md:col-span-2 lg:col-span-3 h-96 w-full overflow-hidden rounded-xl shadow-2xl my-8"
-            >
-              <img src={successImage} alt="Students celebrating career success" className="w-full h-full object-cover" />
-            </motion.div>
-
-            {features.slice(3, 6).map((feature, index) => (
-              <motion.div
-                key={index + 3} // Unique key
                 variants={itemVariants}
                 whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
                 className="bg-white p-8 rounded-xl shadow-lg transition-all duration-300 border-b-4"
@@ -385,7 +359,7 @@ export function LandingPage() {
         {/* CTA Section with Image and Vibrant Colors */}
         <section className="py-20 px-4 relative overflow-hidden" style={{ backgroundColor: primaryTurquoise }}>
           <div className="absolute inset-0 opacity-10">
-            <img src={ctaImage} alt="Abstract background texture" className="w-full h-full object-cover" />
+            <img src={ctaImage} alt="Abstract background texture" className="w-full h-full object-contain" />
           </div>
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.div
