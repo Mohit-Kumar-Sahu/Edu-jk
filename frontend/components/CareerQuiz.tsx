@@ -24,62 +24,62 @@ export function CareerQuiz({ onComplete }: QuizProps) {
   // with the new language whenever `t` changes.
   const sections = [
     {
-      title: t('section_interest_title'),
-      subtitle: t('section_interest_subtitle'),
+      title: t('careerQuiz.section_interest_title'),
+      subtitle: t('careerQuiz.section_interest_subtitle'),
       icon: <Lightbulb className="w-6 h-6" />,
       color: "bg-blue-500",
       questions: [
         // Realistic
-        { id: 'R1', text: t('q_r1'), category: 'R' },
-        { id: 'R2', text: t('q_r2'), category: 'R' },
-        { id: 'R3', text: t('q_r3'), category: 'R' },
+        { id: 'R1', text: t('careerQuiz.q_r1'), category: 'R' },
+        { id: 'R2', text: t('careerQuiz.q_r2'), category: 'R' },
+        { id: 'R3', text: t('careerQuiz.q_r3'), category: 'R' },
         
         // Investigative
-        { id: 'I1', text: t('q_i1'), category: 'I' },
-        { id: 'I2', text: t('q_i2'), category: 'I' },
-        { id: 'I3', text: t('q_i3'), category: 'I' },
+        { id: 'I1', text: t('careerQuiz.q_i1'), category: 'I' },
+        { id: 'I2', text: t('careerQuiz.q_i2'), category: 'I' },
+        { id: 'I3', text: t('careerQuiz.q_i3'), category: 'I' },
         
         // Artistic
-        { id: 'A1', text: t('q_a1'), category: 'A' },
-        { id: 'A2', text: t('q_a2'), category: 'A' },
-        { id: 'A3', text: t('q_a3'), category: 'A' },
+        { id: 'A1', text: t('careerQuiz.q_a1'), category: 'A' },
+        { id: 'A2', text: t('careerQuiz.q_a2'), category: 'A' },
+        { id: 'A3', text: t('careerQuiz.q_a3'), category: 'A' },
         
         // Social
-        { id: 'S1', text: t('q_s1'), category: 'S' },
-        { id: 'S2', text: t('q_s2'), category: 'S' },
-        { id: 'S3', text: t('q_s3'), category: 'S' },
+        { id: 'S1', text: t('careerQuiz.q_s1'), category: 'S' },
+        { id: 'S2', text: t('careerQuiz.q_s2'), category: 'S' },
+        { id: 'S3', text: t('careerQuiz.q_s3'), category: 'S' },
         
         // Enterprising
-        { id: 'E1', text: t('q_e1'), category: 'E' },
-        { id: 'E2', text: t('q_e2'), category: 'E' },
-        { id: 'E3', text: t('q_e3'), category: 'E' },
+        { id: 'E1', text: t('careerQuiz.q_e1'), category: 'E' },
+        { id: 'E2', text: t('careerQuiz.q_e2'), category: 'E' },
+        { id: 'E3', text: t('careerQuiz.q_e3'), category: 'E' },
         
         // Conventional
-        { id: 'C1', text: t('q_c1'), category: 'C' },
-        { id: 'C2', text: t('q_c2'), category: 'C' },
-        { id: 'C3', text: t('q_c3'), category: 'C' }
+        { id: 'C1', text: t('careerQuiz.q_c1'), category: 'C' },
+        { id: 'C2', text: t('careerQuiz.q_c2'), category: 'C' },
+        { id: 'C3', text: t('careerQuiz.q_c3'), category: 'C' }
       ]
     },
     {
-      title: t('section_aptitude_title'),
-      subtitle: t('section_aptitude_subtitle'),
+      title: t('careerQuiz.section_aptitude_title'),
+      subtitle: t('careerQuiz.section_aptitude_subtitle'),
       icon: <Brain className="w-6 h-6" />,
       color: "bg-green-500",
       questions: [
         // Numerical
-        { id: 'N1', text: t('q_n1'), category: t('cat_numerical'), options: [t('q_n1_opt_1'), t('q_n1_opt_2'), t('q_n1_opt_3'), t('q_n1_opt_4')], correct: 1 },
-        { id: 'N2', text: t('q_n2'), category: t('cat_numerical'), options: [t('q_n2_opt_1'), t('q_n2_opt_2'), t('q_n2_opt_3'), t('q_n2_opt_4')], correct: 2 },
-        { id: 'N3', text: t('q_n3'), category: t('cat_numerical'), options: [t('q_n3_opt_1'), t('q_n3_opt_2'), t('q_n3_opt_3'), t('q_n3_opt_4')], correct: 1 },
+        { id: 'N1', text: t('careerQuiz.q_n1'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n1_opt_1'), t('careerQuiz.q_n1_opt_2'), t('careerQuiz.q_n1_opt_3'), t('careerQuiz.q_n1_opt_4')], correct: 1 },
+        { id: 'N2', text: t('careerQuiz.q_n2'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n2_opt_1'), t('careerQuiz.q_n2_opt_2'), t('careerQuiz.q_n2_opt_3'), t('careerQuiz.q_n2_opt_4')], correct: 2 },
+        { id: 'N3', text: t('careerQuiz.q_n3'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n3_opt_1'), t('careerQuiz.q_n3_opt_2'), t('careerQuiz.q_n3_opt_3'), t('careerQuiz.q_n3_opt_4')], correct: 1 },
         
         // Verbal
-        { id: 'V1', text: t('q_v1'), category: t('cat_verbal'), options: [t('q_v1_opt_1'), t('q_v1_opt_2'), t('q_v1_opt_3'), t('q_v1_opt_4')], correct: 1 },
-        { id: 'V2', text: t('q_v2'), category: t('cat_verbal'), options: [t('q_v2_opt_1'), t('q_v2_opt_2'), t('q_v2_opt_3'), t('q_v2_opt_4')], correct: 0 },
-        { id: 'V3', text: t('q_v3'), category: t('cat_verbal'), options: [t('q_v3_opt_1'), t('q_v3_opt_2'), t('q_v3_opt_3'), t('q_v3_opt_4')], correct: 3 },
+        { id: 'V1', text: t('careerQuiz.q_v1'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v1_opt_1'), t('careerQuiz.q_v1_opt_2'), t('careerQuiz.q_v1_opt_3'), t('careerQuiz.q_v1_opt_4')], correct: 1 },
+        { id: 'V2', text: t('careerQuiz.q_v2'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v2_opt_1'), t('careerQuiz.q_v2_opt_2'), t('careerQuiz.q_v2_opt_3'), t('careerQuiz.q_v2_opt_4')], correct: 0 },
+        { id: 'V3', text: t('careerQuiz.q_v3'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v3_opt_1'), t('careerQuiz.q_v3_opt_2'), t('careerQuiz.q_v3_opt_3'), t('careerQuiz.q_v3_opt_4')], correct: 3 },
         
         // Logical
-        { id: 'L1', text: t('q_l1'), category: t('cat_logical'), options: [t('q_l1_opt_1'), t('q_l1_opt_2'), t('q_l1_opt_3'), t('q_l1_opt_4')], correct: 1 },
-        { id: 'L2', text: t('q_l2'), category: t('cat_logical'), options: [t('q_l2_opt_1'), t('q_l2_opt_2'), t('q_l2_opt_3'), t('q_l2_opt_4')], correct: 2 },
-        { id: 'L3', text: t('q_l3'), category: t('cat_logical'), options: [t('q_l3_opt_1'), t('q_l3_opt_2'), t('q_l3_opt_3'), t('q_l3_opt_4')], correct: 2 }
+        { id: 'L1', text: t('careerQuiz.q_l1'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l1_opt_1'), t('careerQuiz.q_l1_opt_2'), t('careerQuiz.q_l1_opt_3'), t('careerQuiz.q_l1_opt_4')], correct: 1 },
+        { id: 'L2', text: t('careerQuiz.q_l2'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l2_opt_1'), t('careerQuiz.q_l2_opt_2'), t('careerQuiz.q_l2_opt_3'), t('careerQuiz.q_l2_opt_4')], correct: 2 },
+        { id: 'L3', text: t('careerQuiz.q_l3'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l3_opt_1'), t('careerQuiz.q_l3_opt_2'), t('careerQuiz.q_l3_opt_3'), t('careerQuiz.q_l3_opt_4')], correct: 2 }
       ]
     }
   ];
@@ -120,12 +120,12 @@ export function CareerQuiz({ onComplete }: QuizProps) {
     // Calculate RIASEC scores
     const riasecScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
     const categoryNames = {
-      R: t('riasec_realistic'),
-      I: t('riasec_investigative'),
-      A: t('riasec_artistic'),
-      S: t('riasec_social'),
-      E: t('riasec_enterprising'),
-      C: t('riasec_conventional')
+      R: t('careerQuiz.riasec_realistic'),
+      I: t('careerQuiz.riasec_investigative'),
+      A: t('careerQuiz.riasec_artistic'),
+      S: t('careerQuiz.riasec_social'),
+      E: t('careerQuiz.riasec_enterprising'),
+      C: t('careerQuiz.riasec_conventional')
     };
 
     // Interest scores (RIASEC)
@@ -178,34 +178,34 @@ export function CareerQuiz({ onComplete }: QuizProps) {
     // A mapping from RIASEC codes to career recommendations
     const careerDatabase = {
       R: [
-        { title: t('career_civil_engineer_title'), description: t('career_civil_engineer_desc'), match: 95 },
-        { title: t('career_mechanical_engineer_title'), description: t('career_mechanical_engineer_desc'), match: 90 },
-        { title: t('career_agriculture_officer_title'), description: t('career_agriculture_officer_desc'), match: 85 }
+        { title: t('careerQuiz.career_civil_engineer_title'), description: t('careerQuiz.career_civil_engineer_desc'), match: 95 },
+        { title: t('careerQuiz.career_mechanical_engineer_title'), description: t('careerQuiz.career_mechanical_engineer_desc'), match: 90 },
+        { title: t('careerQuiz.career_agriculture_officer_title'), description: t('careerQuiz.career_agriculture_officer_desc'), match: 85 }
       ],
       I: [
-        { title: t('career_software_developer_title'), description: t('career_software_developer_desc'), match: 95 },
-        { title: t('career_research_scientist_title'), description: t('career_research_scientist_desc'), match: 90 },
-        { title: t('career_data_analyst_title'), description: t('career_data_analyst_desc'), match: 85 }
+        { title: t('careerQuiz.career_software_developer_title'), description: t('careerQuiz.career_software_developer_desc'), match: 95 },
+        { title: t('careerQuiz.career_research_scientist_title'), description: t('careerQuiz.career_research_scientist_desc'), match: 90 },
+        { title: t('careerQuiz.career_data_analyst_title'), description: t('careerQuiz.career_data_analyst_desc'), match: 85 }
       ],
       A: [
-        { title: t('career_graphic_designer_title'), description: t('career_graphic_designer_desc'), match: 95 },
-        { title: t('career_content_writer_title'), description: t('career_content_writer_desc'), match: 90 },
-        { title: t('career_ui_ux_designer_title'), description: t('career_ui_ux_designer_desc'), match: 85 }
+        { title: t('careerQuiz.career_graphic_designer_title'), description: t('careerQuiz.career_graphic_designer_desc'), match: 95 },
+        { title: t('careerQuiz.career_content_writer_title'), description: t('careerQuiz.career_content_writer_desc'), match: 90 },
+        { title: t('careerQuiz.career_ui_ux_designer_title'), description: t('careerQuiz.career_ui_ux_designer_desc'), match: 85 }
       ],
       S: [
-        { title: t('career_teacher_title'), description: t('career_teacher_desc'), match: 95 },
-        { title: t('career_social_worker_title'), description: t('career_social_worker_desc'), match: 90 },
-        { title: t('career_counselor_title'), description: t('career_counselor_desc'), match: 85 }
+        { title: t('careerQuiz.career_teacher_title'), description: t('careerQuiz.career_teacher_desc'), match: 95 },
+        { title: t('careerQuiz.career_social_worker_title'), description: t('careerQuiz.career_social_worker_desc'), match: 90 },
+        { title: t('careerQuiz.career_counselor_title'), description: t('careerQuiz.career_counselor_desc'), match: 85 }
       ],
       E: [
-        { title: t('career_business_manager_title'), description: t('career_business_manager_desc'), match: 95 },
-        { title: t('career_marketing_executive_title'), description: t('career_marketing_executive_desc'), match: 90 },
-        { title: t('career_entrepreneur_title'), description: t('career_entrepreneur_desc'), match: 85 }
+        { title: t('careerQuiz.career_business_manager_title'), description: t('careerQuiz.career_business_manager_desc'), match: 95 },
+        { title: t('careerQuiz.career_marketing_executive_title'), description: t('careerQuiz.career_marketing_executive_desc'), match: 90 },
+        { title: t('careerQuiz.career_entrepreneur_title'), description: t('careerQuiz.career_entrepreneur_desc'), match: 85 }
       ],
       C: [
-        { title: t('career_accountant_title'), description: t('career_accountant_desc'), match: 95 },
-        { title: t('career_bank_officer_title'), description: t('career_bank_officer_desc'), match: 90 },
-        { title: t('career_admin_officer_title'), description: t('career_admin_officer_desc'), match: 85 }
+        { title: t('careerQuiz.career_accountant_title'), description: t('careerQuiz.career_accountant_desc'), match: 95 },
+        { title: t('careerQuiz.career_bank_officer_title'), description: t('careerQuiz.career_bank_officer_desc'), match: 90 },
+        { title: t('careerQuiz.career_admin_officer_title'), description: t('careerQuiz.career_admin_officer_desc'), match: 85 }
       ]
     };
 
@@ -242,9 +242,9 @@ export function CareerQuiz({ onComplete }: QuizProps) {
           <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Target className="w-12 h-12 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('quiz_completed_title')}</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('careerQuiz.quiz_completed_title')}</h2>
           <p className="text-lg text-gray-600 mb-6">
-            {t('quiz_completed_message')}
+            {t('careerQuiz.quiz_completed_message')}
           </p>
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </motion.div>
@@ -264,11 +264,11 @@ export function CareerQuiz({ onComplete }: QuizProps) {
               className="flex items-center space-x-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              <span>{t('back_to_dashboard')}</span>
+              <span>{t('careerQuiz.back_to_dashboard')}</span>
             </Button>
             
             <Badge variant="secondary">
-              {t('quiz_progress', { current: currentQuestionIndex + 1, total: totalQuestions })}
+              {t('careerQuiz.quiz_progress', { current: currentQuestionIndex + 1, total: totalQuestions })}
             </Badge>
           </div>
 
@@ -307,15 +307,15 @@ export function CareerQuiz({ onComplete }: QuizProps) {
                 )}
               </CardHeader>
               <CardContent>
-                {currentSectionData.title === t('section_interest_title') ? (
+                {currentSectionData.title === t('careerQuiz.section_interest_title') ? (
                   // Likert scale for interest questions
                   <div className="space-y-3">
                     <div className="grid grid-cols-5 gap-2 text-center text-sm">
-                      <span>{t('likert_disagree_strong')}</span>
-                      <span>{t('likert_disagree')}</span>
-                      <span>{t('likert_neutral')}</span>
-                      <span>{t('likert_agree')}</span>
-                      <span>{t('likert_agree_strong')}</span>
+                      <span>{t('careerQuiz.likert_disagree_strong')}</span>
+                      <span>{t('careerQuiz.likert_disagree')}</span>
+                      <span>{t('careerQuiz.likert_neutral')}</span>
+                      <span>{t('careerQuiz.likert_agree')}</span>
+                      <span>{t('careerQuiz.likert_agree_strong')}</span>
                     </div>
                     <div className="grid grid-cols-5 gap-2">
                       {[1, 2, 3, 4, 5].map((value) => (
@@ -372,7 +372,7 @@ export function CareerQuiz({ onComplete }: QuizProps) {
             className="flex items-center space-x-2"
           >
             <ChevronLeft className="w-4 h-4" />
-            <span>{t('previous_button')}</span>
+            <span>{t('careerQuiz.previous_button')}</span>
           </Button>
 
           <Button
@@ -382,8 +382,8 @@ export function CareerQuiz({ onComplete }: QuizProps) {
           >
             <span>
               {currentSection === sections.length - 1 && currentQuestion === currentSectionData.questions.length - 1
-                ? t('complete_quiz_button')
-                : t('next_button')}
+                ? t('careerQuiz.complete_quiz_button')
+                : t('careerQuiz.next_button')}
             </span>
             <ChevronRight className="w-4 h-4" />
           </Button>

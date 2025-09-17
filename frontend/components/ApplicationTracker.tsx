@@ -101,28 +101,28 @@ export function ApplicationTracker() {
         className="text-center"
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {t('tracker_title')}
+          {t('applicationTracker.tracker_title')}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          {t('tracker_subtitle')}
+          {t('applicationTracker.tracker_subtitle')}
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-blue-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">{totalApplications}</div>
-            <div className="text-sm text-gray-600">{t('total_applications')}</div>
+            <div className="text-sm text-gray-600">{t('applicationTracker.total_applications')}</div>
           </div>
           <div className="bg-orange-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-orange-600">{pendingApplications.length}</div>
-            <div className="text-sm text-gray-600">{t('pending')}</div>
+            <div className="text-sm text-gray-600">{t('applicationTracker.pending')}</div>
           </div>
           <div className="bg-green-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-green-600">{acceptedApplications.length}</div>
-            <div className="text-sm text-gray-600">{t('accepted')}</div>
+            <div className="text-sm text-gray-600">{t('applicationTracker.accepted')}</div>
           </div>
           <div className="bg-purple-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-purple-600">₹6,300</div>
-            <div className="text-sm text-gray-600">{t('total_fees')}</div>
+            <div className="text-sm text-gray-600">{t('applicationTracker.total_fees')}</div>
           </div>
         </div>
       </motion.div>
@@ -130,10 +130,10 @@ export function ApplicationTracker() {
       {/* Applications Tabs */}
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">{t('tab_all')}</TabsTrigger>
-          <TabsTrigger value="pending">{t('tab_pending', { count: pendingApplications.length })}</TabsTrigger>
-          <TabsTrigger value="accepted">{t('tab_accepted', { count: acceptedApplications.length })}</TabsTrigger>
-          <TabsTrigger value="deadlines">{t('tab_deadlines')}</TabsTrigger>
+          <TabsTrigger value="all">{t('applicationTracker.tab_all')}</TabsTrigger>
+          <TabsTrigger value="pending">{t('applicationTracker.tab_pending', { count: pendingApplications.length })}</TabsTrigger>
+          <TabsTrigger value="accepted">{t('applicationTracker.tab_accepted', { count: acceptedApplications.length })}</TabsTrigger>
+          <TabsTrigger value="deadlines">{t('applicationTracker.tab_deadlines')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -154,7 +154,7 @@ export function ApplicationTracker() {
                           <span>{application.collegeName}</span>
                         </CardTitle>
                         <p className="text-gray-600 mb-2">{application.course}</p>
-                        <p className="text-sm text-gray-500">{t('application_id')}: {application.applicationId}</p>
+                        <p className="text-sm text-gray-500">{t('applicationTracker.application_id')}: {application.applicationId}</p>
                       </div>
 
                       <div className="text-right">
@@ -163,7 +163,7 @@ export function ApplicationTracker() {
                           <span className="ml-1">{application.status}</span>
                         </Badge>
                         <div className="text-sm text-gray-500 mt-1">
-                          {t('last_updated')}: {new Date(application.lastUpdated).toLocaleDateString()}
+                          {t('applicationTracker.last_updated')}: {new Date(application.lastUpdated).toLocaleDateString()}
                         </div>
                       </div>
                     </div>
@@ -173,7 +173,7 @@ export function ApplicationTracker() {
                     {/* Progress Bar */}
                     <div>
                       <div className="flex items-center justify-between text-sm mb-2">
-                        <span>{t('progress_title')}</span>
+                        <span>{t('applicationTracker.progress_title')}</span>
                         <span>{application.progress}%</span>
                       </div>
                       <Progress value={application.progress} className="w-full" />
@@ -183,20 +183,20 @@ export function ApplicationTracker() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4 text-blue-500" />
-                        <span>{t('submitted')}: {new Date(application.submittedDate).toLocaleDateString()}</span>
+                        <span>{t('applicationTracker.submitted')}: {new Date(application.submittedDate).toLocaleDateString()}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4 text-orange-500" />
-                        <span>{t('deadline')}: {new Date(application.deadline).toLocaleDateString()}</span>
+                        <span>{t('applicationTracker.deadline')}: {new Date(application.deadline).toLocaleDateString()}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-green-600 font-medium">{t('fees')}: ₹{application.fees.toLocaleString()}</span>
+                        <span className="text-green-600 font-medium">{t('applicationTracker.fees')}: ₹{application.fees.toLocaleString()}</span>
                       </div>
                     </div>
 
                     {/* Documents */}
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">{t('docs_submitted')}</h4>
+                      <h4 className="font-medium text-gray-900 mb-2">{t('applicationTracker.docs_submitted')}</h4>
                       <div className="flex flex-wrap gap-1 mb-2">
                         {application.documents.map((doc) => (
                           <Badge key={doc} variant="outline" className="text-xs">
@@ -208,7 +208,7 @@ export function ApplicationTracker() {
 
                       {application.missingDocs && application.missingDocs.length > 0 && (
                         <div>
-                          <h5 className="text-sm font-medium text-orange-600 mb-1">{t('missing_docs')}:</h5>
+                          <h5 className="text-sm font-medium text-orange-600 mb-1">{t('applicationTracker.missing_docs')}:</h5>
                           <div className="flex flex-wrap gap-1">
                             {application.missingDocs.map((doc) => (
                               <Badge key={doc} variant="outline" className="text-xs border-orange-300 text-orange-600">
@@ -226,23 +226,23 @@ export function ApplicationTracker() {
                       <div className="flex space-x-2">
                         <Button variant="outline" size="sm">
                           <Eye className="w-4 h-4 mr-2" />
-                          {t('view_details_button')}
+                          {t('applicationTracker.view_details_button')}
                         </Button>
                         <Button variant="outline" size="sm">
                           <Download className="w-4 h-4 mr-2" />
-                          {t('download_receipt_button')}
+                          {t('applicationTracker.download_receipt_button')}
                         </Button>
                       </div>
 
                       {application.status === t('status_docs_required') && (
                         <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                          {t('upload_docs_button')}
+                          {t('applicationTracker.upload_docs_button')}
                         </Button>
                       )}
 
                       {application.status === t('status_accepted') && (
                         <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                          {t('confirm_admission_button')}
+                          {t('applicationTracker.confirm_admission_button')}
                         </Button>
                       )}
                     </div>
@@ -270,8 +270,8 @@ export function ApplicationTracker() {
                   <CardContent>
                     <p className="text-gray-600 mb-4">{application.course}</p>
                     <div className="flex items-center justify-between">
-                      <span>{t('progress')}: {application.progress}%</span>
-                      <Button size="sm">{t('view_details_button')}</Button>
+                      <span>{t('applicationTracker.progress_title')}: {application.progress}%</span>
+                      <Button size="sm">{t('applicationTracker.view_details_button')}</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -279,8 +279,8 @@ export function ApplicationTracker() {
             ) : (
               <div className="text-center py-12">
                 <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_pending_title')}</h3>
-                <p className="text-gray-500">{t('no_pending_message')}</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('applicationTracker.no_pending_title')}</h3>
+                <p className="text-gray-500">{t('applicationTracker.no_pending_message')}</p>
               </div>
             )}
           </div>
@@ -295,22 +295,22 @@ export function ApplicationTracker() {
                     <CardTitle className="flex items-center space-x-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
                       <span>{application.collegeName}</span>
-                      <Badge className="bg-green-100 text-green-800">{t('congratulations')}</Badge>
+                      <Badge className="bg-green-100 text-green-800">{t('applicationTracker.congratulations')}</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">{application.course}</p>
                     <div className="bg-white p-4 rounded-lg mb-4">
-                      <h4 className="font-medium text-green-900 mb-2">{t('next_steps')}:</h4>
+                      <h4 className="font-medium text-green-900 mb-2">{t('applicationTracker.next_steps')}:</h4>
                       <ul className="text-sm text-green-700 space-y-1">
-                        <li>• {t('next_step_1')}</li>
-                        <li>• {t('next_step_2', { fees: application.fees.toLocaleString() })}</li>
-                        <li>• {t('next_step_3')}</li>
-                        <li>• {t('next_step_4')}</li>
+                        <li>• {t('applicationTracker.next_step_1')}</li>
+                        <li>• {t('applicationTracker.next_step_2', { fees: application.fees.toLocaleString() })}</li>
+                        <li>• {t('applicationTracker.next_step_3')}</li>
+                        <li>• {t('applicationTracker.next_step_4')}</li>
                       </ul>
                     </div>
                     <Button className="w-full bg-green-600 hover:bg-green-700">
-                      {t('confirm_admission_button')}
+                      {t('applicationTracker.confirm_admission_button')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -318,8 +318,8 @@ export function ApplicationTracker() {
             ) : (
               <div className="text-center py-12">
                 <CheckCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_accepted_title')}</h3>
-                <p className="text-gray-500">{t('no_accepted_message')}</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('applicationTracker.no_accepted_title')}</h3>
+                <p className="text-gray-500">{t('applicationTracker.no_accepted_message')}</p>
               </div>
             )}
           </div>
@@ -345,13 +345,13 @@ export function ApplicationTracker() {
                             daysLeft <= 7 ? 'text-red-600' :
                             daysLeft <= 14 ? 'text-orange-600' : 'text-green-600'
                           }`}>
-                            {daysLeft > 0 ? t('days_left', { count: daysLeft }) : t('deadline_passed')}
+                            {daysLeft > 0 ? t('applicationTracker.days_left', { count: daysLeft }) : t('applicationTracker.deadline_passed')}
                           </div>
                           <Badge className={
                             daysLeft <= 7 ? 'bg-red-100 text-red-800' :
                             daysLeft <= 14 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
                           }>
-                            {daysLeft <= 7 ? t('urgent') : daysLeft <= 14 ? t('soon') : t('on_time')}
+                            {daysLeft <= 7 ? t('applicationTracker.urgent') : daysLeft <= 14 ? t('applicationTracker.soon') : t('applicationTracker.on_time')}
                           </Badge>
                         </div>
                       </div>

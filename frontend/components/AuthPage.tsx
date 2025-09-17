@@ -41,13 +41,13 @@ export function AuthPage() {
   });
 
   // The districts array is now defined here, ensuring it re-renders
-  // with the new language.
+  // with the new language and uses the new key structure.
   const districts = [
-    t('district_srinagar'), t('district_jammu'), t('district_baramulla'), t('district_budgam'),
-    t('district_anantnag'), t('district_kupwara'), t('district_kulgam'), t('district_shopian'),
-    t('district_pulwama'), t('district_ganderbal'), t('district_bandipora'), t('district_kathua'),
-    t('district_udhampur'), t('district_doda'), t('district_ramban'), t('district_kishtwar'),
-    t('district_poonch'), t('district_rajouri'), t('district_reasi'), t('district_samba')
+    t('authPage.data.districts.srinagar'), t('authPage.data.districts.jammu'), t('authPage.data.districts.baramulla'), t('authPage.data.districts.budgam'),
+    t('authPage.data.districts.anantnag'), t('authPage.data.districts.kupwara'), t('authPage.data.districts.kulgam'), t('authPage.data.districts.shopian'),
+    t('authPage.data.districts.pulwama'), t('authPage.data.districts.ganderbal'), t('authPage.data.districts.bandipora'), t('authPage.data.districts.kathua'),
+    t('authPage.data.districts.udhampur'), t('authPage.data.districts.doda'), t('authPage.data.districts.ramban'), t('authPage.data.districts.kishtwar'),
+    t('authPage.data.districts.poonch'), t('authPage.data.districts.rajouri'), t('authPage.data.districts.reasi'), t('authPage.data.districts.samba')
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -59,7 +59,7 @@ export function AuthPage() {
       navigate('/dashboard');
     } catch (error: any) {
       console.error('Login error:', error);
-      alert(t('login_failed_alert'));
+      alert(t('authPage.alerts.login_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -113,7 +113,7 @@ export function AuthPage() {
           body: JSON.stringify({
             to: registerForm.phone,
             // Use the t() function with a variable
-            message: t('welcome_sms', { name: registerForm.name })
+            message: t('authPage.alerts.welcome_sms', { name: registerForm.name })
           })
         });
         if (!smsResponse.ok) {
@@ -124,10 +124,10 @@ export function AuthPage() {
         console.error('SMS send error:', smsError);
       }
 
-      alert(t('registration_success_alert'));
+      alert(t('authPage.alerts.registration_success'));
     } catch (error: any) {
       console.error('Registration error:', error);
-      alert(t('registration_failed_alert'));
+      alert(t('authPage.alerts.registration_failed'));
     } finally {
       setIsLoading(false);
     }
@@ -135,15 +135,15 @@ export function AuthPage() {
 
   const handleForgotPassword = async () => {
     if (!loginForm.email) {
-      alert(t('forgot_password_no_email_alert'));
+      alert(t('authPage.alerts.forgot_password_no_email'));
       return;
     }
     try {
       await forgotPassword(loginForm.email);
-      alert(t('forgot_password_success_alert'));
+      alert(t('authPage.alerts.forgot_password_success'));
     } catch (error) {
       console.error('Forgot password error:', error);
-      alert(t('forgot_password_failed_alert'));
+      alert(t('authPage.alerts.forgot_password_failed'));
     }
   };
 
@@ -162,10 +162,10 @@ export function AuthPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Edu2Career J&K</h1>
-              <p className="text-sm text-gray-600">{t('header_tagline')}</p>
+              <p className="text-sm text-gray-600">{t('authPage.header_tagline')}</p>
             </div>
           </div>
-          <h2 className="text-xl text-gray-700">{t('welcome_message')}</h2>
+          <h2 className="text-xl text-gray-700">{t('authPage.welcome_message')}</h2>
         </motion.div>
 
         <motion.div
@@ -175,29 +175,29 @@ export function AuthPage() {
         >
           <Card>
             <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl text-center">{t('card_title')}</CardTitle>
+              <CardTitle className="text-2xl text-center">{t('authPage.card_title')}</CardTitle>
               <CardDescription className="text-center">
-                {t('card_description')}
+                {t('authPage.card_description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="login" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="login">{t('tab_sign_in')}</TabsTrigger>
-                  <TabsTrigger value="register">{t('tab_sign_up')}</TabsTrigger>
+                  <TabsTrigger value="login">{t('authPage.tab_sign_in')}</TabsTrigger>
+                  <TabsTrigger value="register">{t('authPage.tab_sign_up')}</TabsTrigger>
                 </TabsList>
 
                 {/* Login Tab */}
                 <TabsContent value="login" className="space-y-4">
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="login-email">{t('email_label')}</Label>
+                      <Label htmlFor="login-email">{t('authPage.email_label')}</Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="login-email"
                           type="email"
-                          placeholder={t('email_placeholder')}
+                          placeholder={t('authPage.email_placeholder')}
                           className="pl-10"
                           value={loginForm.email}
                           onChange={(e) => setLoginForm({...loginForm, email: e.target.value})}
@@ -207,13 +207,13 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="login-password">{t('password_label')}</Label>
+                      <Label htmlFor="login-password">{t('authPage.password_label')}</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="login-password"
                           type={showPassword ? "text" : "password"}
-                          placeholder={t('password_placeholder')}
+                          placeholder={t('authPage.password_placeholder')}
                           className="pl-10 pr-10"
                           value={loginForm.password}
                           onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
@@ -235,12 +235,12 @@ export function AuthPage() {
                         onClick={handleForgotPassword}
                         className="text-sm text-blue-600 hover:text-blue-800"
                       >
-                        {t('forgot_password_link')}
+                        {t('authPage.forgot_password_link')}
                       </button>
                     </div>
 
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? t('loading_signin') : t('sign_in_button')}
+                      {isLoading ? t('authPage.buttons.loading_signin') : t('authPage.buttons.sign_in')}
                     </Button>
                   </form>
                 </TabsContent>
@@ -249,13 +249,13 @@ export function AuthPage() {
                 <TabsContent value="register" className="space-y-4">
                   <form onSubmit={handleRegister} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="register-name">{t('full_name_label')}</Label>
+                      <Label htmlFor="register-name">{t('authPage.full_name_label')}</Label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="register-name"
                           type="text"
-                          placeholder={t('full_name_placeholder')}
+                          placeholder={t('authPage.full_name_placeholder')}
                           className="pl-10"
                           value={registerForm.name}
                           onChange={(e) => setRegisterForm({...registerForm, name: e.target.value})}
@@ -265,13 +265,13 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="register-email">{t('email_label')}</Label>
+                      <Label htmlFor="register-email">{t('authPage.email_label')}</Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="register-email"
                           type="email"
-                          placeholder={t('email_placeholder')}
+                          placeholder={t('authPage.email_placeholder')}
                           className="pl-10"
                           value={registerForm.email}
                           onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})}
@@ -281,13 +281,13 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="register-password">{t('password_label')}</Label>
+                      <Label htmlFor="register-password">{t('authPage.password_label')}</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="register-password"
                           type={showPassword ? "text" : "password"}
-                          placeholder={t('create_password_placeholder')}
+                          placeholder={t('authPage.create_password_placeholder')}
                           className="pl-10 pr-10"
                           value={registerForm.password}
                           onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})}
@@ -304,13 +304,13 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="register-phone">{t('phone_label')}</Label>
+                      <Label htmlFor="register-phone">{t('authPage.phone_label')}</Label>
                       <div className="relative">
                         <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                         <Input
                           id="register-phone"
                           type="tel"
-                          placeholder={t('phone_placeholder')}
+                          placeholder={t('authPage.phone_placeholder')}
                           className="pl-10"
                           value={registerForm.phone}
                           onChange={(e) => setRegisterForm({...registerForm, phone: e.target.value})}
@@ -320,10 +320,10 @@ export function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="register-district">{t('district_label')}</Label>
+                      <Label htmlFor="register-district">{t('authPage.district_label')}</Label>
                       <Select value={registerForm.district} onValueChange={(value: string) => setRegisterForm({...registerForm, district: value})}>
                         <SelectTrigger>
-                          <SelectValue placeholder={t('district_placeholder')} />
+                          <SelectValue placeholder={t('authPage.district_placeholder')} />
                         </SelectTrigger>
                         <SelectContent>
                           {districts.map((district) => (
@@ -337,43 +337,43 @@ export function AuthPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="register-class">{t('class_label')}</Label>
+                        <Label htmlFor="register-class">{t('authPage.class_label')}</Label>
                         <Select value={registerForm.currentClass} onValueChange={(value: string) => setRegisterForm({...registerForm, currentClass: value})}>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('class_placeholder')} />
+                            <SelectValue placeholder={t('authPage.class_placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="10th">{t('class_10th')}</SelectItem>
-                            <SelectItem value="11th">{t('class_11th')}</SelectItem>
-                            <SelectItem value="12th">{t('class_12th')}</SelectItem>
-                            <SelectItem value="Graduate">{t('class_graduate')}</SelectItem>
-                            <SelectItem value="Post Graduate">{t('class_post_graduate')}</SelectItem>
+                            <SelectItem value="10th">{t('authPage.data.class.10th')}</SelectItem>
+                            <SelectItem value="11th">{t('authPage.data.class.11th')}</SelectItem>
+                            <SelectItem value="12th">{t('authPage.data.class.12th')}</SelectItem>
+                            <SelectItem value="Graduate">{t('authPage.data.class.graduate')}</SelectItem>
+                            <SelectItem value="Post Graduate">{t('authPage.data.class.post_graduate')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="register-stream">{t('stream_label')}</Label>
+                        <Label htmlFor="register-stream">{t('authPage.stream_label')}</Label>
                         <Select value={registerForm.stream} onValueChange={(value: string) => setRegisterForm({...registerForm, stream: value})}>
                           <SelectTrigger>
-                            <SelectValue placeholder={t('stream_placeholder')} />
+                            <SelectValue placeholder={t('authPage.stream_placeholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Science">{t('stream_science')}</SelectItem>
-                            <SelectItem value="Commerce">{t('stream_commerce')}</SelectItem>
-                            <SelectItem value="Arts">{t('stream_arts')}</SelectItem>
-                            <SelectItem value="Vocational">{t('stream_vocational')}</SelectItem>
+                            <SelectItem value="Science">{t('authPage.data.stream.science')}</SelectItem>
+                            <SelectItem value="Commerce">{t('authPage.data.stream.commerce')}</SelectItem>
+                            <SelectItem value="Arts">{t('authPage.data.stream.arts')}</SelectItem>
+                            <SelectItem value="Vocational">{t('authPage.data.stream.vocational')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="register-school">{t('school_college_label')}</Label>
+                      <Label htmlFor="register-school">{t('authPage.school_college_label')}</Label>
                       <Input
                         id="register-school"
                         type="text"
-                        placeholder={t('school_college_placeholder')}
+                        placeholder={t('authPage.school_college_placeholder')}
                         value={registerForm.schoolCollege}
                         onChange={(e) => setRegisterForm({...registerForm, schoolCollege: e.target.value})}
                         required
@@ -381,7 +381,7 @@ export function AuthPage() {
                     </div>
 
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? t('loading_create_account') : t('create_account_button')}
+                      {isLoading ? t('authPage.buttons.loading_create_account') : t('authPage.buttons.create_account')}
                     </Button>
                   </form>
                 </TabsContent>
@@ -397,7 +397,7 @@ export function AuthPage() {
           transition={{ delay: 0.3 }}
           className="text-center text-sm text-gray-600 mt-6"
         >
-          {t('terms_and_privacy')}
+          {t('authPage.terms_and_privacy')}
         </motion.p>
       </div>
     </div>

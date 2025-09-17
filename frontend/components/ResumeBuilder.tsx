@@ -11,7 +11,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  Calendar,
   Award,
   BookOpen,
   Briefcase
@@ -30,7 +29,6 @@ export function ResumeBuilder() {
   const { t, currentLanguage } = useLocalization();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('preview');
-  const [isEditing, setIsEditing] = useState(false);
   const [newSkill, setNewSkill] = useState('');
 
   // Define a function to generate the initial data with current translations
@@ -39,7 +37,6 @@ export function ResumeBuilder() {
       name: user?.user_metadata?.name || '',
       email: user?.email || '',
       phone: user?.user_metadata?.phone || '',
-      address: user?.user_metadata?.address || '',
       district: user?.user_metadata?.district || '',
       objective: t('resume.default_objective')
     },
@@ -141,6 +138,7 @@ export function ResumeBuilder() {
   };
 
   const downloadResume = () => {
+    // Implement PDF download functionality here
     alert(t('resume.alert_download_soon'));
   };
 

@@ -38,8 +38,8 @@ export function NotificationCenter() {
   const createNotifications = (): Notification[] => [
     {
         id: '1',
-        title: t('notif_cuet_title'),
-        message: t('notif_cuet_message'),
+        title: t('notifications.notif_cuet_title'),
+        message: t('notifications.notif_cuet_message'),
         type: 'exam',
         priority: 'high',
         timestamp: new Date('2024-02-20T10:00:00'),
@@ -48,8 +48,8 @@ export function NotificationCenter() {
     },
     {
         id: '2',
-        title: t('notif_pmsss_title'),
-        message: t('notif_pmsss_message'),
+        title: t('notifications.notif_pmsss_title'),
+        message: t('notifications.notif_pmsss_message'),
         type: 'scholarship',
         priority: 'urgent',
         timestamp: new Date('2024-02-19T14:30:00'),
@@ -58,8 +58,8 @@ export function NotificationCenter() {
     },
     {
         id: '3',
-        title: t('notif_gdc_title'),
-        message: t('notif_gdc_message'),
+        title: t('notifications.notif_gdc_title'),
+        message: t('notifications.notif_gdc_message'),
         type: 'info',
         priority: 'normal',
         timestamp: new Date('2024-02-18T16:45:00'),
@@ -68,8 +68,8 @@ export function NotificationCenter() {
     },
     {
         id: '4',
-        title: t('notif_app_status_title'),
-        message: t('notif_app_status_message'),
+        title: t('notifications.notif_app_status_title'),
+        message: t('notifications.notif_app_status_message'),
         type: 'application',
         priority: 'normal',
         timestamp: new Date('2024-02-17T11:20:00'),
@@ -78,8 +78,8 @@ export function NotificationCenter() {
     },
     {
         id: '5',
-        title: t('notif_jee_title'),
-        message: t('notif_jee_message'),
+        title: t('notifications.notif_jee_title'),
+        message: t('notifications.notif_jee_message'),
         type: 'exam',
         priority: 'high',
         timestamp: new Date('2024-02-16T09:15:00'),
@@ -88,8 +88,8 @@ export function NotificationCenter() {
     },
     {
         id: '6',
-        title: t('notif_quiz_complete_title'),
-        message: t('notif_quiz_complete_message'),
+        title: t('notifications.notif_quiz_complete_title'),
+        message: t('notifications.notif_quiz_complete_message'),
         type: 'achievement',
         priority: 'normal',
         timestamp: new Date('2024-02-15T13:30:00'),
@@ -98,8 +98,8 @@ export function NotificationCenter() {
     },
     {
         id: '7',
-        title: t('notif_nsp_title'),
-        message: t('notif_nsp_message'),
+        title: t('notifications.notif_nsp_title'),
+        message: t('notifications.notif_nsp_message'),
         type: 'scholarship',
         priority: 'normal',
         timestamp: new Date('2024-02-14T12:00:00'),
@@ -108,8 +108,8 @@ export function NotificationCenter() {
     },
     {
         id: '8',
-        title: t('notif_profile_rem_title'),
-        message: t('notif_profile_rem_message'),
+        title: t('notifications.notif_profile_rem_title'),
+        message: t('notifications.notif_profile_rem_message'),
         type: 'reminder',
         priority: 'low',
         timestamp: new Date('2024-02-13T08:45:00'),
@@ -146,11 +146,11 @@ export function NotificationCenter() {
   };
   
   const getTranslatedPriority = (priority: string) => {
-      return t(`priority_${priority}`);
+      return t(`notifications.priority_${priority}`);
   };
 
   const getTranslatedType = (type: string) => {
-      return t(`notif_type_${type}`);
+      return t(`notifications.notif_type_${type}`);
   };
 
   const formatTimestamp = (timestamp: Date) => {
@@ -158,13 +158,13 @@ export function NotificationCenter() {
     const diffInMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
     
     if (diffInMinutes < 60) {
-      return t('time_minutes_ago', { count: diffInMinutes });
+      return t('notifications.time_minutes_ago', { count: diffInMinutes });
     } else if (diffInMinutes < 1440) {
       const hours = Math.floor(diffInMinutes / 60);
-      return t('time_hours_ago', { count: hours });
+      return t('notifications.time_hours_ago', { count: hours });
     } else {
       const days = Math.floor(diffInMinutes / 1440);
-      return t('time_days_ago', { count: days });
+      return t('notifications.time_days_ago', { count: days });
     }
   };
 
@@ -204,13 +204,13 @@ export function NotificationCenter() {
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-center space-x-3">
           <Bell className="w-8 h-8 text-blue-600" />
-          <span>{t('notif_header_title')}</span>
+          <span>{t('notifications.notif_header_title')}</span>
           {unreadCount > 0 && (
-            <Badge className="bg-red-500 text-white">{unreadCount} {t('notif_header_new_badge')}</Badge>
+            <Badge className="bg-red-500 text-white">{unreadCount} {t('notifications.notif_header_new_badge')}</Badge>
           )}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          {t('notif_header_subtitle')}
+          {t('notifications.notif_header_subtitle')}
         </p>
       </motion.div>
 
@@ -226,20 +226,20 @@ export function NotificationCenter() {
               <div className="flex items-center space-x-4">
                 <Select value={filter} onValueChange={setFilter}>
                   <SelectTrigger className="w-48">
-                    <SelectValue placeholder={t('notif_filter_placeholder')} />
+                    <SelectValue placeholder={t('notifications.notif_filter_placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('notif_filter_all')}</SelectItem>
-                    <SelectItem value="unread">{t('notif_filter_unread')}</SelectItem>
-                    <SelectItem value="exam">{t('notif_filter_exams')}</SelectItem>
-                    <SelectItem value="scholarship">{t('notif_filter_scholarships')}</SelectItem>
-                    <SelectItem value="application">{t('notif_filter_applications')}</SelectItem>
-                    <SelectItem value="achievement">{t('notif_filter_achievements')}</SelectItem>
+                    <SelectItem value="all">{t('notifications.notif_filter_all')}</SelectItem>
+                    <SelectItem value="unread">{t('notifications.notif_filter_unread')}</SelectItem>
+                    <SelectItem value="exam">{t('notifications.notif_filter_exams')}</SelectItem>
+                    <SelectItem value="scholarship">{t('notifications.notif_filter_scholarships')}</SelectItem>
+                    <SelectItem value="application">{t('notifications.notif_filter_applications')}</SelectItem>
+                    <SelectItem value="achievement">{t('notifications.notif_filter_achievements')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
                 <div className="text-sm text-gray-600">
-                  {t('notif_count', { count: filteredNotifications.length })}
+                  {t('notifications.notif_count', { count: filteredNotifications.length })}
                 </div>
               </div>
               
@@ -251,7 +251,7 @@ export function NotificationCenter() {
                   className="flex items-center space-x-2"
                 >
                   <CheckCircle className="w-4 h-4" />
-                  <span>{t('notif_button_mark_all')}</span>
+                  <span>{t('notifications.notif_button_mark_all')}</span>
                 </Button>
               )}
             </div>
@@ -355,7 +355,7 @@ export function NotificationCenter() {
                               markAsRead(notification.id);
                             }}
                           >
-                            {t('notif_view_details_btn')}
+                            {t('notifications.notif_view_details_btn')}
                           </Button>
                         </div>
                       )}
@@ -373,12 +373,12 @@ export function NotificationCenter() {
           >
             <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
-              {filter === 'unread' ? t('notif_empty_unread_title') : t('notif_empty_all_title')}
+              {filter === 'unread' ? t('notifications.notif_empty_unread_title') : t('notifications.notif_empty_all_title')}
             </h3>
             <p className="text-gray-500">
               {filter === 'unread' 
-                ? t('notif_empty_unread_message')
-                : t('notif_empty_all_message')
+                ? t('notifications.notif_empty_unread_message')
+                : t('notifications.notif_empty_all_message')
               }
             </p>
           </motion.div>
@@ -395,31 +395,31 @@ export function NotificationCenter() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <AlertCircle className="w-5 h-5" />
-              <span>{t('notif_settings_title')}</span>
+              <span>{t('notifications.notif_settings_title')}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">{t('notif_settings_exam_h')}</h4>
-                <p className="text-sm text-blue-700">{t('notif_settings_exam_p')}</p>
+                <h4 className="font-medium text-blue-900 mb-2">{t('notifications.notif_settings_exam_h')}</h4>
+                <p className="text-sm text-blue-700">{t('notifications.notif_settings_exam_p')}</p>
               </div>
               <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium text-green-900 mb-2">{t('notif_settings_scholarship_h')}</h4>
-                <p className="text-sm text-green-700">{t('notif_settings_scholarship_p')}</p>
+                <h4 className="font-medium text-green-900 mb-2">{t('notifications.notif_settings_scholarship_h')}</h4>
+                <p className="text-sm text-green-700">{t('notifications.notif_settings_scholarship_p')}</p>
               </div>
               <div className="p-4 bg-purple-50 rounded-lg">
-                <h4 className="font-medium text-purple-900 mb-2">{t('notif_settings_application_h')}</h4>
-                <p className="text-sm text-purple-700">{t('notif_settings_application_p')}</p>
+                <h4 className="font-medium text-purple-900 mb-2">{t('notifications.notif_settings_application_h')}</h4>
+                <p className="text-sm text-purple-700">{t('notifications.notif_settings_application_p')}</p>
               </div>
               <div className="p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-medium text-orange-900 mb-2">{t('notif_settings_guidance_h')}</h4>
-                <p className="text-sm text-orange-700">{t('notif_settings_guidance_p')}</p>
+                <h4 className="font-medium text-orange-900 mb-2">{t('notifications.notif_settings_guidance_h')}</h4>
+                <p className="text-sm text-orange-700">{t('notifications.notif_settings_guidance_p')}</p>
               </div>
             </div>
             <div className="mt-6 text-center">
               <Button variant="outline">
-                {t('notif_settings_button')}
+                {t('notifications.notif_settings_button')}
               </Button>
             </div>
           </CardContent>

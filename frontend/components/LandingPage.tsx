@@ -56,13 +56,13 @@ const PromoBanner = () => {
       className="text-white text-center py-3 px-4 flex justify-center items-center gap-4 relative z-50 shadow-md"
     >
       <p className="text-base md:text-lg font-semibold flex items-center">
-        {t('promo')}
+        {t('landingPage.promo')}
       </p>
       <Link 
         to="/auth" 
         className="text-sm md:text-base bg-white text-blue-800 hover:bg-gray-100 px-4 py-2 rounded-full transition-colors font-bold shadow-sm"
       >
-        {t('promo_button')} <Sparkles size={16} className="inline-block ml-1" />
+        {t('landingPage.promo_button')} <Sparkles size={16} className="inline-block ml-1" />
       </Link>
       <button 
         onClick={() => setIsVisible(false)} 
@@ -82,66 +82,66 @@ export function LandingPage() {
     {
       image: promoImage,
       icon: <GraduationCap className="w-8 h-8" />,
-      title: t("feat_guidance_title"),
-      description: t("feat_guidance_desc")
+      title: t("landingPage.feat_guidance_title"),
+      description: t("landingPage.feat_guidance_desc")
     },
     {
       image: statsImage,
       icon: <MapPin className="w-8 h-8" />,
-      title: t("feat_colleges_title"),
-      description: t("feat_colleges_desc")
+      title: t("landingPage.feat_colleges_title"),
+      description: t("landingPage.feat_colleges_desc")
     },
     {
       image: ctaImage,
       icon: <Award className="w-8 h-8" />,
-      title: t("feat_scholarship_title"),
-      description: t("feat_scholarship_desc")
+      title: t("landingPage.feat_scholarship_title"),
+      description: t("landingPage.feat_scholarship_desc")
     },
     {
       image: promoImage,
       icon: <Users className="w-8 h-8" />,
-      title: t("feat_chatbot_title"),
-      description: t("feat_chatbot_desc")
+      title: t("landingPage.feat_chatbot_title"),
+      description: t("landingPage.feat_chatbot_desc")
     },
     {
       image: statsImage,
       icon: <BookOpen className="w-8 h-8" />,
-      title: t("feat_tracker_title"),
-      description: t("feat_tracker_desc")
+      title: t("landingPage.feat_tracker_title"),
+      description: t("landingPage.feat_tracker_desc")
     },
     {
       image: ctaImage,
       icon: <TrendingUp className="w-8 h-8" />,
-      title: t("feat_resume_title"),
-      description: t("feat_resume_desc")
+      title: t("landingPage.feat_resume_title"),
+      description: t("landingPage.feat_resume_desc")
     }
   ];
 
   const stats = [
-    { number: "142", label: t("stat_142"), icon: <MapPin size={24} /> },
-    { number: "50+", label: t("stat_50+"), icon: <TrendingIcon size={24} /> },
-    { number: "25+", label: t("stat_25+"), icon: <DollarSign size={24} /> },
-    { number: "100%", label: t("stat_100%"), icon: <CheckCircle size={24} /> }
+    { number: "142", label: t("landingPage.stat_142"), icon: <MapPin size={24} /> },
+    { number: "50+", label: t("landingPage.stat_50+"), icon: <TrendingIcon size={24} /> },
+    { number: "25+", label: t("landingPage.stat_25+"), icon: <DollarSign size={24} /> },
+    { number: "100%", label: t("landingPage.stat_100%"), icon: <CheckCircle size={24} /> }
   ];
 
   const howItWorks = [
     {
       image: promoImage,
       icon: <Lightbulb size={48} />,
-      title: t("step_discover_title"),
-      description: t("step_discover_desc")
+      title: t("landingPage.step_discover_title"),
+      description: t("landingPage.step_discover_desc")
     },
     {
       image: statsImage,
       icon: <TrendingIcon size={48} />,
-      title: t("step_plan_title"),
-      description: t("step_plan_desc")
+      title: t("landingPage.step_plan_title"),
+      description: t("landingPage.step_plan_desc")
     },
     {
       image: ctaImage,
       icon: <Trophy size={48} />,
-      title: t("step_achieve_title"),
-      description: t("step_achieve_desc")
+      title: t("landingPage.step_achieve_title"),
+      description: t("landingPage.step_achieve_desc")
     }
   ];
 
@@ -167,7 +167,7 @@ export function LandingPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold" style={{ color: accentGray }}>Edu2Career J&K</h1>
-                  <p className="text-xs" style={{ color: textGray }}>{t('header_tagline')}</p>
+                  <p className="text-xs" style={{ color: textGray }}>{t('landingPage.header_tagline')}</p>
                 </div>
               </motion.div>
               
@@ -181,13 +181,13 @@ export function LandingPage() {
                   to="/auth"
                   className="px-4 py-2 hover:text-gray-900 transition-colors font-medium" style={{ color: primaryBlue }}
                 >
-                  {t('login')}
+                  {t('landingPage.login')}
                 </Link>
                 <Link 
                   to="/auth"
                   className="px-6 py-2 text-white rounded-lg hover:brightness-110 transition-colors font-semibold shadow-md" style={{ backgroundColor: primaryBlue }}
                 >
-                  {t('get_started')}
+                  {t('landingPage.get_started')}
                 </Link>
               </motion.div>
             </div>
@@ -217,10 +217,10 @@ export function LandingPage() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                {t('hero_title').split(' ')[0]} <span style={{ color: primaryBlue }}>{t('hero_title').split(' ').slice(1, 3).join(' ')}</span> {t('hero_title').split(' ').slice(3).join(' ')}
+                {t('landingPage.hero_title').split(' ')[0]} <span style={{ color: primaryBlue }}>{t('landingPage.hero_title').split(' ').slice(1, 3).join(' ')}</span> {t('landingPage.hero_title').split(' ').slice(3).join(' ')}
               </h1>
               <p className="text-xl text-white mb-8 max-w-lg mx-auto">
-                {t('hero_subtitle')}
+                {t('landingPage.hero_subtitle')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -228,13 +228,13 @@ export function LandingPage() {
                   to="/auth"
                   className="px-8 py-4 text-white rounded-lg text-lg font-semibold hover:brightness-110 transition-colors shadow-lg flex items-center justify-center" style={{ backgroundColor: primaryBlue }}
                 >
-                  {t('hero_cta')} <Sparkles size={20} className="ml-2" />
+                  {t('landingPage.hero_cta')} <Sparkles size={20} className="ml-2" />
                 </Link>
                 <button 
                   className="px-8 py-4 border-2 rounded-lg text-lg font-semibold hover:bg-opacity-10 transition-colors flex items-center justify-center" 
                   style={{ borderColor: primaryBlue, color: primaryBlue, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
                 >
-                  {t('hero_demo_cta')} <Zap size={20} className="ml-2" />
+                  {t('landingPage.hero_demo_cta')} <Zap size={20} className="ml-2" />
                 </button>
               </div>
             </motion.div>
@@ -250,10 +250,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto px-4 text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold" style={{ color: accentGray }}>
-              {t('stats_title')}
+              {t('landingPage.stats_title')}
             </h2>
             <p className="text-xl mt-2" style={{ color: textGray }}>
-              {t('stats_subtitle')}
+              {t('landingPage.stats_subtitle')}
             </p>
           </motion.div>
 
@@ -294,10 +294,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              {t('how_it_works_title')}
+              {t('landingPage.how_it_works_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              {t('how_it_works_subtitle')}
+              {t('landingPage.how_it_works_subtitle')}
             </p>
           </motion.div>
 
@@ -337,10 +337,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              {t('video_chatbot_title')}
+              {t('landingPage.video_chatbot_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              {t('video_chatbot_desc')}
+              {t('landingPage.video_chatbot_desc')}
             </p>
           </motion.div>
           <div className="grid gap-16 max-w-7xl mx-auto">
@@ -354,9 +354,9 @@ export function LandingPage() {
             >
               <video src={videoChatbot} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('video_chatbot_title')}</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('landingPage.video_chatbot_title')}</h3>
                 <p className="text-base" style={{ color: textGray }}>
-                  {t('video_chatbot_desc')}
+                  {t('landingPage.video_chatbot_desc')}
                 </p>
               </div>
             </motion.div>
@@ -371,9 +371,9 @@ export function LandingPage() {
             >
               <video src={videoTracker} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('video_tracker_title')}</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('landingPage.video_tracker_title')}</h3>
                 <p className="text-base" style={{ color: textGray }}>
-                  {t('video_tracker_desc')}
+                  {t('landingPage.video_tracker_desc')}
                 </p>
               </div>
             </motion.div>
@@ -389,10 +389,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              {t('features_title')}
+              {t('landingPage.features_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              {t('features_subtitle')}
+              {t('landingPage.features_subtitle')}
             </p>
           </motion.div>
 
@@ -430,16 +430,16 @@ export function LandingPage() {
               viewport={{ once: true, amount: 0.5 }}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                {t('cta_title')}
+                {t('landingPage.cta_title')}
               </h2>
               <p className="text-xl mb-8 text-white opacity-90">
-                {t('cta_subtitle')}
+                {t('landingPage.cta_subtitle')}
               </p>
               <Link 
                 to="/auth"
                 className="inline-block px-8 py-4 bg-white text-lg font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-xl flex items-center justify-center mx-auto max-w-xs" style={{ color: primaryBlue }}
               >
-                {t('cta_button')} <Sparkles size={20} className="ml-2" />
+                {t('landingPage.cta_button')} <Sparkles size={20} className="ml-2" />
               </Link>
             </motion.div>
           </div>
@@ -457,42 +457,42 @@ export function LandingPage() {
                   <span className="text-lg font-semibold">Edu2Career J&K</span>
                 </div>
                 <p className="text-sm" style={{ color: lightBlue }}>
-                  {t('footer_tagline')}
+                  {t('landingPage.footer_tagline')}
                 </p>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('quick_links')}</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('landingPage.quick_links')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_get_started')}</Link></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_about')}</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_contact')}</a></li>
+                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('landingPage.footer_get_started')}</Link></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('landingPage.footer_about')}</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('landingPage.footer_contact')}</a></li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('features')}</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('landingPage.features')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightBlue }}>{t('footer_career_quiz')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_college_locator')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_scholarship_checker')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_ai_chatbot')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_career_quiz')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_college_locator')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_scholarship_checker')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_ai_chatbot')}</li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('support')}</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('landingPage.support')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightBlue }}>{t('footer_help_center')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_privacy')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_terms')}</li>
-                  <li style={{ color: lightBlue }}>{t('footer_feedback')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_help_center')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_privacy')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_terms')}</li>
+                  <li style={{ color: lightBlue }}>{t('landingPage.footer_feedback')}</li>
                 </ul>
               </div>
             </div>
             
             <div className="border-t mt-8 pt-8 text-center text-sm" style={{ borderColor: textGray, color: lightBlue }}>
-              <p>{t('copyright')}</p>
+              <p>{t('landingPage.copyright')}</p>
             </div>
           </div>
         </footer>
