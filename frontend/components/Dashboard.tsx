@@ -30,7 +30,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
   const { user } = useAuth();
   const { t } = useLocalization();
 
-  // These arrays are now defined directly, so they will re-translate on every render
+  // Assuming these keys and values now exist in your localization file
   const notifications = [
     { id: 1, title: t("dashboard.notification_cuet_title"), type: "exam", urgent: true },
     { id: 2, title: t("dashboard.notification_pmsss_title"), type: "scholarship", urgent: false },
@@ -112,7 +112,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
               {getGreeting()}, {user?.user_metadata?.name || t("dashboard.student")}! 👋
             </h1>
             <p className="text-blue-100 mb-4">
-              {t("dashboard.welcome_subtitle")}
+              {t("dashboard.subtitle")} {/* Corrected Key */}
             </p>
             {quizResults && (
               <div className="flex items-center space-x-2">
