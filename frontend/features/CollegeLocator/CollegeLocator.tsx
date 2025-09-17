@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   MapPin, 
   Search, 
@@ -27,7 +29,6 @@ interface College {
   'College Name': string;
   District: string;
   'Level (UG/PG/Both)': string;
-  // Add other fields as needed based on your data
   naacGrade?: string;
   affiliation?: string;
   streams?: string[];
@@ -42,6 +43,181 @@ interface College {
   distance?: number;
 }
 
+// Hardcoded mock data with 10 colleges
+const mockColleges: College[] = [
+  {
+    id: '1',
+    'College Name': 'Govt. College for Women, M.A. Road',
+    District: 'Srinagar',
+    'Level (UG/PG/Both)': 'Both',
+    naacGrade: 'A+',
+    affiliation: 'Cluster University Srinagar',
+    streams: ['Arts', 'Science', 'Commerce'],
+    totalSeats: 1200,
+    facultyCount: 150,
+    facilities: ['Library', 'Hostel', 'Auditorium', 'Lab'],
+    website: 'https://gcwmaroad.ac.in/',
+    email: 'info@gcwmaroad.ac.in',
+    phone: '+91-1234567890',
+    latitude: 34.0886,
+    longitude: 74.8080,
+  },
+  {
+    id: '2',
+    'College Name': 'Govt. Degree College, Bemina',
+    District: 'Srinagar',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'A',
+    affiliation: 'Cluster University Srinagar',
+    streams: ['Science', 'Commerce'],
+    totalSeats: 1000,
+    facultyCount: 120,
+    facilities: ['Sports', 'Hostel', 'Canteen'],
+    website: 'https://gdcbemina.edu.in/',
+    email: 'info@gdcbemina.edu.in',
+    phone: '+91-9876543210',
+    latitude: 34.0845,
+    longitude: 74.7677,
+  },
+  {
+    id: '3',
+    'College Name': 'Govt. Gandhi Memorial Science College',
+    District: 'Jammu',
+    'Level (UG/PG/Both)': 'Both',
+    naacGrade: 'A++',
+    affiliation: 'University of Jammu',
+    streams: ['Science'],
+    totalSeats: 2000,
+    facultyCount: 200,
+    facilities: ['Library', 'Auditorium', 'Lab', 'Gym'],
+    website: 'https://ggmsc.in/',
+    email: 'contact@ggmsc.in',
+    phone: '+91-1234512345',
+    latitude: 32.7266,
+    longitude: 74.8570,
+  },
+  {
+    id: '4',
+    'College Name': 'Govt. Degree College, Baramulla',
+    District: 'Baramulla',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'B+',
+    affiliation: 'University of Kashmir',
+    streams: ['Arts', 'Science', 'Commerce'],
+    totalSeats: 800,
+    facultyCount: 90,
+    facilities: ['Library', 'Sports', 'Hostel'],
+    website: 'https://gdcbaramulla.in/',
+    email: 'info@gdcbaramulla.in',
+    phone: '+91-9988776655',
+    latitude: 34.2045,
+    longitude: 74.3644,
+  },
+  {
+    id: '5',
+    'College Name': 'Govt. Degree College, Anantnag',
+    District: 'Anantnag',
+    'Level (UG/PG/Both)': 'Both',
+    naacGrade: 'A',
+    affiliation: 'University of Kashmir',
+    streams: ['Arts', 'Science', 'Commerce'],
+    totalSeats: 1500,
+    facultyCount: 160,
+    facilities: ['Library', 'Hostel', 'Auditorium'],
+    website: 'https://gdcanantnag.edu.in/',
+    email: 'contact@gdcanantnag.edu.in',
+    phone: '+91-1932222345',
+    latitude: 33.7317,
+    longitude: 75.1437,
+  },
+  {
+    id: '6',
+    'College Name': 'Govt. Degree College, Udhampur',
+    District: 'Udhampur',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'B++',
+    affiliation: 'University of Jammu',
+    streams: ['Science', 'Commerce'],
+    totalSeats: 900,
+    facultyCount: 100,
+    facilities: ['Sports', 'Lab', 'Canteen'],
+    website: 'https://gdcudhampur.ac.in/',
+    email: 'info@gdcudhampur.ac.in',
+    phone: '+91-1992270725',
+    latitude: 32.9248,
+    longitude: 75.1472,
+  },
+  {
+    id: '7',
+    'College Name': 'Govt. Degree College, Kathua',
+    District: 'Kathua',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'A',
+    affiliation: 'University of Jammu',
+    streams: ['Arts', 'Commerce'],
+    totalSeats: 1100,
+    facultyCount: 115,
+    facilities: ['Library', 'Canteen'],
+    website: 'https://gdckathua.edu.in/',
+    email: 'gdckathua@gmail.com',
+    phone: '+91-1922232545',
+    latitude: 32.3855,
+    longitude: 75.5226,
+  },
+  {
+    id: '8',
+    'College Name': 'Govt. Degree College, Poonch',
+    District: 'Poonch',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'B+',
+    affiliation: 'University of Jammu',
+    streams: ['Arts', 'Science'],
+    totalSeats: 700,
+    facultyCount: 80,
+    facilities: ['Sports', 'Hostel'],
+    website: 'https://gdcpoonch.in/',
+    email: 'info@gdcpoonch.in',
+    phone: '+91-1965220677',
+    latitude: 33.7663,
+    longitude: 74.0934,
+  },
+  {
+    id: '9',
+    'College Name': 'Govt. Degree College, Budgam',
+    District: 'Budgam',
+    'Level (UG/PG/Both)': 'UG',
+    naacGrade: 'B',
+    affiliation: 'University of Kashmir',
+    streams: ['Arts', 'Science'],
+    totalSeats: 950,
+    facultyCount: 110,
+    facilities: ['Library', 'Auditorium'],
+    website: 'https://gdcbudgam.edu.in/',
+    email: 'info@gdcbudgam.edu.in',
+    phone: '+91-1951255432',
+    latitude: 34.0279,
+    longitude: 74.6543,
+  },
+  {
+    id: '10',
+    'College Name': 'Govt. College of Education, Jammu',
+    District: 'Jammu',
+    'Level (UG/PG/Both)': 'PG',
+    naacGrade: 'A',
+    affiliation: 'University of Jammu',
+    streams: ['Education'],
+    totalSeats: 500,
+    facultyCount: 60,
+    facilities: ['Library', 'Auditorium'],
+    website: 'https://gcejammu.ac.in/',
+    email: 'gcejammu@gmail.com',
+    phone: '+91-1912582877',
+    latitude: 32.7266,
+    longitude: 74.8570,
+  },
+];
+
+
 export function CollegeLocator() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('all');
@@ -51,26 +227,13 @@ export function CollegeLocator() {
   const [savedColleges, setSavedColleges] = useState<string[]>([]);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
 
-  // Replace mock data with data fetched from backend API
   const [colleges, setColleges] = useState<College[]>([]);
 
   useEffect(() => {
-    async function fetchColleges() {
-      try {
-        const response = await fetch('/api/colleges');
-        if (!response.ok) {
-          throw new Error('Failed to fetch colleges');
-        }
-        const data = await response.json();
-        setColleges(data);
-      } catch (error) {
-        console.error('Error fetching colleges:', error);
-      }
-    }
-    fetchColleges();
-  }, []);
+    // In a real app, you would fetch data here.
+    // For this example, we use the mock data directly.
+    setColleges(mockColleges);
 
-  useEffect(() => {
     if (!navigator.geolocation) {
       console.warn('Geolocation is not supported by this browser.');
       return;
@@ -132,9 +295,8 @@ export function CollegeLocator() {
     const matchesSearch = college['College Name'].toLowerCase().includes(searchTerm.toLowerCase()) ||
                          college.District.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDistrict = selectedDistrict === 'all' || college.District === selectedDistrict;
-    // Note: Stream and NAAC filters may need adjustment based on actual data
-    const matchesStream = selectedStream === 'all' || college['Level (UG/PG/Both)'].includes(selectedStream);
-    const matchesNAAC = selectedNAAC === 'all'; // Placeholder, as NAAC grade may not be in schema
+    const matchesStream = selectedStream === 'all' || college.streams?.includes(selectedStream);
+    const matchesNAAC = selectedNAAC === 'all' || college.naacGrade === selectedNAAC;
     
     return matchesSearch && matchesDistrict && matchesStream && matchesNAAC;
   });
@@ -255,7 +417,9 @@ export function CollegeLocator() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Grades</SelectItem>
+                  <SelectItem value="A+">A+ Grade</SelectItem>
                   <SelectItem value="A">A Grade</SelectItem>
+                  <SelectItem value="B+">B+ Grade</SelectItem>
                   <SelectItem value="B">B Grade</SelectItem>
                   <SelectItem value="C">C Grade</SelectItem>
                 </SelectContent>
@@ -385,19 +549,19 @@ export function CollegeLocator() {
                     <div className="flex items-center justify-between pt-4 border-t">
                       <div className="flex space-x-2">
                         {college.website && (
-                          <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
+                          <a href={college.website} target="_blank" rel="noopener noreferrer" className="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
                             <Globe className="w-4 h-4" />
-                          </button>
+                          </a>
                         )}
                         {college.email && (
-                          <button className="p-2 text-green-600 hover:bg-green-50 rounded-full">
+                          <a href={`mailto:${college.email}`} className="p-2 text-green-600 hover:bg-green-50 rounded-full">
                             <Mail className="w-4 h-4" />
-                          </button>
+                          </a>
                         )}
                         {college.phone && (
-                          <button className="p-2 text-orange-600 hover:bg-orange-50 rounded-full">
+                          <a href={`tel:${college.phone}`} className="p-2 text-orange-600 hover:bg-orange-50 rounded-full">
                             <Phone className="w-4 h-4" />
-                          </button>
+                          </a>
                         )}
                       </div>
 

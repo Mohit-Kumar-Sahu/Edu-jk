@@ -1,394 +1,293 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Target, Brain, Lightbulb, Users, Briefcase, Cog } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Progress } from './ui/progress';
-import { Badge } from './ui/badge';
-import { useLocalization } from '../hooks/useLocalization';
+"use client";
 
-interface QuizProps {
-  onComplete: (results: any) => void;
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Lightbulb, Briefcase, Code, Palette, BookOpen, Handshake } from 'lucide-react';
+
+interface Question {
+  id: number;
+  question: string;
+  options: {
+    text: string;
+    points: { [key: string]: number };
+  }[];
 }
 
-export function CareerQuiz({ onComplete }: QuizProps) {
-  const { t } = useLocalization();
-  const navigate = useNavigate();
-  const [currentSection, setCurrentSection] = useState(0);
+const quizQuestions: Question[] = [
+  {
+    id: 1,
+    question: "When working on a project, I prefer to...",
+    options: [
+      { text: "Lead the team and manage the timeline.", points: { management: 3, business: 2 } },
+      { text: "Analyze data and solve logical puzzles.", points: { technology: 3, engineering: 2, research: 1 } },
+      { text: "Create and design the visual elements.", points: { creative: 3, humanities: 1 } },
+      { text: "Communicate with clients and customers.", points: { communication: 3, business: 2 } },
+    ],
+  },
+  {
+    id: 2,
+    question: "Which subject in school did you enjoy the most?",
+    options: [
+      { text: "Science (Physics, Chemistry, Biology)", points: { research: 3, engineering: 2, medical: 2 } },
+      { text: "Mathematics", points: { engineering: 3, finance: 2, technology: 2 } },
+      { text: "Literature and History", points: { humanities: 3, creative: 1 } },
+      { text: "Economics and Commerce", points: { business: 3, finance: 3, management: 1 } },
+    ],
+  },
+  {
+    id: 3,
+    question: "What kind of problem-solving excites you the most?",
+    options: [
+      { text: "Building a new software application.", points: { technology: 3, engineering: 2 } },
+      { text: "Finding a cure for a disease.", points: { medical: 3, research: 2 } },
+      { text: "Developing a new marketing strategy.", points: { business: 3, creative: 1 } },
+      { text: "Improving a legal or social system.", points: { law: 3, humanities: 2, communication: 1 } },
+    ],
+  },
+  {
+    id: 4,
+    question: "I feel most energized when I...",
+    options: [
+      { text: "Work with numbers and data all day.", points: { finance: 3, technology: 2, engineering: 1 } },
+      { text: "Interact with and help people one-on-one.", points: { medical: 3, social_work: 3, communication: 2 } },
+      { text: "Create something from scratch, like a drawing or story.", points: { creative: 3, humanities: 2 } },
+      { text: "Read scientific papers and conduct experiments.", points: { research: 3, technology: 2, engineering: 1 } },
+    ],
+  },
+  {
+    id: 5,
+    question: "Which of these skills would you like to develop?",
+    options: [
+      { text: "Public speaking and negotiation.", points: { communication: 3, business: 2, law: 1 } },
+      { text: "Coding and programming.", points: { technology: 3, engineering: 2, research: 1 } },
+      { text: "Financial planning and investment.", points: { finance: 3, business: 2 } },
+      { text: "Critical analysis of historical events.", points: { humanities: 3, law: 2 } },
+    ],
+  },
+  {
+    id: 6,
+    question: "My ideal workplace would be...",
+    options: [
+      { text: "A bustling office with a clear hierarchy.", points: { management: 3, business: 2, finance: 1 } },
+      { text: "A quiet, focused laboratory or study.", points: { research: 3, technology: 2 } },
+      { text: "A creative studio or a flexible remote setup.", points: { creative: 3, humanities: 2 } },
+      { text: "A place where I can directly help the community.", points: { social_work: 3, medical: 2, communication: 1 } },
+    ],
+  },
+  {
+    id: 7,
+    question: "What kind of career goal do you find most appealing?",
+    options: [
+      { text: "Building a profitable company.", points: { business: 3, management: 2 } },
+      { text: "Making a difference through public policy.", points: { law: 3, social_work: 2, humanities: 1 } },
+      { text: "Creating a masterpiece or a viral product.", points: { creative: 3, business: 1 } },
+      { text: "Developing the next-generation AI or machine.", points: { technology: 3, engineering: 2 } },
+    ],
+  },
+];
+
+const careerPaths = {
+  engineering: {
+    name: "Engineering",
+    description: "You have a knack for solving technical problems and building systems. You'd thrive in fields like Civil, Mechanical, or Electrical Engineering.",
+    icon: <Briefcase className="h-12 w-12 text-blue-600 mb-4" />,
+  },
+  technology: {
+    name: "Technology & IT",
+    description: "Your interests align with software, data, and digital innovation. This path is perfect for roles like Software Developer, Data Scientist, or Cybersecurity Analyst.",
+    icon: <Code className="h-12 w-12 text-gray-800 mb-4" />,
+  },
+  medical: {
+    name: "Medical & Healthcare",
+    description: "Your passion is helping people and understanding the human body. Consider careers like Doctor, Nurse, Physical Therapist, or Pharmacist.",
+    icon: <Handshake className="h-12 w-12 text-green-600 mb-4" />,
+  },
+  business: {
+    name: "Business & Entrepreneurship",
+    description: "You are a natural leader with a flair for strategy and finance. This is a great fit for roles in management, marketing, or starting your own venture.",
+    icon: <BookOpen className="h-12 w-12 text-indigo-600 mb-4" />,
+  },
+  finance: {
+    name: "Finance & Accounting",
+    description: "You are excellent with numbers and financial systems. You could pursue careers as a Financial Analyst, Accountant, or Investment Banker.",
+    icon: <Briefcase className="h-12 w-12 text-blue-800 mb-4" />,
+  },
+  research: {
+    name: "Research & Development",
+    description: "Your curiosity is your biggest asset. This path is for you if you enjoy deep dives into subjects as a Scientist, Academician, or a Research Associate.",
+    icon: <Lightbulb className="h-12 w-12 text-yellow-600 mb-4" />,
+  },
+  creative: {
+    name: "Creative Arts & Design",
+    description: "You have a strong sense of aesthetics and self-expression. Consider careers in Graphic Design, Web Design, Fine Arts, or becoming a writer.",
+    icon: <Palette className="h-12 w-12 text-pink-500 mb-4" />,
+  },
+  humanities: {
+    name: "Humanities & Social Sciences",
+    description: "You are interested in human culture, history, and society. This path can lead to careers in Journalism, Social Work, Education, or Public Administration.",
+    icon: <BookOpen className="h-12 w-12 text-purple-600 mb-4" />,
+  },
+  law: {
+    name: "Law & Justice",
+    description: "You have a keen interest in legal systems and justice. A career as a Lawyer, Judge, or Legal Consultant would suit you well.",
+    icon: <Handshake className="h-12 w-12 text-red-600 mb-4" />,
+  },
+  social_work: {
+    name: "Social Work & Public Service",
+    description: "Your primary goal is to make a positive impact on society. This can lead to roles in social work, NGOs, or other public service sectors.",
+    icon: <Handshake className="h-12 w-12 text-teal-600 mb-4" />,
+  },
+  communication: {
+    name: "Communication & Media",
+    description: "You are a great communicator and enjoy connecting with people. This path is ideal for a career in Marketing, Public Relations, or Journalism.",
+    icon: <BookOpen className="h-12 w-12 text-orange-600 mb-4" />,
+  },
+};
+
+export function CareerQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<{[key: string]: number}>({});
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [scores, setScores] = useState({
+    engineering: 0,
+    technology: 0,
+    medical: 0,
+    business: 0,
+    finance: 0,
+    research: 0,
+    creative: 0,
+    humanities: 0,
+    law: 0,
+    social_work: 0,
+    communication: 0,
+  });
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
 
-  // Define sections directly in the component so it re-renders
-  // with the new language whenever `t` changes.
-  const sections = [
-    {
-      title: t('careerQuiz.section_interest_title'),
-      subtitle: t('careerQuiz.section_interest_subtitle'),
-      icon: <Lightbulb className="w-6 h-6" />,
-      color: "bg-blue-500",
-      questions: [
-        // Realistic
-        { id: 'R1', text: t('careerQuiz.q_r1'), category: 'R' },
-        { id: 'R2', text: t('careerQuiz.q_r2'), category: 'R' },
-        { id: 'R3', text: t('careerQuiz.q_r3'), category: 'R' },
-        
-        // Investigative
-        { id: 'I1', text: t('careerQuiz.q_i1'), category: 'I' },
-        { id: 'I2', text: t('careerQuiz.q_i2'), category: 'I' },
-        { id: 'I3', text: t('careerQuiz.q_i3'), category: 'I' },
-        
-        // Artistic
-        { id: 'A1', text: t('careerQuiz.q_a1'), category: 'A' },
-        { id: 'A2', text: t('careerQuiz.q_a2'), category: 'A' },
-        { id: 'A3', text: t('careerQuiz.q_a3'), category: 'A' },
-        
-        // Social
-        { id: 'S1', text: t('careerQuiz.q_s1'), category: 'S' },
-        { id: 'S2', text: t('careerQuiz.q_s2'), category: 'S' },
-        { id: 'S3', text: t('careerQuiz.q_s3'), category: 'S' },
-        
-        // Enterprising
-        { id: 'E1', text: t('careerQuiz.q_e1'), category: 'E' },
-        { id: 'E2', text: t('careerQuiz.q_e2'), category: 'E' },
-        { id: 'E3', text: t('careerQuiz.q_e3'), category: 'E' },
-        
-        // Conventional
-        { id: 'C1', text: t('careerQuiz.q_c1'), category: 'C' },
-        { id: 'C2', text: t('careerQuiz.q_c2'), category: 'C' },
-        { id: 'C3', text: t('careerQuiz.q_c3'), category: 'C' }
-      ]
-    },
-    {
-      title: t('careerQuiz.section_aptitude_title'),
-      subtitle: t('careerQuiz.section_aptitude_subtitle'),
-      icon: <Brain className="w-6 h-6" />,
-      color: "bg-green-500",
-      questions: [
-        // Numerical
-        { id: 'N1', text: t('careerQuiz.q_n1'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n1_opt_1'), t('careerQuiz.q_n1_opt_2'), t('careerQuiz.q_n1_opt_3'), t('careerQuiz.q_n1_opt_4')], correct: 1 },
-        { id: 'N2', text: t('careerQuiz.q_n2'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n2_opt_1'), t('careerQuiz.q_n2_opt_2'), t('careerQuiz.q_n2_opt_3'), t('careerQuiz.q_n2_opt_4')], correct: 2 },
-        { id: 'N3', text: t('careerQuiz.q_n3'), category: t('careerQuiz.cat_numerical'), options: [t('careerQuiz.q_n3_opt_1'), t('careerQuiz.q_n3_opt_2'), t('careerQuiz.q_n3_opt_3'), t('careerQuiz.q_n3_opt_4')], correct: 1 },
-        
-        // Verbal
-        { id: 'V1', text: t('careerQuiz.q_v1'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v1_opt_1'), t('careerQuiz.q_v1_opt_2'), t('careerQuiz.q_v1_opt_3'), t('careerQuiz.q_v1_opt_4')], correct: 1 },
-        { id: 'V2', text: t('careerQuiz.q_v2'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v2_opt_1'), t('careerQuiz.q_v2_opt_2'), t('careerQuiz.q_v2_opt_3'), t('careerQuiz.q_v2_opt_4')], correct: 0 },
-        { id: 'V3', text: t('careerQuiz.q_v3'), category: t('careerQuiz.cat_verbal'), options: [t('careerQuiz.q_v3_opt_1'), t('careerQuiz.q_v3_opt_2'), t('careerQuiz.q_v3_opt_3'), t('careerQuiz.q_v3_opt_4')], correct: 3 },
-        
-        // Logical
-        { id: 'L1', text: t('careerQuiz.q_l1'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l1_opt_1'), t('careerQuiz.q_l1_opt_2'), t('careerQuiz.q_l1_opt_3'), t('careerQuiz.q_l1_opt_4')], correct: 1 },
-        { id: 'L2', text: t('careerQuiz.q_l2'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l2_opt_1'), t('careerQuiz.q_l2_opt_2'), t('careerQuiz.q_l2_opt_3'), t('careerQuiz.q_l2_opt_4')], correct: 2 },
-        { id: 'L3', text: t('careerQuiz.q_l3'), category: t('careerQuiz.cat_logical'), options: [t('careerQuiz.q_l3_opt_1'), t('careerQuiz.q_l3_opt_2'), t('careerQuiz.q_l3_opt_3'), t('careerQuiz.q_l3_opt_4')], correct: 2 }
-      ]
+  const handleAnswer = (points: { [key: string]: number }) => {
+    const newScores = { ...scores };
+    for (const key in points) {
+      if (newScores[key as keyof typeof newScores] !== undefined) {
+        newScores[key as keyof typeof newScores] += points[key];
+      }
     }
-  ];
+    setScores(newScores);
 
-  const totalQuestions = sections.reduce((sum, section) => sum + section.questions.length, 0);
-  const currentQuestionIndex = sections.slice(0, currentSection).reduce((sum, section) => sum + section.questions.length, 0) + currentQuestion;
-  const progress = (currentQuestionIndex / totalQuestions) * 100;
-
-  const currentSectionData = sections[currentSection];
-  const currentQuestionData = currentSectionData.questions[currentQuestion];
-
-  const handleAnswer = (value: number) => {
-    const questionId = currentQuestionData.id;
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
-  };
-
-  const nextQuestion = () => {
-    if (currentQuestion < currentSectionData.questions.length - 1) {
+    if (currentQuestion < quizQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-    } else if (currentSection < sections.length - 1) {
-      setCurrentSection(currentSection + 1);
-      setCurrentQuestion(0);
     } else {
-      completeQuiz();
+      calculateResult();
     }
   };
 
-  const prevQuestion = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
-    } else if (currentSection > 0) {
-      setCurrentSection(currentSection - 1);
-      setCurrentQuestion(sections[currentSection - 1].questions.length - 1);
+  const calculateResult = () => {
+    let maxScore = -1;
+    let maxCareer = 'unknown';
+    for (const career in scores) {
+      if (scores[career as keyof typeof scores] > maxScore) {
+        maxScore = scores[career as keyof typeof scores];
+        maxCareer = career;
+      }
     }
+    setResult(maxCareer);
+    setShowResult(true);
   };
 
-  const calculateResults = () => {
-    // Calculate RIASEC scores
-    const riasecScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-    const categoryNames = {
-      R: t('careerQuiz.riasec_realistic'),
-      I: t('careerQuiz.riasec_investigative'),
-      A: t('careerQuiz.riasec_artistic'),
-      S: t('careerQuiz.riasec_social'),
-      E: t('careerQuiz.riasec_enterprising'),
-      C: t('careerQuiz.riasec_conventional')
-    };
-
-    // Interest scores (RIASEC)
-    Object.entries(answers).forEach(([questionId, score]) => {
-      const question = sections[0].questions.find(q => q.id === questionId);
-      if (question && question.category in riasecScores) {
-        riasecScores[question.category as keyof typeof riasecScores] += score;
-      }
+  const resetQuiz = () => {
+    setCurrentQuestion(0);
+    setScores({
+      engineering: 0,
+      technology: 0,
+      medical: 0,
+      business: 0,
+      finance: 0,
+      research: 0,
+      creative: 0,
+      humanities: 0,
+      law: 0,
+      social_work: 0,
+      communication: 0,
     });
-
-    // Aptitude scores
-    let aptitudeScore = 0;
-    let totalAptitudeQuestions = 0;
-    
-    sections[1].questions.forEach(question => {
-      const answer = answers[question.id];
-      if (answer !== undefined) {
-        totalAptitudeQuestions++;
-        if (question.correct !== undefined && answer === question.correct) {
-          aptitudeScore++;
-        }
-      }
-    });
-
-    const aptitudePercentage = totalAptitudeQuestions > 0 ? Math.round((aptitudeScore / totalAptitudeQuestions) * 100) : 0;
-
-    // Get top RIASEC categories
-    const topInterests = Object.entries(riasecScores)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 3)
-      .map(([code, score]) => ({
-        code,
-        name: categoryNames[code as keyof typeof categoryNames],
-        score: Math.round((score / 15) * 100) // Normalize to percentage
-      }));
-
-    // Career recommendations based on top interests
-    const careerRecommendations = getCareerRecommendations(topInterests);
-
-    return {
-      riasecScores,
-      topInterests,
-      aptitudeScore: aptitudePercentage,
-      topCareerPaths: careerRecommendations,
-      totalScore: Math.round((aptitudePercentage + topInterests[0]?.score || 0) / 2)
-    };
+    setShowResult(false);
+    setResult(null);
   };
-
-  const getCareerRecommendations = (topInterests: any[]) => {
-    // A mapping from RIASEC codes to career recommendations
-    const careerDatabase = {
-      R: [
-        { title: t('careerQuiz.career_civil_engineer_title'), description: t('careerQuiz.career_civil_engineer_desc'), match: 95 },
-        { title: t('careerQuiz.career_mechanical_engineer_title'), description: t('careerQuiz.career_mechanical_engineer_desc'), match: 90 },
-        { title: t('careerQuiz.career_agriculture_officer_title'), description: t('careerQuiz.career_agriculture_officer_desc'), match: 85 }
-      ],
-      I: [
-        { title: t('careerQuiz.career_software_developer_title'), description: t('careerQuiz.career_software_developer_desc'), match: 95 },
-        { title: t('careerQuiz.career_research_scientist_title'), description: t('careerQuiz.career_research_scientist_desc'), match: 90 },
-        { title: t('careerQuiz.career_data_analyst_title'), description: t('careerQuiz.career_data_analyst_desc'), match: 85 }
-      ],
-      A: [
-        { title: t('careerQuiz.career_graphic_designer_title'), description: t('careerQuiz.career_graphic_designer_desc'), match: 95 },
-        { title: t('careerQuiz.career_content_writer_title'), description: t('careerQuiz.career_content_writer_desc'), match: 90 },
-        { title: t('careerQuiz.career_ui_ux_designer_title'), description: t('careerQuiz.career_ui_ux_designer_desc'), match: 85 }
-      ],
-      S: [
-        { title: t('careerQuiz.career_teacher_title'), description: t('careerQuiz.career_teacher_desc'), match: 95 },
-        { title: t('careerQuiz.career_social_worker_title'), description: t('careerQuiz.career_social_worker_desc'), match: 90 },
-        { title: t('careerQuiz.career_counselor_title'), description: t('careerQuiz.career_counselor_desc'), match: 85 }
-      ],
-      E: [
-        { title: t('careerQuiz.career_business_manager_title'), description: t('careerQuiz.career_business_manager_desc'), match: 95 },
-        { title: t('careerQuiz.career_marketing_executive_title'), description: t('careerQuiz.career_marketing_executive_desc'), match: 90 },
-        { title: t('careerQuiz.career_entrepreneur_title'), description: t('careerQuiz.career_entrepreneur_desc'), match: 85 }
-      ],
-      C: [
-        { title: t('careerQuiz.career_accountant_title'), description: t('careerQuiz.career_accountant_desc'), match: 95 },
-        { title: t('careerQuiz.career_bank_officer_title'), description: t('careerQuiz.career_bank_officer_desc'), match: 90 },
-        { title: t('careerQuiz.career_admin_officer_title'), description: t('careerQuiz.career_admin_officer_desc'), match: 85 }
-      ]
-    };
-
-    const recommendations: any[] = [];
-    // Now we can directly use the `code` from `topInterests` to look up the recommendations.
-    topInterests.forEach(interest => {
-      recommendations.push(...careerDatabase[interest.code as keyof typeof careerDatabase]);
-    });
-
-    return recommendations.slice(0, 6);
-  };
-
-  const completeQuiz = () => {
-    const results = calculateResults();
-    setIsCompleted(true);
-    onComplete(results);
-    
-    setTimeout(() => {
-      navigate('/quiz-results');
-    }, 2000);
-  };
-
-  const isAnswered = currentQuestionData.id in answers;
-  const canProceed = isAnswered;
-
-  if (isCompleted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          className="text-center"
-        >
-          <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Target className="w-12 h-12 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('careerQuiz.quiz_completed_title')}</h2>
-          <p className="text-lg text-gray-600 mb-6">
-            {t('careerQuiz.quiz_completed_message')}
-          </p>
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen p-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <Button
-              variant="outline"
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center space-x-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              <span>{t('careerQuiz.back_to_dashboard')}</span>
-            </Button>
-            
-            <Badge variant="secondary">
-              {t('careerQuiz.quiz_progress', { current: currentQuestionIndex + 1, total: totalQuestions })}
-            </Badge>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-lg ${currentSectionData.color} text-white`}>
-                {currentSectionData.icon}
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold">{currentSectionData.title}</h1>
-                <p className="text-gray-600">{currentSectionData.subtitle}</p>
-              </div>
-            </div>
-            <Progress value={progress} className="w-full h-2" />
-          </div>
-        </div>
-
-        {/* Question Card */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`${currentSection}-${currentQuestion}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Card className="mb-6">
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  {currentQuestionData.text}
-                </CardTitle>
-                {currentQuestionData.category && (
-                  <Badge variant="outline" className="w-fit">
-                    {currentQuestionData.category}
-                  </Badge>
-                )}
-              </CardHeader>
-              <CardContent>
-                {currentSectionData.title === t('careerQuiz.section_interest_title') ? (
-                  // Likert scale for interest questions
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-5 gap-2 text-center text-sm">
-                      <span>{t('careerQuiz.likert_disagree_strong')}</span>
-                      <span>{t('careerQuiz.likert_disagree')}</span>
-                      <span>{t('careerQuiz.likert_neutral')}</span>
-                      <span>{t('careerQuiz.likert_agree')}</span>
-                      <span>{t('careerQuiz.likert_agree_strong')}</span>
-                    </div>
-                    <div className="grid grid-cols-5 gap-2">
-                      {[1, 2, 3, 4, 5].map((value) => (
-                        <button
-                          key={value}
-                          onClick={() => handleAnswer(value)}
-                          className={`p-4 rounded-lg border-2 transition-all ${
-                            answers[currentQuestionData.id] === value
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <div className="w-6 h-6 mx-auto rounded-full border-2 border-current"></div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  // Multiple choice for aptitude questions
-                  <div className="space-y-3">
-                    {currentQuestionData.options?.map((option, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleAnswer(index)}
-                        className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
-                          answers[currentQuestionData.id] === index
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-4 h-4 rounded-full border-2 ${
-                            answers[currentQuestionData.id] === index
-                              ? 'border-blue-500 bg-blue-500'
-                              : 'border-gray-300'
-                          }`}></div>
-                          <span>{option}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Navigation */}
-        <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={prevQuestion}
-            disabled={currentSection === 0 && currentQuestion === 0}
-            className="flex items-center space-x-2"
-          >
-            <ChevronLeft className="w-4 h-4" />
-            <span>{t('careerQuiz.previous_button')}</span>
-          </Button>
-
-          <Button
-            onClick={nextQuestion}
-            disabled={!canProceed}
-            className="flex items-center space-x-2"
-          >
-            <span>
-              {currentSection === sections.length - 1 && currentQuestion === currentSectionData.questions.length - 1
-                ? t('careerQuiz.complete_quiz_button')
-                : t('careerQuiz.next_button')}
-            </span>
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
-      </div>
+    <div className="p-4 md:p-6 min-h-screen flex items-center justify-center bg-gray-100">
+      <motion.div
+        key={showResult ? 'result' : `question-${currentQuestion}`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-2xl"
+      >
+        <Card className="p-4 md:p-8 rounded-xl shadow-2xl transition-shadow duration-500 bg-white">
+          <AnimatePresence mode="wait">
+            {!showResult ? (
+              <motion.div
+                key={currentQuestion}
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 50 }}
+                transition={{ duration: 0.4 }}
+              >
+                <CardHeader className="text-center mb-6">
+                  <p className="text-sm font-semibold text-blue-500">
+                    Question {currentQuestion + 1} of {quizQuestions.length}
+                  </p>
+                  <CardTitle className="text-2xl font-extrabold text-gray-800 mt-2">
+                    {quizQuestions[currentQuestion].question}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {quizQuestions[currentQuestion].options.map((option, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="w-full h-auto py-4 px-6 text-left text-base font-medium rounded-lg border border-gray-300 hover:bg-blue-50 hover:border-blue-500 transition-colors duration-200"
+                      onClick={() => handleAnswer(option.points)}
+                    >
+                      {option.text}
+                    </Button>
+                  ))}
+                </CardContent>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="results"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-center space-y-6"
+              >
+                <CardHeader>
+                  <CardTitle className="text-3xl font-extrabold text-blue-700">Your Career Path Suggestion</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {result && careerPaths[result as keyof typeof careerPaths] ? (
+                    <>
+                      {careerPaths[result as keyof typeof careerPaths].icon}
+                      <h2 className="text-2xl font-bold text-gray-800">
+                        {careerPaths[result as keyof typeof careerPaths].name}
+                      </h2>
+                      <p className="text-gray-600 max-w-md mx-auto">{careerPaths[result as keyof typeof careerPaths].description}</p>
+                    </>
+                  ) : (
+                    <p className="text-gray-600">No specific recommendation could be made. Please try the quiz again!</p>
+                  )}
+                  <Button
+                    onClick={resetQuiz}
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors duration-200"
+                  >
+                    Start Again
+                  </Button>
+                </CardContent>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Card>
+      </motion.div>
     </div>
   );
 }
