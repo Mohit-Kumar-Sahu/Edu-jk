@@ -9,18 +9,17 @@ import promoImage from '../images/image1.png';
 import statsImage from '../images/image2.png'; 
 import heroVideo from '../videos/video1.mp4';
 import ctaImage from '../images/image3.png';
-import textureImage from '../images/image4.png';
 import videoChatbot from '../videos/video2.mp4';
 import videoTracker from '../videos/video3.mp4';
-// Note: image5.png has been permanently removed as requested.
+// Note: image4.png and image5.png have been permanently removed as requested.
 
-// Define a monochromatic turquoise color palette
-const primaryTurquoise = '#20c997'; // A vibrant turquoise
-const lightTurquoise = '#e6fff7'; // Very light for backgrounds
-const darkTurquoise = '#16916b'; // Darker for accents/buttons
-const accentGray = '#2d3748'; // For text that needs to stand out on light bg
-const textGray = '#4a5568'; // For general body text
-const bgColor = '#f8fafc'; // Off-white for overall page background
+// Define a monochromatic blue color palette for uniformity
+const primaryBlue = '#2563eb'; // A strong, vibrant blue
+const lightBlue = '#eff6ff'; // Very light for backgrounds
+const darkBlue = '#1e3a8a'; // Darker for accents/buttons
+const accentGray = '#1f2937'; // For text that needs to stand out on light bg
+const textGray = '#4b5563'; // For general body text
+const bgColor = '#ffffff'; // The main background color for the page
 
 // Animation variants for a consistent, professional feel
 const containerVariants = {
@@ -50,7 +49,7 @@ const PromoBanner = () => {
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -50, opacity: 0 }}
       transition={{ duration: 0.5 }}
-      style={{ backgroundColor: darkTurquoise }}
+      style={{ backgroundColor: darkBlue }}
       className="text-white text-center py-3 px-4 flex justify-center items-center gap-4 relative z-50 shadow-md"
     >
       <p className="text-base md:text-lg font-semibold flex items-center">
@@ -142,12 +141,8 @@ export function LandingPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bgColor }}>
-      {/* Textured background finish that won't interfere with content */}
-      <div 
-        className="absolute inset-0 z-0 bg-repeat bg-fixed opacity-5 pointer-events-none" 
-        style={{ backgroundImage: `url(${textureImage})` }}
-      ></div>
-
+      {/* No textured background image, just a clean color */}
+      
       {/* Main content container ensures no overlap */}
       <div className="relative z-10">
         <PromoBanner />
@@ -161,7 +156,7 @@ export function LandingPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center space-x-2"
               >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: primaryTurquoise }}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: primaryBlue }}>
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -177,13 +172,13 @@ export function LandingPage() {
               >
                 <Link 
                   to="/auth"
-                  className="px-4 py-2 hover:text-gray-900 transition-colors font-medium" style={{ color: primaryTurquoise }}
+                  className="px-4 py-2 hover:text-gray-900 transition-colors font-medium" style={{ color: primaryBlue }}
                 >
                   Login
                 </Link>
                 <Link 
                   to="/auth"
-                  className="px-6 py-2 text-white rounded-lg hover:brightness-110 transition-colors font-semibold shadow-md" style={{ backgroundColor: primaryTurquoise }}
+                  className="px-6 py-2 text-white rounded-lg hover:brightness-110 transition-colors font-semibold shadow-md" style={{ backgroundColor: primaryBlue }}
                 >
                   Get Started ✨
                 </Link>
@@ -192,11 +187,11 @@ export function LandingPage() {
           </div>
         </header>
 
-        {/* Hero Section with Video & Promo Image */}
-        <section className="relative py-20 px-4 overflow-hidden min-h-[70vh] flex items-center justify-center">
+        {/* Hero Section with Video & Highlighted Text */}
+        <section className="relative py-20 px-4 overflow-hidden min-h-[70vh] flex items-center justify-center text-center">
           {/* Background video that fills the section without cropping */}
           <video 
-            className="absolute inset-0 w-full h-full object-cover opacity-20" 
+            className="absolute inset-0 w-full h-full object-cover" 
             src={heroVideo} 
             autoPlay 
             loop 
@@ -204,56 +199,44 @@ export function LandingPage() {
             playsInline
           />
           
-          <div className="max-w-7xl mx-auto text-center relative z-10 grid md:grid-cols-2 items-center gap-12">
-            {/* Text and CTAs */}
+          {/* A dark overlay for better text readability */}
+          <div className="absolute inset-0 bg-gray-900 opacity-60"></div>
+
+          {/* Text and CTAs placed directly over the video */}
+          <div className="max-w-7xl mx-auto relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-left"
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ color: accentGray }}>
-                Your <span style={{ color: primaryTurquoise }}>Career Journey</span> Starts Here 🚀
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                Your <span style={{ color: primaryBlue }}>Career Journey</span> Starts Here 🚀
               </h1>
-              <p className="text-xl mb-8 max-w-lg" style={{ color: textGray }}>
+              <p className="text-xl text-white mb-8 max-w-lg mx-auto">
                 One-stop personalized career & education advisor for students in Jammu & Kashmir. 
                 Discover your path, find the right college, and unlock your potential. 🌟
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link 
                   to="/auth"
-                  className="px-8 py-4 text-white rounded-lg text-lg font-semibold hover:brightness-110 transition-colors shadow-lg flex items-center justify-center" style={{ backgroundColor: primaryTurquoise }}
+                  className="px-8 py-4 text-white rounded-lg text-lg font-semibold hover:brightness-110 transition-colors shadow-lg flex items-center justify-center" style={{ backgroundColor: primaryBlue }}
                 >
                   Start Your Journey <Sparkles size={20} className="ml-2" />
                 </Link>
                 <button 
                   className="px-8 py-4 border-2 rounded-lg text-lg font-semibold hover:bg-opacity-10 transition-colors flex items-center justify-center" 
-                  style={{ borderColor: primaryTurquoise, color: primaryTurquoise }}
+                  style={{ borderColor: primaryBlue, color: primaryBlue, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
                 >
                   Watch Demo <Zap size={20} className="ml-2" />
                 </button>
               </div>
             </motion.div>
-            
-            {/* Promo Image - fully visible and not cropped */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="hidden md:block"
-            >
-              <img 
-                src={promoImage} 
-                alt="Students achieving success" 
-                className="w-full h-auto rounded-xl shadow-2xl"
-              />
-            </motion.div>
           </div>
         </section>
 
-        {/* Stats Section - now on a "blank screen" and not hidden */}
-        <section className="py-16" style={{ backgroundColor: lightTurquoise }}>
+        {/* Stats Section - with clean background */}
+        <section className="py-16" style={{ backgroundColor: lightBlue }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -283,7 +266,7 @@ export function LandingPage() {
                   whileHover={{ scale: 1.05, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
                   className="bg-white p-6 rounded-xl shadow-md text-center flex flex-col items-center justify-center h-full"
                 >
-                  <div className="mb-3" style={{ color: primaryTurquoise }}>
+                  <div className="mb-3" style={{ color: primaryBlue }}>
                     {stat.icon}
                   </div>
                   <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: accentGray }}>
@@ -296,7 +279,7 @@ export function LandingPage() {
           </div>
         </section>
         
-        {/* New "How It Works" Section - with images in cards */}
+        {/* "How It Works" Section - with images in cards */}
         <section className="py-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -328,10 +311,10 @@ export function LandingPage() {
               >
                 <img src={step.image} alt={step.title} className="w-full h-48 object-cover" />
                 <div className="p-8 text-center flex flex-col items-center">
-                  <div className="mb-4 inline-block p-4 rounded-full" style={{ color: primaryTurquoise, backgroundColor: lightTurquoise }}>
+                  <div className="mb-4 inline-block p-4 rounded-full" style={{ color: primaryBlue, backgroundColor: lightBlue }}>
                     {step.icon}
                   </div>
-                  <h3 className="text-2xl font-bold mb-3" style={{ color: primaryTurquoise }}>{step.title}</h3>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: primaryBlue }}>{step.title}</h3>
                   <p className="text-base" style={{ color: textGray }}>{step.description}</p>
                 </div>
               </motion.div>
@@ -340,7 +323,7 @@ export function LandingPage() {
         </section>
 
         {/* Video Showcase Section - with full-width, non-overlapping cards */}
-        <section className="py-20 px-4" style={{ backgroundColor: lightTurquoise }}>
+        <section className="py-20 px-4" style={{ backgroundColor: lightBlue }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -365,7 +348,7 @@ export function LandingPage() {
             >
               <video src={videoChatbot} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryTurquoise }}>AI Career Chatbot 🤖</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>AI Career Chatbot 🤖</h3>
                 <p className="text-base" style={{ color: textGray }}>
                   Get instant answers and personalized guidance for your career questions in multiple languages.
                 </p>
@@ -382,7 +365,7 @@ export function LandingPage() {
             >
               <video src={videoTracker} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryTurquoise }}>Application Tracker 📝</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>Application Tracker 📝</h3>
                 <p className="text-base" style={{ color: textGray }}>
                   Seamlessly apply to colleges with auto-filled forms and monitor your application status in real-time.
                 </p>
@@ -391,7 +374,7 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* Features Section - with outstanding card design and images */}
+        {/* Features Section - with images in cards */}
         <section className="py-20 px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -423,7 +406,7 @@ export function LandingPage() {
               >
                 <img src={feature.image} alt={feature.title} className="w-full h-48 object-cover" />
                 <div className="p-8 flex flex-col items-center text-center">
-                  <div className="mb-4" style={{ color: primaryTurquoise }}>{feature.icon}</div>
+                  <div className="mb-4" style={{ color: primaryBlue }}>{feature.icon}</div>
                   <h3 className="text-xl font-semibold mb-3" style={{ color: accentGray }}>{feature.title}</h3>
                   <p className="text-base" style={{ color: textGray }}>{feature.description}</p>
                 </div>
@@ -432,11 +415,8 @@ export function LandingPage() {
           </motion.div>
         </section>
 
-        {/* CTA Section with Image and Vibrant Colors */}
-        <section className="py-20 px-4 relative overflow-hidden" style={{ backgroundColor: primaryTurquoise }}>
-          <div className="absolute inset-0 opacity-10">
-            <img src={ctaImage} alt="Abstract background texture" className="w-full h-full object-contain" />
-          </div>
+        {/* CTA Section with a Clean Background */}
+        <section className="py-20 px-4 relative" style={{ backgroundColor: primaryBlue }}>
           <div className="max-w-4xl mx-auto text-center relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -451,7 +431,7 @@ export function LandingPage() {
               </p>
               <Link 
                 to="/auth"
-                className="inline-block px-8 py-4 bg-white text-lg font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-xl flex items-center justify-center mx-auto max-w-xs" style={{ color: primaryTurquoise }}
+                className="inline-block px-8 py-4 bg-white text-lg font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-xl flex items-center justify-center mx-auto max-w-xs" style={{ color: primaryBlue }}
               >
                 Start Free Today <Sparkles size={20} className="ml-2" />
               </Link>
@@ -465,47 +445,47 @@ export function LandingPage() {
             <div className="grid md:grid-cols-4 gap-8">
               <div>
                 <div className="flex items-center space-x-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: primaryTurquoise }}>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: primaryBlue }}>
                     <GraduationCap className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-lg font-semibold">Edu2Career J&K</span>
                 </div>
-                <p className="text-sm" style={{ color: lightTurquoise }}>
+                <p className="text-sm" style={{ color: lightBlue }}>
                   Empowering students in Jammu & Kashmir with personalized career guidance and educational resources.
                 </p>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryTurquoise }}>Quick Links</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Quick Links</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightTurquoise }}>Get Started</Link></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightTurquoise }}>About Us</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightTurquoise }}>Contact</a></li>
+                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightBlue }}>Get Started</Link></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>About Us</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>Contact</a></li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryTurquoise }}>Features</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Features</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightTurquoise }}>Career Quiz</li>
-                  <li style={{ color: lightTurquoise }}>College Locator</li>
-                  <li style={{ color: lightTurquoise }}>Scholarship Checker</li>
-                  <li style={{ color: lightTurquoise }}>AI Chatbot</li>
+                  <li style={{ color: lightBlue }}>Career Quiz</li>
+                  <li style={{ color: lightBlue }}>College Locator</li>
+                  <li style={{ color: lightBlue }}>Scholarship Checker</li>
+                  <li style={{ color: lightBlue }}>AI Chatbot</li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryTurquoise }}>Support</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Support</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightTurquoise }}>Help Center</li>
-                  <li style={{ color: lightTurquoise }}>Privacy Policy</li>
-                  <li style={{ color: lightTurquoise }}>Terms of Service</li>
-                  <li style={{ color: lightTurquoise }}>Feedback</li>
+                  <li style={{ color: lightBlue }}>Help Center</li>
+                  <li style={{ color: lightBlue }}>Privacy Policy</li>
+                  <li style={{ color: lightBlue }}>Terms of Service</li>
+                  <li style={{ color: lightBlue }}>Feedback</li>
                 </ul>
               </div>
             </div>
             
-            <div className="border-t mt-8 pt-8 text-center text-sm" style={{ borderColor: textGray, color: lightTurquoise }}>
+            <div className="border-t mt-8 pt-8 text-center text-sm" style={{ borderColor: textGray, color: lightBlue }}>
               <p>&copy; 2024 Edu2Career J&K. Made with ❤️ for J&K students. All rights reserved.</p>
             </div>
           </div>
