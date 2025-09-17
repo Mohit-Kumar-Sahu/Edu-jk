@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { 
@@ -16,6 +16,7 @@ import {
   Star
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useLocalization } from '../hooks/useLocalization';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
@@ -27,40 +28,43 @@ interface DashboardProps {
 
 export function Dashboard({ quizResults }: DashboardProps) {
   const { user } = useAuth();
-  const [notifications, setNotifications] = useState([
-    { id: 1, title: "CUET Application Open", type: "exam", urgent: true },
-    { id: 2, title: "PMSSS Scholarship Deadline", type: "scholarship", urgent: false },
-    { id: 3, title: "New College Added: GDC Baramulla", type: "info", urgent: false }
-  ]);
+  const { t } = useLocalization();
+
+  // These arrays are now defined directly, so they will re-translate on every render
+  const notifications = [
+    { id: 1, title: t("dashboard.notification_cuet_title"), type: "exam", urgent: true },
+    { id: 2, title: t("dashboard.notification_pmsss_title"), type: "scholarship", urgent: false },
+    { id: 3, title: t("dashboard.notification_college_title"), type: "info", urgent: false }
+  ];
 
   const quickActions = [
     {
-      title: "Take Career Quiz",
-      description: "Discover your interests & aptitude",
+      title: t("dashboard.takeQuiz"),
+      description: t("dashboard.takeQuiz_desc"),
       icon: <Target className="w-6 h-6" />,
       link: "/quiz",
       color: "bg-blue-500",
       completed: !!quizResults
     },
     {
-      title: "Find Colleges",
-      description: "142 J&K Govt colleges",
+      title: t("dashboard.findColleges"),
+      description: t("dashboard.findColleges_desc"),
       icon: <MapPin className="w-6 h-6" />,
       link: "/colleges",
       color: "bg-green-500",
       completed: false
     },
     {
-      title: "Check Scholarships",
-      description: "PMSSS, NSP & state schemes",
+      title: t("dashboard.applyScholarships"),
+      description: t("dashboard.applyScholarships_desc"),
       icon: <Award className="w-6 h-6" />,
       link: "/scholarships",
       color: "bg-orange-500",
       completed: false
     },
     {
-      title: "Build Resume",
-      description: "Auto-generate professional resume",
+      title: t("dashboard.buildResume"),
+      description: t("dashboard.buildResume_desc"),
       icon: <FileText className="w-6 h-6" />,
       link: "/resume",
       color: "bg-purple-500",
@@ -69,16 +73,16 @@ export function Dashboard({ quizResults }: DashboardProps) {
   ];
 
   const upcomingDeadlines = [
-    { name: "CUET Application", date: "March 15, 2024", type: "Exam" },
-    { name: "PMSSS Scholarship", date: "March 20, 2024", type: "Scholarship" },
-    { name: "JEE Main Registration", date: "March 25, 2024", type: "Exam" }
+    { name: t("dashboard.deadline_cuet_name"), date: "March 15, 2024", type: t("dashboard.deadline_exam_type") },
+    { name: t("dashboard.deadline_pmsss_name"), date: "March 20, 2024", type: t("dashboard.deadline_scholarship_type") },
+    { name: t("dashboard.deadline_jee_name"), date: "March 25, 2024", type: t("dashboard.deadline_exam_type") }
   ];
-
+  
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Good Morning";
-    if (hour < 17) return "Good Afternoon";
-    return "Good Evening";
+    if (hour < 12) return t("dashboard.greeting_morning");
+    if (hour < 17) return t("dashboard.greeting_afternoon");
+    return t("dashboard.greeting_evening");
   };
 
   const profileCompletion = () => {
@@ -105,16 +109,16 @@ export function Dashboard({ quizResults }: DashboardProps) {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
-              {getGreeting()}, {user?.user_metadata?.name || 'Student'}! 👋
+              {getGreeting()}, {user?.user_metadata?.name || t("dashboard.student")}! 👋
             </h1>
             <p className="text-blue-100 mb-4">
-              Ready to explore your career journey today?
+              {t("dashboard.welcome_subtitle")}
             </p>
             {quizResults && (
               <div className="flex items-center space-x-2">
                 <Star className="w-5 h-5 text-yellow-300" />
                 <span className="text-blue-100">
-                  Quiz Score: {quizResults.totalScore || 'Completed'}
+                  {t("dashboard.quiz_score", { score: quizResults.totalScore || t("dashboard.completed") })}
                 </span>
               </div>
             )}
@@ -136,13 +140,13 @@ export function Dashboard({ quizResults }: DashboardProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              Profile Completion
+              {t("dashboard.profile_completion_title")}
               <Badge variant={profileCompletion() === 100 ? "default" : "secondary"}>
                 {profileCompletion()}%
               </Badge>
             </CardTitle>
             <CardDescription>
-              Complete your profile to get personalized recommendations
+              {t("dashboard.profile_completion_subtitle")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -151,7 +155,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
               {profileCompletion() < 100 && (
                 <Link to="/profile">
                   <Button variant="outline" size="sm">
-                    Complete Profile
+                    {t("dashboard.complete_profile_button")}
                   </Button>
                 </Link>
               )}
@@ -166,7 +170,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold mb-4">{t("dashboard.quickActions")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action, index) => (
             <motion.div
@@ -183,14 +187,14 @@ export function Dashboard({ quizResults }: DashboardProps) {
                       </div>
                       {action.completed && (
                         <Badge variant="default" className="bg-green-500">
-                          ✓ Done
+                          {t("dashboard.badge_done")}
                         </Badge>
                       )}
                     </div>
                     <h3 className="font-semibold mb-1">{action.title}</h3>
                     <p className="text-sm text-gray-600 mb-3">{action.description}</p>
                     <div className="flex items-center text-blue-600 text-sm">
-                      <span>{action.completed ? 'View Results' : 'Get Started'}</span>
+                      <span>{action.completed ? t("dashboard.view_results") : t("dashboard.get_started_button")}</span>
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </div>
                   </CardContent>
@@ -212,10 +216,10 @@ export function Dashboard({ quizResults }: DashboardProps) {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-green-600" />
-                <span>Your Career Recommendations</span>
+                <span>{t("dashboard.recommendations_title")}</span>
               </CardTitle>
               <CardDescription>
-                Based on your quiz results
+                {t("dashboard.recommendations_subtitle")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -225,15 +229,15 @@ export function Dashboard({ quizResults }: DashboardProps) {
                     <h4 className="font-semibold text-blue-600 mb-2">{career.title}</h4>
                     <p className="text-sm text-gray-600 mb-2">{career.description}</p>
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-green-600">Match: {career.match}%</span>
+                      <span className="text-green-600">{t("dashboard.match_label", { match: career.match })}</span>
                       <Link to="/quiz-results" className="text-blue-600 hover:underline">
-                        View Details
+                        {t("dashboard.view_details")}
                       </Link>
                     </div>
                   </div>
                 )) || (
                   <div className="col-span-3 text-center py-4">
-                    <p className="text-gray-600">Take the career quiz to see recommendations</p>
+                    <p className="text-gray-600">{t("dashboard.no_recommendations")}</p>
                   </div>
                 )}
               </div>
@@ -253,7 +257,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Calendar className="w-5 h-5 text-orange-600" />
-                <span>Upcoming Deadlines</span>
+                <span>{t("dashboard.upcoming_deadlines_title")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -271,7 +275,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
                 ))}
                 <Link to="/notifications">
                   <Button variant="outline" size="sm" className="w-full mt-3">
-                    View All Notifications
+                    {t("dashboard.view_all_notifications")}
                   </Button>
                 </Link>
               </div>
@@ -289,25 +293,25 @@ export function Dashboard({ quizResults }: DashboardProps) {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <BookOpen className="w-5 h-5 text-purple-600" />
-                <span>Study Resources</span>
+                <span>{t("dashboard.study_resources_title")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="p-3 bg-purple-50 rounded-lg">
-                  <h4 className="font-medium mb-1">Exam Prep Corner</h4>
-                  <p className="text-sm text-gray-600 mb-2">Practice tests for JEE, NEET, CUET</p>
-                  <Button variant="outline" size="sm">Coming Soon</Button>
+                  <h4 className="font-medium mb-1">{t("dashboard.exam_prep_title")}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{t("dashboard.exam_prep_desc")}</p>
+                  <Button variant="outline" size="sm">{t("dashboard.coming_soon")}</Button>
                 </div>
                 <div className="p-3 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium mb-1">Career Guidance Videos</h4>
-                  <p className="text-sm text-gray-600 mb-2">Expert advice from industry professionals</p>
-                  <Button variant="outline" size="sm">Coming Soon</Button>
+                  <h4 className="font-medium mb-1">{t("dashboard.videos_title")}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{t("dashboard.videos_desc")}</p>
+                  <Button variant="outline" size="sm">{t("dashboard.coming_soon")}</Button>
                 </div>
                 <div className="p-3 bg-green-50 rounded-lg">
-                  <h4 className="font-medium mb-1">Alumni Connect</h4>
-                  <p className="text-sm text-gray-600 mb-2">Chat with verified alumni</p>
-                  <Button variant="outline" size="sm">Coming Soon</Button>
+                  <h4 className="font-medium mb-1">{t("dashboard.alumni_title")}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{t("dashboard.alumni_desc")}</p>
+                  <Button variant="outline" size="sm">{t("dashboard.coming_soon")}</Button>
                 </div>
               </div>
             </CardContent>
@@ -324,26 +328,26 @@ export function Dashboard({ quizResults }: DashboardProps) {
       >
         <Card className="text-center">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-blue-600">142</div>
-            <div className="text-sm text-gray-600">J&K Colleges</div>
+            <div className="text-2xl font-bold text-blue-600">{t("dashboard.stats_college_count")}</div>
+            <div className="text-sm text-gray-600">{t("dashboard.stats_college_label")}</div>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-green-600">25+</div>
-            <div className="text-sm text-gray-600">Scholarships</div>
+            <div className="text-2xl font-bold text-green-600">{t("dashboard.stats_scholarship_count")}</div>
+            <div className="text-sm text-gray-600">{t("dashboard.stats_scholarship_label")}</div>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-orange-600">50+</div>
-            <div className="text-sm text-gray-600">Career Paths</div>
+            <div className="text-2xl font-bold text-orange-600">{t("dashboard.stats_career_count")}</div>
+            <div className="text-sm text-gray-600">{t("dashboard.stats_career_label")}</div>
           </CardContent>
         </Card>
         <Card className="text-center">
           <CardContent className="p-4">
-            <div className="text-2xl font-bold text-purple-600">24/7</div>
-            <div className="text-sm text-gray-600">AI Support</div>
+            <div className="text-2xl font-bold text-purple-600">{t("dashboard.stats_ai_count")}</div>
+            <div className="text-sm text-gray-600">{t("dashboard.stats_ai_label")}</div>
           </CardContent>
         </Card>
       </motion.div>

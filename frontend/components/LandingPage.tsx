@@ -77,6 +77,7 @@ const PromoBanner = () => {
 export function LandingPage() {
   const { t } = useLocalization(); // Get the t function here
 
+  // Define the arrays inside the component body
   const features = [
     {
       image: promoImage,
@@ -274,7 +275,7 @@ export function LandingPage() {
                   <div className="mb-3" style={{ color: primaryBlue }}>
                     {stat.icon}
                   </div>
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: accentGray }}>
+                  <div className="text-3xl md:text-4xl font-bold" style={{ color: accentGray }}>
                     {stat.number}
                   </div>
                   <div className="text-sm md:text-base" style={{ color: textGray }}>{stat.label}</div>

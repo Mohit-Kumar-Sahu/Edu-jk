@@ -5,6 +5,7 @@ import { initReactI18next } from 'react-i18next';
 import en from './locales/en.json';
 import ur from './locales/ur.json';
 import ks from './locales/ks.json';
+import hn from './locales/hn.json'; // Import the Hindi translation file
 
 const resources = {
   en: {
@@ -15,6 +16,9 @@ const resources = {
   },
   ks: {
     translation: ks,
+  },
+  hn: { // Add the Hindi resources
+    translation: hn,
   },
 };
 

@@ -27,7 +27,7 @@ export function ScholarshipChecker() {
   const [eligibilityChecked, setEligibilityChecked] = useState(false);
   const [appliedScholarships, setAppliedScholarships] = useState<string[]>([]);
 
-  // Use a localized data structure for scholarships
+  // Correctly define and localize the scholarships array on each render
   const scholarships = [
     {
       id: 'pmsss',
@@ -305,7 +305,7 @@ export function ScholarshipChecker() {
         <TabsContent value="eligible" className="space-y-4">
           <div className="grid gap-6">
             {eligibleScholarships.length > 0 ? (
-              eligibleScholarships.map((scholarship, index) => (
+              eligibleScholarships.map((scholarship) => (
                 <Card key={scholarship.id} className="border-green-200">
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
@@ -409,4 +409,4 @@ export function ScholarshipChecker() {
       </Tabs>
     </div>
   );
-}
+} 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Bell, 
@@ -9,103 +9,122 @@ import {
   BookOpen,
   AlertCircle,
   X,
-  Filter,
-  MarkAsRead
+  Filter
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
+import { useLocalization } from '../hooks/useLocalization';
+
+// Define the notification data structure to improve type safety and organization.
+interface Notification {
+    id: string;
+    title: string;
+    message: string;
+    type: 'exam' | 'scholarship' | 'application' | 'achievement' | 'reminder' | 'info';
+    priority: 'high' | 'urgent' | 'normal' | 'low';
+    timestamp: Date;
+    read: boolean;
+    actionUrl: string;
+}
 
 export function NotificationCenter() {
-  const { t } = useLocalization();
+  const { t, currentLanguage } = useLocalization();
   const [filter, setFilter] = useState('all');
-  const [notifications, setNotifications] = useState([
-    {
-      id: '1',
-      title: t('notif_cuet_title'),
-      message: t('notif_cuet_message'),
-      type: 'exam',
-      priority: 'high',
-      timestamp: new Date('2024-02-20T10:00:00'),
-      read: false,
-      actionUrl: 'https://cuet.samarth.ac.in'
-    },
-    {
-      id: '2',
-      title: t('notif_pmsss_title'),
-      message: t('notif_pmsss_message'),
-      type: 'scholarship',
-      priority: 'urgent',
-      timestamp: new Date('2024-02-19T14:30:00'),
-      read: false,
-      actionUrl: '#'
-    },
-    {
-      id: '3',
-      title: t('notif_gdc_title'),
-      message: t('notif_gdc_message'),
-      type: 'info',
-      priority: 'normal',
-      timestamp: new Date('2024-02-18T16:45:00'),
-      read: true,
-      actionUrl: '/colleges'
-    },
-    {
-      id: '4',
-      title: t('notif_app_status_title'),
-      message: t('notif_app_status_message'),
-      type: 'application',
-      priority: 'normal',
-      timestamp: new Date('2024-02-17T11:20:00'),
-      read: false,
-      actionUrl: '/applications'
-    },
-    {
-      id: '5',
-      title: t('notif_jee_title'),
-      message: t('notif_jee_message'),
-      type: 'exam',
-      priority: 'high',
-      timestamp: new Date('2024-02-16T09:15:00'),
-      read: true,
-      actionUrl: 'https://jeemain.nta.nic.in'
-    },
-    {
-      id: '6',
-      title: t('notif_quiz_complete_title'),
-      message: t('notif_quiz_complete_message'),
-      type: 'achievement',
-      priority: 'normal',
-      timestamp: new Date('2024-02-15T13:30:00'),
-      read: true,
-      actionUrl: '/quiz-results'
-    },
-    {
-      id: '7',
-      title: t('notif_nsp_title'),
-      message: t('notif_nsp_message'),
-      type: 'scholarship',
-      priority: 'normal',
-      timestamp: new Date('2024-02-14T12:00:00'),
-      read: true,
-      actionUrl: '/scholarships'
-    },
-    {
-      id: '8',
-      title: t('notif_profile_rem_title'),
-      message: t('notif_profile_rem_message'),
-      type: 'reminder',
-      priority: 'low',
-      timestamp: new Date('2024-02-13T08:45:00'),
-      read: true,
-      actionUrl: '/profile'
-    }
-  ]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  const getNotificationIcon = (type: string) => {
+  // Create a function to generate notifications based on the current language.
+  const createNotifications = (): Notification[] => [
+    {
+        id: '1',
+        title: t('notif_cuet_title'),
+        message: t('notif_cuet_message'),
+        type: 'exam',
+        priority: 'high',
+        timestamp: new Date('2024-02-20T10:00:00'),
+        read: false,
+        actionUrl: 'https://cuet.samarth.ac.in'
+    },
+    {
+        id: '2',
+        title: t('notif_pmsss_title'),
+        message: t('notif_pmsss_message'),
+        type: 'scholarship',
+        priority: 'urgent',
+        timestamp: new Date('2024-02-19T14:30:00'),
+        read: false,
+        actionUrl: '#'
+    },
+    {
+        id: '3',
+        title: t('notif_gdc_title'),
+        message: t('notif_gdc_message'),
+        type: 'info',
+        priority: 'normal',
+        timestamp: new Date('2024-02-18T16:45:00'),
+        read: true,
+        actionUrl: '/colleges'
+    },
+    {
+        id: '4',
+        title: t('notif_app_status_title'),
+        message: t('notif_app_status_message'),
+        type: 'application',
+        priority: 'normal',
+        timestamp: new Date('2024-02-17T11:20:00'),
+        read: false,
+        actionUrl: '/applications'
+    },
+    {
+        id: '5',
+        title: t('notif_jee_title'),
+        message: t('notif_jee_message'),
+        type: 'exam',
+        priority: 'high',
+        timestamp: new Date('2024-02-16T09:15:00'),
+        read: true,
+        actionUrl: 'https://jeemain.nta.nic.in'
+    },
+    {
+        id: '6',
+        title: t('notif_quiz_complete_title'),
+        message: t('notif_quiz_complete_message'),
+        type: 'achievement',
+        priority: 'normal',
+        timestamp: new Date('2024-02-15T13:30:00'),
+        read: true,
+        actionUrl: '/quiz-results'
+    },
+    {
+        id: '7',
+        title: t('notif_nsp_title'),
+        message: t('notif_nsp_message'),
+        type: 'scholarship',
+        priority: 'normal',
+        timestamp: new Date('2024-02-14T12:00:00'),
+        read: true,
+        actionUrl: '/scholarships'
+    },
+    {
+        id: '8',
+        title: t('notif_profile_rem_title'),
+        message: t('notif_profile_rem_message'),
+        type: 'reminder',
+        priority: 'low',
+        timestamp: new Date('2024-02-13T08:45:00'),
+        read: true,
+        actionUrl: '/profile'
+    }
+  ];
+
+  // Initialize and update notifications when the language changes.
+  // This is the correct way to handle localization for initial state.
+  useEffect(() => {
+    setNotifications(createNotifications());
+  }, [currentLanguage]);
+
+  const getNotificationIcon = (type: Notification['type']) => {
     switch (type) {
       case 'exam': return <BookOpen className="w-5 h-5 text-blue-600" />;
       case 'scholarship': return <Award className="w-5 h-5 text-green-600" />;
@@ -116,7 +135,7 @@ export function NotificationCenter() {
     }
   };
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority: Notification['priority']) => {
     switch (priority) {
       case 'urgent': return 'bg-red-100 text-red-800 border-red-200';
       case 'high': return 'bg-orange-100 text-orange-800 border-orange-200';

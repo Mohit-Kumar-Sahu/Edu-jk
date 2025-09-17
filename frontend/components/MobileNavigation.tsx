@@ -14,6 +14,8 @@ export function MobileNavigation() {
   const { t } = useLocalization();
   const location = useLocation();
 
+  // Move the navigationItems array inside the component.
+  // This ensures the translations update on every render.
   const navigationItems = [
     { name: t('nav_home'), href: '/dashboard', icon: Home },
     { name: t('nav_quiz'), href: '/quiz', icon: Target },

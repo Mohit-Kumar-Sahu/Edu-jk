@@ -20,6 +20,8 @@ export function CareerQuiz({ onComplete }: QuizProps) {
   const [answers, setAnswers] = useState<{[key: string]: number}>({});
   const [isCompleted, setIsCompleted] = useState(false);
 
+  // Define sections directly in the component so it re-renders
+  // with the new language whenever `t` changes.
   const sections = [
     {
       title: t('section_interest_title'),
@@ -173,33 +175,34 @@ export function CareerQuiz({ onComplete }: QuizProps) {
   };
 
   const getCareerRecommendations = (topInterests: any[]) => {
+    // A mapping from RIASEC codes to career recommendations
     const careerDatabase = {
-      'Realistic': [
+      R: [
         { title: t('career_civil_engineer_title'), description: t('career_civil_engineer_desc'), match: 95 },
         { title: t('career_mechanical_engineer_title'), description: t('career_mechanical_engineer_desc'), match: 90 },
         { title: t('career_agriculture_officer_title'), description: t('career_agriculture_officer_desc'), match: 85 }
       ],
-      'Investigative': [
+      I: [
         { title: t('career_software_developer_title'), description: t('career_software_developer_desc'), match: 95 },
         { title: t('career_research_scientist_title'), description: t('career_research_scientist_desc'), match: 90 },
         { title: t('career_data_analyst_title'), description: t('career_data_analyst_desc'), match: 85 }
       ],
-      'Artistic': [
+      A: [
         { title: t('career_graphic_designer_title'), description: t('career_graphic_designer_desc'), match: 95 },
         { title: t('career_content_writer_title'), description: t('career_content_writer_desc'), match: 90 },
         { title: t('career_ui_ux_designer_title'), description: t('career_ui_ux_designer_desc'), match: 85 }
       ],
-      'Social': [
+      S: [
         { title: t('career_teacher_title'), description: t('career_teacher_desc'), match: 95 },
         { title: t('career_social_worker_title'), description: t('career_social_worker_desc'), match: 90 },
         { title: t('career_counselor_title'), description: t('career_counselor_desc'), match: 85 }
       ],
-      'Enterprising': [
+      E: [
         { title: t('career_business_manager_title'), description: t('career_business_manager_desc'), match: 95 },
         { title: t('career_marketing_executive_title'), description: t('career_marketing_executive_desc'), match: 90 },
-        { title: 'career_entrepreneur_title', description: t('career_entrepreneur_desc'), match: 85 }
+        { title: t('career_entrepreneur_title'), description: t('career_entrepreneur_desc'), match: 85 }
       ],
-      'Conventional': [
+      C: [
         { title: t('career_accountant_title'), description: t('career_accountant_desc'), match: 95 },
         { title: t('career_bank_officer_title'), description: t('career_bank_officer_desc'), match: 90 },
         { title: t('career_admin_officer_title'), description: t('career_admin_officer_desc'), match: 85 }
@@ -207,26 +210,12 @@ export function CareerQuiz({ onComplete }: QuizProps) {
     };
 
     const recommendations: any[] = [];
+    // Now we can directly use the `code` from `topInterests` to look up the recommendations.
     topInterests.forEach(interest => {
-      // The interest.name is already localized, so we need to map it back to the original key for the database lookup.
-      // A more robust solution would be to use the 'code' (R, I, A, etc.) for the lookup.
-      const englishKey = Object.keys(riasec_keys_reverse_mapping).find(key => t(key) === interest.name);
-      if (englishKey) {
-          recommendations.push(...careerDatabase[englishKey as keyof typeof careerDatabase]);
-      }
+      recommendations.push(...careerDatabase[interest.code as keyof typeof careerDatabase]);
     });
 
     return recommendations.slice(0, 6);
-  };
-  
-  // This is a new object to map back from the localized name to the original code for the database lookup.
-  const riasec_keys_reverse_mapping = {
-      'Realistic': t('riasec_realistic'),
-      'Investigative': t('riasec_investigative'),
-      'Artistic': t('riasec_artistic'),
-      'Social': t('riasec_social'),
-      'Enterprising': t('riasec_enterprising'),
-      'Conventional': t('riasec_conventional')
   };
 
   const completeQuiz = () => {

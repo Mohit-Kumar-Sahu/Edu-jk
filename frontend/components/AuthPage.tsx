@@ -9,10 +9,10 @@ import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
+import { useLocalization } from '../hooks/useLocalization';
 
 export function AuthPage() {
-  const { t } = useLocalization(); // Use the t function
+  const { t } = useLocalization();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp, forgotPassword } = useAuth();
@@ -40,10 +40,14 @@ export function AuthPage() {
     schoolCollege: ''
   });
 
+  // The districts array is now defined here, ensuring it re-renders
+  // with the new language.
   const districts = [
-    'Srinagar', 'Jammu', 'Baramulla', 'Budgam', 'Anantnag', 'Kupwara', 'Kulgam', 'Shopian',
-    'Pulwama', 'Ganderbal', 'Bandipora', 'Kathua', 'Udhampur', 'Doda', 'Ramban', 'Kishtwar',
-    'Poonch', 'Rajouri', 'Reasi', 'Samba'
+    t('district_srinagar'), t('district_jammu'), t('district_baramulla'), t('district_budgam'),
+    t('district_anantnag'), t('district_kupwara'), t('district_kulgam'), t('district_shopian'),
+    t('district_pulwama'), t('district_ganderbal'), t('district_bandipora'), t('district_kathua'),
+    t('district_udhampur'), t('district_doda'), t('district_ramban'), t('district_kishtwar'),
+    t('district_poonch'), t('district_rajouri'), t('district_reasi'), t('district_samba')
   ];
 
   const handleLogin = async (e: React.FormEvent) => {

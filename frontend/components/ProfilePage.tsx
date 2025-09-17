@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Mail, Phone, MapPin, BookOpen, Save, Edit2, Camera } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
@@ -13,31 +13,59 @@ import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 
 export function ProfilePage() {
-  const { t } = useLocalization();
+  const { t, currentLanguage } = useLocalization();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Use a single state for profile data
   const [profileData, setProfileData] = useState({
-    name: user?.user_metadata?.name || '',
-    email: user?.email || '',
-    phone: user?.user_metadata?.phone || '',
-    district: user?.user_metadata?.district || '',
-    currentClass: user?.user_metadata?.currentClass || '',
-    stream: user?.user_metadata?.stream || '',
-    schoolCollege: user?.user_metadata?.schoolCollege || '',
-    dateOfBirth: user?.user_metadata?.dateOfBirth || '',
-    gender: user?.user_metadata?.gender || '',
-    category: user?.user_metadata?.category || '',
-    fatherName: user?.user_metadata?.fatherName || '',
-    motherName: user?.user_metadata?.motherName || '',
-    familyIncome: user?.user_metadata?.familyIncome || '',
-    address: user?.user_metadata?.address || '',
-    pincode: user?.user_metadata?.pincode || '',
-    careerInterests: user?.user_metadata?.careerInterests || [],
-    achievements: user?.user_metadata?.achievements || '',
-    skills: user?.user_metadata?.skills || []
+    name: '',
+    email: '',
+    phone: '',
+    district: '',
+    currentClass: '',
+    stream: '',
+    schoolCollege: '',
+    dateOfBirth: '',
+    gender: '',
+    category: '',
+    fatherName: '',
+    motherName: '',
+    familyIncome: '',
+    address: '',
+    pincode: '',
+    careerInterests: [],
+    achievements: '',
+    skills: []
   });
+
+  // Use a useEffect to initialize profile data from the user object.
+  // This ensures the data is correctly set after the user object is available.
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        name: user?.user_metadata?.name || '',
+        email: user?.email || '',
+        phone: user?.user_metadata?.phone || '',
+        district: user?.user_metadata?.district || '',
+        currentClass: user?.user_metadata?.currentClass || '',
+        stream: user?.user_metadata?.stream || '',
+        schoolCollege: user?.user_metadata?.schoolCollege || '',
+        dateOfBirth: user?.user_metadata?.dateOfBirth || '',
+        gender: user?.user_metadata?.gender || '',
+        category: user?.user_metadata?.category || '',
+        fatherName: user?.user_metadata?.fatherName || '',
+        motherName: user?.user_metadata?.motherName || '',
+        familyIncome: user?.user_metadata?.familyIncome || '',
+        address: user?.user_metadata?.address || '',
+        pincode: user?.user_metadata?.pincode || '',
+        careerInterests: user?.user_metadata?.careerInterests || [],
+        achievements: user?.user_metadata?.achievements || '',
+        skills: user?.user_metadata?.skills || []
+      });
+    }
+  }, [user]);
 
   const districts = [
     'Srinagar', 'Jammu', 'Baramulla', 'Budgam', 'Anantnag', 'Kupwara', 'Kulgam', 'Shopian',
@@ -52,14 +80,19 @@ export function ProfilePage() {
   const familyIncomes = ['below-1-lakh', '1-3-lakh', '3-5-lakh', '5-8-lakh', 'above-8-lakh'];
 
   const calculateProfileCompletion = () => {
-    const fields = [
-      profileData.name, profileData.email, profileData.phone, profileData.district,
-      profileData.currentClass, profileData.stream, profileData.schoolCollege,
-      profileData.dateOfBirth, profileData.gender, profileData.fatherName,
-      profileData.motherName, profileData.address, profileData.pincode
+    // Correct way to calculate completion by using keys from the state object.
+    const requiredFields = [
+      'name', 'email', 'phone', 'district', 'currentClass', 'stream',
+      'schoolCollege', 'dateOfBirth', 'gender', 'fatherName', 'motherName',
+      'address', 'pincode'
     ];
-    const completed = fields.filter(field => field && field.trim() !== '').length;
-    return Math.round((completed / fields.length) * 100);
+    
+    const completed = requiredFields.filter(key => {
+      const value = profileData[key as keyof typeof profileData];
+      return value && (typeof value === 'string' ? value.trim() !== '' : true);
+    }).length;
+    
+    return Math.round((completed / requiredFields.length) * 100);
   };
 
   const handleSave = async () => {

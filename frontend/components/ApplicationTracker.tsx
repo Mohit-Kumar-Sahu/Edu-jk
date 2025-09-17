@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'motion/react';
-import { 
-  FileText, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  Eye, 
+import {
+  FileText,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Eye,
   Download,
   Calendar,
   MapPin,
@@ -22,8 +22,9 @@ import { useLocalization } from '../hooks/useLocalization';
 export function ApplicationTracker() {
   const { t } = useLocalization();
 
-  // The status strings themselves should also be a translation key for consistency
-  const [applications] = useState([
+  // Define the applications array directly in the component.
+  // This will rebuild the array and re-call `t()` on every render.
+  const applications = [
     {
       id: '1',
       collegeName: 'Government Degree College Srinagar',
@@ -64,7 +65,7 @@ export function ApplicationTracker() {
       deadline: '2024-03-20',
       progress: 40
     }
-  ]);
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -105,7 +106,7 @@ export function ApplicationTracker() {
         <p className="text-lg text-gray-600 mb-6">
           {t('tracker_subtitle')}
         </p>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-blue-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">{totalApplications}</div>
@@ -155,7 +156,7 @@ export function ApplicationTracker() {
                         <p className="text-gray-600 mb-2">{application.course}</p>
                         <p className="text-sm text-gray-500">{t('application_id')}: {application.applicationId}</p>
                       </div>
-                      
+
                       <div className="text-right">
                         <Badge className={getStatusColor(application.status)}>
                           {getStatusIcon(application.status)}
@@ -167,7 +168,7 @@ export function ApplicationTracker() {
                       </div>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="space-y-4">
                     {/* Progress Bar */}
                     <div>
@@ -204,7 +205,7 @@ export function ApplicationTracker() {
                           </Badge>
                         ))}
                       </div>
-                      
+
                       {application.missingDocs && application.missingDocs.length > 0 && (
                         <div>
                           <h5 className="text-sm font-medium text-orange-600 mb-1">{t('missing_docs')}:</h5>
@@ -232,13 +233,13 @@ export function ApplicationTracker() {
                           {t('download_receipt_button')}
                         </Button>
                       </div>
-                      
+
                       {application.status === t('status_docs_required') && (
                         <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
                           {t('upload_docs_button')}
                         </Button>
                       )}
-                      
+
                       {application.status === t('status_accepted') && (
                         <Button size="sm" className="bg-green-600 hover:bg-green-700">
                           {t('confirm_admission_button')}
@@ -341,7 +342,7 @@ export function ApplicationTracker() {
                         </div>
                         <div className="text-right">
                           <div className={`text-sm font-medium ${
-                            daysLeft <= 7 ? 'text-red-600' : 
+                            daysLeft <= 7 ? 'text-red-600' :
                             daysLeft <= 14 ? 'text-orange-600' : 'text-green-600'
                           }`}>
                             {daysLeft > 0 ? t('days_left', { count: daysLeft }) : t('deadline_passed')}
