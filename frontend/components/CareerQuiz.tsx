@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Target, Brain, Lightbulb, Users, Briefcase, Cog } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { Badge } from './ui/badge';
+import { useLocalization } from '../hooks/useLocalization';
 
 interface QuizProps {
   onComplete: (results: any) => void;
 }
 
 export function CareerQuiz({ onComplete }: QuizProps) {
+  const { t } = useLocalization();
   const navigate = useNavigate();
   const [currentSection, setCurrentSection] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -20,62 +22,62 @@ export function CareerQuiz({ onComplete }: QuizProps) {
 
   const sections = [
     {
-      title: "Interest Assessment",
-      subtitle: "RIASEC Model",
+      title: t('section_interest_title'),
+      subtitle: t('section_interest_subtitle'),
       icon: <Lightbulb className="w-6 h-6" />,
       color: "bg-blue-500",
       questions: [
         // Realistic
-        { id: 'R1', text: 'I enjoy working with tools and machines', category: 'R' },
-        { id: 'R2', text: 'I like outdoor activities and manual work', category: 'R' },
-        { id: 'R3', text: 'I prefer practical, hands-on problem solving', category: 'R' },
+        { id: 'R1', text: t('q_r1'), category: 'R' },
+        { id: 'R2', text: t('q_r2'), category: 'R' },
+        { id: 'R3', text: t('q_r3'), category: 'R' },
         
         // Investigative
-        { id: 'I1', text: 'I enjoy analyzing data and conducting research', category: 'I' },
-        { id: 'I2', text: 'I like solving complex mathematical problems', category: 'I' },
-        { id: 'I3', text: 'I am curious about how things work scientifically', category: 'I' },
+        { id: 'I1', text: t('q_i1'), category: 'I' },
+        { id: 'I2', text: t('q_i2'), category: 'I' },
+        { id: 'I3', text: t('q_i3'), category: 'I' },
         
         // Artistic
-        { id: 'A1', text: 'I enjoy creative writing and artistic expression', category: 'A' },
-        { id: 'A2', text: 'I like designing and creating visual content', category: 'A' },
-        { id: 'A3', text: 'I prefer unstructured, creative environments', category: 'A' },
+        { id: 'A1', text: t('q_a1'), category: 'A' },
+        { id: 'A2', text: t('q_a2'), category: 'A' },
+        { id: 'A3', text: t('q_a3'), category: 'A' },
         
         // Social
-        { id: 'S1', text: 'I enjoy helping and teaching others', category: 'S' },
-        { id: 'S2', text: 'I like working in team environments', category: 'S' },
-        { id: 'S3', text: 'I am interested in counseling and social work', category: 'S' },
+        { id: 'S1', text: t('q_s1'), category: 'S' },
+        { id: 'S2', text: t('q_s2'), category: 'S' },
+        { id: 'S3', text: t('q_s3'), category: 'S' },
         
         // Enterprising
-        { id: 'E1', text: 'I enjoy leading and managing projects', category: 'E' },
-        { id: 'E2', text: 'I like selling ideas and persuading others', category: 'E' },
-        { id: 'E3', text: 'I am comfortable taking calculated risks', category: 'E' },
+        { id: 'E1', text: t('q_e1'), category: 'E' },
+        { id: 'E2', text: t('q_e2'), category: 'E' },
+        { id: 'E3', text: t('q_e3'), category: 'E' },
         
         // Conventional
-        { id: 'C1', text: 'I prefer organized, structured work environments', category: 'C' },
-        { id: 'C2', text: 'I enjoy working with data and detailed information', category: 'C' },
-        { id: 'C3', text: 'I like following established procedures', category: 'C' }
+        { id: 'C1', text: t('q_c1'), category: 'C' },
+        { id: 'C2', text: t('q_c2'), category: 'C' },
+        { id: 'C3', text: t('q_c3'), category: 'C' }
       ]
     },
     {
-      title: "Aptitude Assessment",
-      subtitle: "Core Skills",
+      title: t('section_aptitude_title'),
+      subtitle: t('section_aptitude_subtitle'),
       icon: <Brain className="w-6 h-6" />,
       color: "bg-green-500",
       questions: [
         // Numerical
-        { id: 'N1', text: 'If a book costs ₹120 after a 20% discount, what was the original price?', category: 'Numerical', options: ['₹144', '₹150', '₹160', '₹180'], correct: 1 },
-        { id: 'N2', text: 'What is 15% of 240?', category: 'Numerical', options: ['30', '32', '36', '40'], correct: 2 },
-        { id: 'N3', text: 'A train travels 300 km in 4 hours. What is its average speed?', category: 'Numerical', options: ['70 km/h', '75 km/h', '80 km/h', '85 km/h'], correct: 1 },
+        { id: 'N1', text: t('q_n1'), category: t('cat_numerical'), options: [t('q_n1_opt_1'), t('q_n1_opt_2'), t('q_n1_opt_3'), t('q_n1_opt_4')], correct: 1 },
+        { id: 'N2', text: t('q_n2'), category: t('cat_numerical'), options: [t('q_n2_opt_1'), t('q_n2_opt_2'), t('q_n2_opt_3'), t('q_n2_opt_4')], correct: 2 },
+        { id: 'N3', text: t('q_n3'), category: t('cat_numerical'), options: [t('q_n3_opt_1'), t('q_n3_opt_2'), t('q_n3_opt_3'), t('q_n3_opt_4')], correct: 1 },
         
         // Verbal
-        { id: 'V1', text: 'Choose the word most similar to "Abundant":', category: 'Verbal', options: ['Scarce', 'Plentiful', 'Limited', 'Rare'], correct: 1 },
-        { id: 'V2', text: 'Complete: "As light is to darkness, hope is to _____"', category: 'Verbal', options: ['Despair', 'Brightness', 'Future', 'Dreams'], correct: 0 },
-        { id: 'V3', text: 'Which word does not belong: Dog, Cat, Bird, Chair', category: 'Verbal', options: ['Dog', 'Cat', 'Bird', 'Chair'], correct: 3 },
+        { id: 'V1', text: t('q_v1'), category: t('cat_verbal'), options: [t('q_v1_opt_1'), t('q_v1_opt_2'), t('q_v1_opt_3'), t('q_v1_opt_4')], correct: 1 },
+        { id: 'V2', text: t('q_v2'), category: t('cat_verbal'), options: [t('q_v2_opt_1'), t('q_v2_opt_2'), t('q_v2_opt_3'), t('q_v2_opt_4')], correct: 0 },
+        { id: 'V3', text: t('q_v3'), category: t('cat_verbal'), options: [t('q_v3_opt_1'), t('q_v3_opt_2'), t('q_v3_opt_3'), t('q_v3_opt_4')], correct: 3 },
         
         // Logical
-        { id: 'L1', text: 'What comes next in the sequence: 2, 6, 18, 54, ?', category: 'Logical', options: ['108', '162', '216', '270'], correct: 1 },
-        { id: 'L2', text: 'If all roses are flowers, and some flowers are red, can we conclude that some roses are red?', category: 'Logical', options: ['Yes', 'No', 'Cannot determine', 'Maybe'], correct: 2 },
-        { id: 'L3', text: 'A is taller than B, B is taller than C. Who is shortest?', category: 'Logical', options: ['A', 'B', 'C', 'Cannot determine'], correct: 2 }
+        { id: 'L1', text: t('q_l1'), category: t('cat_logical'), options: [t('q_l1_opt_1'), t('q_l1_opt_2'), t('q_l1_opt_3'), t('q_l1_opt_4')], correct: 1 },
+        { id: 'L2', text: t('q_l2'), category: t('cat_logical'), options: [t('q_l2_opt_1'), t('q_l2_opt_2'), t('q_l2_opt_3'), t('q_l2_opt_4')], correct: 2 },
+        { id: 'L3', text: t('q_l3'), category: t('cat_logical'), options: [t('q_l3_opt_1'), t('q_l3_opt_2'), t('q_l3_opt_3'), t('q_l3_opt_4')], correct: 2 }
       ]
     }
   ];
@@ -116,12 +118,12 @@ export function CareerQuiz({ onComplete }: QuizProps) {
     // Calculate RIASEC scores
     const riasecScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
     const categoryNames = {
-      R: 'Realistic',
-      I: 'Investigative', 
-      A: 'Artistic',
-      S: 'Social',
-      E: 'Enterprising',
-      C: 'Conventional'
+      R: t('riasec_realistic'),
+      I: t('riasec_investigative'),
+      A: t('riasec_artistic'),
+      S: t('riasec_social'),
+      E: t('riasec_enterprising'),
+      C: t('riasec_conventional')
     };
 
     // Interest scores (RIASEC)
@@ -173,45 +175,58 @@ export function CareerQuiz({ onComplete }: QuizProps) {
   const getCareerRecommendations = (topInterests: any[]) => {
     const careerDatabase = {
       'Realistic': [
-        { title: 'Civil Engineer', description: 'Design and build infrastructure projects', match: 95 },
-        { title: 'Mechanical Engineer', description: 'Design machines and mechanical systems', match: 90 },
-        { title: 'Agriculture Officer', description: 'Manage agricultural development programs', match: 85 }
+        { title: t('career_civil_engineer_title'), description: t('career_civil_engineer_desc'), match: 95 },
+        { title: t('career_mechanical_engineer_title'), description: t('career_mechanical_engineer_desc'), match: 90 },
+        { title: t('career_agriculture_officer_title'), description: t('career_agriculture_officer_desc'), match: 85 }
       ],
       'Investigative': [
-        { title: 'Software Developer', description: 'Create applications and software solutions', match: 95 },
-        { title: 'Research Scientist', description: 'Conduct scientific research and experiments', match: 90 },
-        { title: 'Data Analyst', description: 'Analyze data to find insights and trends', match: 85 }
+        { title: t('career_software_developer_title'), description: t('career_software_developer_desc'), match: 95 },
+        { title: t('career_research_scientist_title'), description: t('career_research_scientist_desc'), match: 90 },
+        { title: t('career_data_analyst_title'), description: t('career_data_analyst_desc'), match: 85 }
       ],
       'Artistic': [
-        { title: 'Graphic Designer', description: 'Create visual content and designs', match: 95 },
-        { title: 'Content Writer', description: 'Create engaging written content', match: 90 },
-        { title: 'UI/UX Designer', description: 'Design user interfaces and experiences', match: 85 }
+        { title: t('career_graphic_designer_title'), description: t('career_graphic_designer_desc'), match: 95 },
+        { title: t('career_content_writer_title'), description: t('career_content_writer_desc'), match: 90 },
+        { title: t('career_ui_ux_designer_title'), description: t('career_ui_ux_designer_desc'), match: 85 }
       ],
       'Social': [
-        { title: 'Teacher', description: 'Educate and guide students', match: 95 },
-        { title: 'Social Worker', description: 'Help individuals and communities', match: 90 },
-        { title: 'Counselor', description: 'Provide guidance and mental health support', match: 85 }
+        { title: t('career_teacher_title'), description: t('career_teacher_desc'), match: 95 },
+        { title: t('career_social_worker_title'), description: t('career_social_worker_desc'), match: 90 },
+        { title: t('career_counselor_title'), description: t('career_counselor_desc'), match: 85 }
       ],
       'Enterprising': [
-        { title: 'Business Manager', description: 'Lead and manage business operations', match: 95 },
-        { title: 'Marketing Executive', description: 'Promote products and services', match: 90 },
-        { title: 'Entrepreneur', description: 'Start and run your own business', match: 85 }
+        { title: t('career_business_manager_title'), description: t('career_business_manager_desc'), match: 95 },
+        { title: t('career_marketing_executive_title'), description: t('career_marketing_executive_desc'), match: 90 },
+        { title: 'career_entrepreneur_title', description: t('career_entrepreneur_desc'), match: 85 }
       ],
       'Conventional': [
-        { title: 'Accountant', description: 'Manage financial records and transactions', match: 95 },
-        { title: 'Bank Officer', description: 'Handle banking operations and services', match: 90 },
-        { title: 'Administrative Officer', description: 'Manage office operations and procedures', match: 85 }
+        { title: t('career_accountant_title'), description: t('career_accountant_desc'), match: 95 },
+        { title: t('career_bank_officer_title'), description: t('career_bank_officer_desc'), match: 90 },
+        { title: t('career_admin_officer_title'), description: t('career_admin_officer_desc'), match: 85 }
       ]
     };
 
     const recommendations: any[] = [];
     topInterests.forEach(interest => {
-      if (careerDatabase[interest.name as keyof typeof careerDatabase]) {
-        recommendations.push(...careerDatabase[interest.name as keyof typeof careerDatabase]);
+      // The interest.name is already localized, so we need to map it back to the original key for the database lookup.
+      // A more robust solution would be to use the 'code' (R, I, A, etc.) for the lookup.
+      const englishKey = Object.keys(riasec_keys_reverse_mapping).find(key => t(key) === interest.name);
+      if (englishKey) {
+          recommendations.push(...careerDatabase[englishKey as keyof typeof careerDatabase]);
       }
     });
 
     return recommendations.slice(0, 6);
+  };
+  
+  // This is a new object to map back from the localized name to the original code for the database lookup.
+  const riasec_keys_reverse_mapping = {
+      'Realistic': t('riasec_realistic'),
+      'Investigative': t('riasec_investigative'),
+      'Artistic': t('riasec_artistic'),
+      'Social': t('riasec_social'),
+      'Enterprising': t('riasec_enterprising'),
+      'Conventional': t('riasec_conventional')
   };
 
   const completeQuiz = () => {
@@ -219,7 +234,6 @@ export function CareerQuiz({ onComplete }: QuizProps) {
     setIsCompleted(true);
     onComplete(results);
     
-    // Confetti effect
     setTimeout(() => {
       navigate('/quiz-results');
     }, 2000);
@@ -239,9 +253,9 @@ export function CareerQuiz({ onComplete }: QuizProps) {
           <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Target className="w-12 h-12 text-white" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Quiz Completed! 🎉</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('quiz_completed_title')}</h2>
           <p className="text-lg text-gray-600 mb-6">
-            Great job! We're analyzing your responses to create personalized career recommendations.
+            {t('quiz_completed_message')}
           </p>
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         </motion.div>
@@ -261,11 +275,11 @@ export function CareerQuiz({ onComplete }: QuizProps) {
               className="flex items-center space-x-2"
             >
               <ChevronLeft className="w-4 h-4" />
-              <span>Back to Dashboard</span>
+              <span>{t('back_to_dashboard')}</span>
             </Button>
             
             <Badge variant="secondary">
-              {currentQuestionIndex + 1} of {totalQuestions}
+              {t('quiz_progress', { current: currentQuestionIndex + 1, total: totalQuestions })}
             </Badge>
           </div>
 
@@ -304,15 +318,15 @@ export function CareerQuiz({ onComplete }: QuizProps) {
                 )}
               </CardHeader>
               <CardContent>
-                {currentSectionData.title === "Interest Assessment" ? (
+                {currentSectionData.title === t('section_interest_title') ? (
                   // Likert scale for interest questions
                   <div className="space-y-3">
                     <div className="grid grid-cols-5 gap-2 text-center text-sm">
-                      <span>Strongly Disagree</span>
-                      <span>Disagree</span>
-                      <span>Neutral</span>
-                      <span>Agree</span>
-                      <span>Strongly Agree</span>
+                      <span>{t('likert_disagree_strong')}</span>
+                      <span>{t('likert_disagree')}</span>
+                      <span>{t('likert_neutral')}</span>
+                      <span>{t('likert_agree')}</span>
+                      <span>{t('likert_agree_strong')}</span>
                     </div>
                     <div className="grid grid-cols-5 gap-2">
                       {[1, 2, 3, 4, 5].map((value) => (
@@ -369,7 +383,7 @@ export function CareerQuiz({ onComplete }: QuizProps) {
             className="flex items-center space-x-2"
           >
             <ChevronLeft className="w-4 h-4" />
-            <span>Previous</span>
+            <span>{t('previous_button')}</span>
           </Button>
 
           <Button
@@ -379,8 +393,8 @@ export function CareerQuiz({ onComplete }: QuizProps) {
           >
             <span>
               {currentSection === sections.length - 1 && currentQuestion === currentSectionData.questions.length - 1
-                ? 'Complete Quiz'
-                : 'Next'}
+                ? t('complete_quiz_button')
+                : t('next_button')}
             </span>
             <ChevronRight className="w-4 h-4" />
           </Button>

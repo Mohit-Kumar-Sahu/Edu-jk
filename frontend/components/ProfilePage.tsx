@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { User, Mail, Phone, MapPin, BookOpen, Save, Edit2, Camera } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useLocalization } from '../hooks/useLocalization';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -12,6 +13,7 @@ import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 
 export function ProfilePage() {
+  const { t } = useLocalization();
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -42,6 +44,12 @@ export function ProfilePage() {
     'Pulwama', 'Ganderbal', 'Bandipora', 'Kathua', 'Udhampur', 'Doda', 'Ramban', 'Kishtwar',
     'Poonch', 'Rajouri', 'Reasi', 'Samba'
   ];
+
+  const categories = ['general', 'obc', 'sc', 'st', 'ews'];
+  const classes = ['10th', '11th', '12th', 'Graduate', 'Post Graduate'];
+  const streams = ['Science', 'Commerce', 'Arts', 'Vocational'];
+  const genders = ['male', 'female', 'other'];
+  const familyIncomes = ['below-1-lakh', '1-3-lakh', '3-5-lakh', '5-8-lakh', 'above-8-lakh'];
 
   const calculateProfileCompletion = () => {
     const fields = [
@@ -77,8 +85,8 @@ export function ProfilePage() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
-        <p className="text-lg text-gray-600">Manage your personal information and preferences</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('profile_title')}</h1>
+        <p className="text-lg text-gray-600">{t('profile_subtitle')}</p>
       </motion.div>
 
       {/* Profile Completion */}
@@ -90,7 +98,7 @@ export function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              Profile Completion
+              {t('profile_completion_title')}
               <Badge variant={profileCompletion === 100 ? "default" : "secondary"}>
                 {profileCompletion}%
               </Badge>
@@ -100,8 +108,8 @@ export function ProfilePage() {
             <Progress value={profileCompletion} className="w-full mb-2" />
             <p className="text-sm text-gray-600">
               {profileCompletion === 100 
-                ? "Your profile is complete! You'll get the most accurate recommendations."
-                : "Complete your profile to get personalized career and scholarship recommendations."
+                ? t('profile_completion_message_complete')
+                : t('profile_completion_message_incomplete')
               }
             </p>
           </CardContent>
@@ -118,7 +126,7 @@ export function ProfilePage() {
         >
           <Card>
             <CardHeader>
-              <CardTitle>Profile Picture</CardTitle>
+              <CardTitle>{t('profile_pic_title')}</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <div className="relative mb-4">
@@ -132,32 +140,34 @@ export function ProfilePage() {
               <h3 className="text-xl font-semibold text-gray-900">{profileData.name || 'Student'}</h3>
               <p className="text-gray-600">{profileData.email}</p>
               <p className="text-sm text-gray-500 mt-1">
-                {profileData.currentClass} {profileData.stream && `- ${profileData.stream}`}
+                {profileData.currentClass && t(`class_${profileData.currentClass.toLowerCase().replace(' ', '_')}`)} {profileData.stream && `- ${t(`stream_${profileData.stream.toLowerCase()}`)}`}
               </p>
-              <p className="text-sm text-gray-500">{profileData.district}, Jammu & Kashmir</p>
+              <p className="text-sm text-gray-500">
+                {profileData.district && t(`district_${profileData.district.toLowerCase()}`)}, {t('jammu_kashmir')}
+              </p>
             </CardContent>
           </Card>
 
           {/* Quick Stats */}
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Quick Stats</CardTitle>
+              <CardTitle>{t('quick_stats_title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-600">Quiz Taken</span>
-                <Badge variant="secondary">Yes</Badge>
+                <span className="text-gray-600">{t('stat_quiz_taken')}</span>
+                <Badge variant="secondary">{t('stat_yes')}</Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Colleges Saved</span>
+                <span className="text-gray-600">{t('stat_colleges_saved')}</span>
                 <Badge variant="secondary">3</Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Applications</span>
+                <span className="text-gray-600">{t('stat_applications')}</span>
                 <Badge variant="secondary">1</Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Profile Views</span>
+                <span className="text-gray-600">{t('stat_profile_views')}</span>
                 <Badge variant="secondary">12</Badge>
               </div>
             </CardContent>
@@ -174,23 +184,23 @@ export function ProfilePage() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Personal Information</CardTitle>
+                <CardTitle>{t('personal_info_title')}</CardTitle>
                 <Button
                   variant={isEditing ? "outline" : "default"}
                   onClick={() => setIsEditing(!isEditing)}
                 >
                   <Edit2 className="w-4 h-4 mr-2" />
-                  {isEditing ? 'Cancel' : 'Edit Profile'}
+                  {isEditing ? t('button_cancel') : t('button_edit_profile')}
                 </Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Basic Information */}
               <div>
-                <h4 className="text-lg font-semibold mb-4">Basic Information</h4>
+                <h4 className="text-lg font-semibold mb-4">{t('basic_info_title')}</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name *</Label>
+                    <Label htmlFor="name">{t('label_full_name')}</Label>
                     <Input
                       id="name"
                       value={profileData.name}
@@ -199,7 +209,7 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email">{t('label_email')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -209,7 +219,7 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Label htmlFor="phone">{t('label_phone')}</Label>
                     <Input
                       id="phone"
                       value={profileData.phone}
@@ -218,7 +228,7 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="dob">Date of Birth</Label>
+                    <Label htmlFor="dob">{t('label_dob')}</Label>
                     <Input
                       id="dob"
                       type="date"
@@ -228,30 +238,28 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="gender">Gender</Label>
+                    <Label htmlFor="gender">{t('label_gender')}</Label>
                     <Select value={profileData.gender} onValueChange={(value) => setProfileData({...profileData, gender: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select gender" />
+                        <SelectValue placeholder={t('placeholder_select_gender')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        {genders.map(gender => (
+                          <SelectItem key={gender} value={gender}>{t(`gender_${gender}`)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="category">Category</Label>
+                    <Label htmlFor="category">{t('label_category')}</Label>
                     <Select value={profileData.category} onValueChange={(value) => setProfileData({...profileData, category: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={t('placeholder_select_category')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="general">General</SelectItem>
-                        <SelectItem value="obc">OBC</SelectItem>
-                        <SelectItem value="sc">SC</SelectItem>
-                        <SelectItem value="st">ST</SelectItem>
-                        <SelectItem value="ews">EWS</SelectItem>
+                        {categories.map(category => (
+                          <SelectItem key={category} value={category}>{t(`category_${category}`)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -260,39 +268,36 @@ export function ProfilePage() {
 
               {/* Educational Information */}
               <div>
-                <h4 className="text-lg font-semibold mb-4">Educational Information</h4>
+                <h4 className="text-lg font-semibold mb-4">{t('educational_info_title')}</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="currentClass">Current Class/Level *</Label>
+                    <Label htmlFor="currentClass">{t('label_current_class')}</Label>
                     <Select value={profileData.currentClass} onValueChange={(value) => setProfileData({...profileData, currentClass: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select class" />
+                        <SelectValue placeholder={t('placeholder_select_class')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="10th">10th</SelectItem>
-                        <SelectItem value="11th">11th</SelectItem>
-                        <SelectItem value="12th">12th</SelectItem>
-                        <SelectItem value="Graduate">Graduate</SelectItem>
-                        <SelectItem value="Post Graduate">Post Graduate</SelectItem>
+                        {classes.map(cls => (
+                          <SelectItem key={cls} value={cls}>{t(`class_${cls.toLowerCase().replace(' ', '_')}`)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="stream">Stream *</Label>
+                    <Label htmlFor="stream">{t('label_stream')}</Label>
                     <Select value={profileData.stream} onValueChange={(value) => setProfileData({...profileData, stream: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select stream" />
+                        <SelectValue placeholder={t('placeholder_select_stream')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Science">Science</SelectItem>
-                        <SelectItem value="Commerce">Commerce</SelectItem>
-                        <SelectItem value="Arts">Arts</SelectItem>
-                        <SelectItem value="Vocational">Vocational</SelectItem>
+                        {streams.map(stream => (
+                          <SelectItem key={stream} value={stream}>{t(`stream_${stream.toLowerCase()}`)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="md:col-span-2">
-                    <Label htmlFor="schoolCollege">School/College Name *</Label>
+                    <Label htmlFor="schoolCollege">{t('label_school_college')}</Label>
                     <Input
                       id="schoolCollege"
                       value={profileData.schoolCollege}
@@ -305,25 +310,25 @@ export function ProfilePage() {
 
               {/* Address Information */}
               <div>
-                <h4 className="text-lg font-semibold mb-4">Address Information</h4>
+                <h4 className="text-lg font-semibold mb-4">{t('address_info_title')}</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="district">District *</Label>
+                    <Label htmlFor="district">{t('label_district')}</Label>
                     <Select value={profileData.district} onValueChange={(value) => setProfileData({...profileData, district: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select district" />
+                        <SelectValue placeholder={t('placeholder_select_district')} />
                       </SelectTrigger>
                       <SelectContent>
                         {districts.map((district) => (
                           <SelectItem key={district} value={district}>
-                            {district}
+                            {t(`district_${district.toLowerCase()}`)}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="pincode">Pincode</Label>
+                    <Label htmlFor="pincode">{t('label_pincode')}</Label>
                     <Input
                       id="pincode"
                       value={profileData.pincode}
@@ -332,7 +337,7 @@ export function ProfilePage() {
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <Label htmlFor="address">Full Address</Label>
+                    <Label htmlFor="address">{t('label_full_address')}</Label>
                     <Textarea
                       id="address"
                       value={profileData.address}
@@ -346,10 +351,10 @@ export function ProfilePage() {
 
               {/* Family Information */}
               <div>
-                <h4 className="text-lg font-semibold mb-4">Family Information</h4>
+                <h4 className="text-lg font-semibold mb-4">{t('family_info_title')}</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="fatherName">Father's Name</Label>
+                    <Label htmlFor="fatherName">{t('label_father_name')}</Label>
                     <Input
                       id="fatherName"
                       value={profileData.fatherName}
@@ -358,7 +363,7 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="motherName">Mother's Name</Label>
+                    <Label htmlFor="motherName">{t('label_mother_name')}</Label>
                     <Input
                       id="motherName"
                       value={profileData.motherName}
@@ -367,17 +372,15 @@ export function ProfilePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="familyIncome">Annual Family Income</Label>
+                    <Label htmlFor="familyIncome">{t('label_family_income')}</Label>
                     <Select value={profileData.familyIncome} onValueChange={(value) => setProfileData({...profileData, familyIncome: value})} disabled={!isEditing}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select income range" />
+                        <SelectValue placeholder={t('placeholder_select_income')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="below-1-lakh">Below ₹1 Lakh</SelectItem>
-                        <SelectItem value="1-3-lakh">₹1-3 Lakh</SelectItem>
-                        <SelectItem value="3-5-lakh">₹3-5 Lakh</SelectItem>
-                        <SelectItem value="5-8-lakh">₹5-8 Lakh</SelectItem>
-                        <SelectItem value="above-8-lakh">Above ₹8 Lakh</SelectItem>
+                        {familyIncomes.map(income => (
+                          <SelectItem key={income} value={income}>{t(`income_${income.toLowerCase().replace(/-/g, '_')}`)}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -386,16 +389,16 @@ export function ProfilePage() {
 
               {/* Achievements */}
               <div>
-                <h4 className="text-lg font-semibold mb-4">Achievements & Skills</h4>
+                <h4 className="text-lg font-semibold mb-4">{t('achievements_skills_title')}</h4>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="achievements">Academic Achievements</Label>
+                    <Label htmlFor="achievements">{t('label_academic_achievements')}</Label>
                     <Textarea
                       id="achievements"
                       value={profileData.achievements}
                       onChange={(e) => setProfileData({...profileData, achievements: e.target.value})}
                       disabled={!isEditing}
-                      placeholder="List your academic achievements, awards, competitions, etc."
+                      placeholder={t('placeholder_achievements')}
                       rows={3}
                     />
                   </div>
@@ -409,7 +412,7 @@ export function ProfilePage() {
                     variant="outline"
                     onClick={() => setIsEditing(false)}
                   >
-                    Cancel
+                    {t('button_cancel')}
                   </Button>
                   <Button
                     onClick={handleSave}
@@ -417,7 +420,7 @@ export function ProfilePage() {
                     className="flex items-center space-x-2"
                   >
                     <Save className="w-4 h-4" />
-                    <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+                    <span>{isSaving ? t('button_saving') : t('button_save_changes')}</span>
                   </Button>
                 </div>
               )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   Award, 
   CheckCircle, 
@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useLocalization } from '../hooks/useLocalization';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -21,152 +22,53 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Alert, AlertDescription } from './ui/alert';
 
 export function ScholarshipChecker() {
+  const { t } = useLocalization();
   const { user } = useAuth();
   const [eligibilityChecked, setEligibilityChecked] = useState(false);
   const [appliedScholarships, setAppliedScholarships] = useState<string[]>([]);
 
+  // Use a localized data structure for scholarships
   const scholarships = [
     {
       id: 'pmsss',
-      name: 'Prime Minister Special Scholarship Scheme (PMSSS)',
-      provider: 'Government of India',
-      type: 'State Sponsored',
-      amount: '₹1,25,000 per year',
-      deadline: 'March 31, 2024',
       status: 'Open',
-      eligibility: {
-        domicile: 'J&K Resident',
-        class12Marks: 85,
-        familyIncome: 800000,
-        age: 27
-      },
-      description: 'Scholarship for J&K students to pursue higher education outside the UT',
-      benefits: [
-        'Tuition fee up to ₹1,25,000',
-        'Maintenance allowance ₹1,00,000',
-        'Books & stationery ₹5,000'
-      ],
-      documents: [
-        'Domicile Certificate',
-        'Class 12 Marks Sheet',
-        'Family Income Certificate',
-        'Bank Account Details'
-      ],
+      deadline: '2024-03-31',
       link: 'https://www.aicte-india.org/schemes/PMSSS'
     },
     {
       id: 'nsp',
-      name: 'National Scholarship Portal (NSP)',
-      provider: 'Government of India',
-      type: 'Merit Based',
-      amount: '₹50,000 per year',
-      deadline: 'April 15, 2024',
       status: 'Open',
-      eligibility: {
-        domicile: 'Indian Citizen',
-        class12Marks: 75,
-        familyIncome: 500000,
-        age: 25
-      },
-      description: 'Merit-based scholarship for students from economically weaker sections',
-      benefits: [
-        'Scholarship amount varies by course',
-        'Direct bank transfer',
-        'Renewable annually'
-      ],
-      documents: [
-        'Income Certificate',
-        'Caste Certificate (if applicable)',
-        'Academic Certificates',
-        'Bank Account Details'
-      ],
+      deadline: '2024-04-15',
       link: 'https://scholarships.gov.in'
     },
     {
       id: 'jk-merit',
-      name: 'J&K Merit Scholarship',
-      provider: 'J&K Government',
-      type: 'Merit Based',
-      amount: '₹25,000 per year',
-      deadline: 'May 31, 2024',
       status: 'Open',
-      eligibility: {
-        domicile: 'J&K Resident',
-        class12Marks: 80,
-        familyIncome: 600000,
-        age: 23
-      },
-      description: 'State scholarship for meritorious students from J&K',
-      benefits: [
-        'Annual scholarship ₹25,000',
-        'Fee waiver in govt colleges',
-        'Book allowance'
-      ],
-      documents: [
-        'Domicile Certificate',
-        'Academic Certificates',
-        'Income Certificate',
-        'College Admission Letter'
-      ],
+      deadline: '2024-05-31',
       link: '#'
     },
     {
       id: 'minority',
-      name: 'Minority Scholarship Scheme',
-      provider: 'Ministry of Minority Affairs',
-      type: 'Community Based',
-      amount: '₹30,000 per year',
-      deadline: 'June 30, 2024',
       status: 'Open',
-      eligibility: {
-        domicile: 'Indian Citizen',
-        class12Marks: 70,
-        familyIncome: 200000,
-        age: 30
-      },
-      description: 'Scholarship for students from minority communities',
-      benefits: [
-        'Scholarship for professional courses',
-        'Maintenance allowance',
-        'Books & equipment allowance'
-      ],
-      documents: [
-        'Minority Community Certificate',
-        'Income Certificate',
-        'Academic Certificates',
-        'Bank Account Details'
-      ],
+      deadline: '2024-06-30',
       link: 'https://minorityaffairs.gov.in'
     },
     {
       id: 'inspire',
-      name: 'INSPIRE Scholarship',
-      provider: 'Department of Science & Technology',
-      type: 'Science Stream',
-      amount: '₹80,000 per year',
-      deadline: 'July 15, 2024',
       status: 'Open',
-      eligibility: {
-        domicile: 'Indian Citizen',
-        class12Marks: 85,
-        familyIncome: 600000,
-        age: 27
-      },
-      description: 'Scholarship for students pursuing science courses',
-      benefits: [
-        'Annual scholarship ₹80,000',
-        'Summer research fellowship',
-        'Mentorship program'
-      ],
-      documents: [
-        'Class 12 Science Marks Sheet',
-        'Income Certificate',
-        'Course Admission Letter',
-        'Bank Account Details'
-      ],
+      deadline: '2024-07-15',
       link: 'https://online-inspire.gov.in'
     }
-  ];
+  ].map(s => ({
+    ...s,
+    name: t(`scholarship_${s.id}_name`),
+    provider: t(`scholarship_${s.id}_provider`),
+    type: t(`scholarship_${s.id}_type`),
+    amount: t(`scholarship_${s.id}_amount`),
+    description: t(`scholarship_${s.id}_description`),
+    benefits: t(`scholarship_${s.id}_benefits`).split(';'),
+    documents: t(`scholarship_${s.id}_documents`).split(';')
+  }));
 
   const checkEligibility = (scholarship: any) => {
     if (!user?.user_metadata) return null;
@@ -220,28 +122,28 @@ export function ScholarshipChecker() {
         className="text-center"
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Scholarship Opportunities
+          {t('scholarships_header_title')}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Discover and apply for scholarships including PMSSS, NSP and J&K state schemes
+          {t('scholarships_header_subtitle')}
         </p>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-green-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-green-600">{eligibleScholarships.length}</div>
-            <div className="text-sm text-gray-600">Eligible</div>
+            <div className="text-sm text-gray-600">{t('stat_eligible')}</div>
           </div>
           <div className="bg-blue-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">{appliedScholarships.length}</div>
-            <div className="text-sm text-gray-600">Applied</div>
+            <div className="text-sm text-gray-600">{t('stat_applied')}</div>
           </div>
           <div className="bg-orange-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-orange-600">₹5L+</div>
-            <div className="text-sm text-gray-600">Max Amount</div>
+            <div className="text-2xl font-bold text-orange-600">{t('stat_max_amount')}</div>
+            <div className="text-sm text-gray-600">{t('stat_max_amount_label')}</div>
           </div>
           <div className="bg-purple-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">25+</div>
-            <div className="text-sm text-gray-600">Total Schemes</div>
+            <div className="text-2xl font-bold text-purple-600">{t('stat_total_schemes')}</div>
+            <div className="text-sm text-gray-600">{t('stat_total_schemes_label')}</div>
           </div>
         </div>
       </motion.div>
@@ -251,9 +153,9 @@ export function ScholarshipChecker() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Complete your profile to get accurate eligibility checking for scholarships.
+            {t('alert_profile_completion')}
             <Button variant="link" className="p-0 h-auto ml-2">
-              Update Profile
+              {t('button_update_profile')}
             </Button>
           </AlertDescription>
         </Alert>
@@ -262,10 +164,10 @@ export function ScholarshipChecker() {
       {/* Tabs */}
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All Scholarships</TabsTrigger>
-          <TabsTrigger value="eligible">Eligible ({eligibleScholarships.length})</TabsTrigger>
-          <TabsTrigger value="applied">Applied ({appliedScholarships.length})</TabsTrigger>
-          <TabsTrigger value="deadlines">Deadlines</TabsTrigger>
+          <TabsTrigger value="all">{t('tab_all_scholarships')}</TabsTrigger>
+          <TabsTrigger value="eligible">{t('tab_eligible', { count: eligibleScholarships.length })}</TabsTrigger>
+          <TabsTrigger value="applied">{t('tab_applied', { count: appliedScholarships.length })}</TabsTrigger>
+          <TabsTrigger value="deadlines">{t('tab_deadlines')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -294,19 +196,19 @@ export function ScholarshipChecker() {
                           
                           <div className="flex flex-wrap gap-2 mb-3">
                             <Badge className={getStatusColor(scholarship.status)}>
-                              {scholarship.status}
+                              {t(`status_${scholarship.status.toLowerCase().replace(' ', '_')}`)}
                             </Badge>
                             <Badge variant="outline">{scholarship.provider}</Badge>
                             <Badge variant="outline">{scholarship.type}</Badge>
                             {eligibility?.eligible && (
                               <Badge className="bg-green-100 text-green-800">
                                 <CheckCircle className="w-3 h-3 mr-1" />
-                                Eligible
+                                {t('badge_eligible')}
                               </Badge>
                             )}
                             {hasApplied && (
                               <Badge className="bg-blue-100 text-blue-800">
-                                Applied
+                                {t('badge_applied')}
                               </Badge>
                             )}
                           </div>
@@ -314,7 +216,7 @@ export function ScholarshipChecker() {
                         
                         <div className="text-right">
                           <div className="text-lg font-bold text-green-600">{scholarship.amount}</div>
-                          <div className="text-sm text-gray-500">per year</div>
+                          <div className="text-sm text-gray-500">{t('amount_per_year')}</div>
                         </div>
                       </div>
                     </CardHeader>
@@ -323,7 +225,7 @@ export function ScholarshipChecker() {
                       {/* Key Info */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <h4 className="font-medium text-gray-900 mb-2">Benefits</h4>
+                          <h4 className="font-medium text-gray-900 mb-2">{t('heading_benefits')}</h4>
                           <ul className="text-sm text-gray-600 space-y-1">
                             {scholarship.benefits.map((benefit, idx) => (
                               <li key={idx} className="flex items-center space-x-2">
@@ -335,7 +237,7 @@ export function ScholarshipChecker() {
                         </div>
                         
                         <div>
-                          <h4 className="font-medium text-gray-900 mb-2">Required Documents</h4>
+                          <h4 className="font-medium text-gray-900 mb-2">{t('heading_documents')}</h4>
                           <ul className="text-sm text-gray-600 space-y-1">
                             {scholarship.documents.slice(0, 3).map((doc, idx) => (
                               <li key={idx} className="flex items-center space-x-2">
@@ -344,7 +246,9 @@ export function ScholarshipChecker() {
                               </li>
                             ))}
                             {scholarship.documents.length > 3 && (
-                              <li className="text-blue-600 text-sm">+{scholarship.documents.length - 3} more documents</li>
+                              <li className="text-blue-600 text-sm">
+                                {t('documents_count', { count: scholarship.documents.length - 3 })}
+                              </li>
                             )}
                           </ul>
                         </div>
@@ -355,12 +259,12 @@ export function ScholarshipChecker() {
                         <div className="flex items-center space-x-4">
                           <div className="flex items-center space-x-2 text-sm">
                             <Calendar className="w-4 h-4 text-orange-500" />
-                            <span>Deadline: {scholarship.deadline}</span>
+                            <span>{t('label_deadline', { deadline: scholarship.deadline })}</span>
                           </div>
                           {daysLeft > 0 && daysLeft <= 30 && (
                             <div className="flex items-center space-x-2 text-sm text-orange-600">
                               <Clock className="w-4 h-4" />
-                              <span>{daysLeft} days left</span>
+                              <span>{t('days_left', { days: daysLeft })}</span>
                             </div>
                           )}
                         </div>
@@ -368,24 +272,24 @@ export function ScholarshipChecker() {
                         <div className="flex space-x-2">
                           <Button variant="outline" size="sm">
                             <ExternalLink className="w-4 h-4 mr-2" />
-                            Learn More
+                            {t('button_learn_more')}
                           </Button>
                           {eligibility?.eligible && !hasApplied && (
                             <Button 
                               size="sm"
                               onClick={() => applyForScholarship(scholarship.id)}
                             >
-                              Apply Now
+                              {t('button_apply_now')}
                             </Button>
                           )}
                           {hasApplied && (
                             <Button size="sm" variant="outline" disabled>
-                              Applied ✓
+                              {t('button_applied_label')}
                             </Button>
                           )}
                           {!eligibility?.eligible && (
                             <Button size="sm" variant="outline" disabled>
-                              Not Eligible
+                              {t('button_not_eligible')}
                             </Button>
                           )}
                         </div>
@@ -407,14 +311,14 @@ export function ScholarshipChecker() {
                     <CardTitle className="flex items-center space-x-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
                       <span>{scholarship.name}</span>
-                      <Badge className="bg-green-100 text-green-800">Eligible</Badge>
+                      <Badge className="bg-green-100 text-green-800">{t('badge_eligible')}</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">{scholarship.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-green-600">{scholarship.amount}</span>
-                      <Button>Apply Now</Button>
+                      <Button>{t('button_apply_now')}</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -422,8 +326,8 @@ export function ScholarshipChecker() {
             ) : (
               <div className="text-center py-12">
                 <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Eligible Scholarships</h3>
-                <p className="text-gray-500">Complete your profile to check eligibility</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_eligible_title')}</h3>
+                <p className="text-gray-500">{t('no_eligible_message')}</p>
               </div>
             )}
           </div>
@@ -440,7 +344,7 @@ export function ScholarshipChecker() {
                       <CardTitle className="flex items-center space-x-2">
                         <Award className="w-5 h-5 text-blue-600" />
                         <span>{scholarship.name}</span>
-                        <Badge className="bg-blue-100 text-blue-800">Applied</Badge>
+                        <Badge className="bg-blue-100 text-blue-800">{t('badge_applied')}</Badge>
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -449,8 +353,8 @@ export function ScholarshipChecker() {
                         <div className="flex items-center justify-between">
                           <span className="text-lg font-bold text-green-600">{scholarship.amount}</span>
                           <div className="flex space-x-2">
-                            <Button variant="outline" size="sm">View Application</Button>
-                            <Button variant="outline" size="sm">Track Status</Button>
+                            <Button variant="outline" size="sm">{t('button_view_application')}</Button>
+                            <Button variant="outline" size="sm">{t('button_track_status')}</Button>
                           </div>
                         </div>
                       </div>
@@ -460,8 +364,8 @@ export function ScholarshipChecker() {
             ) : (
               <div className="text-center py-12">
                 <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Applications Yet</h3>
-                <p className="text-gray-500">Start applying for eligible scholarships</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_applications_title')}</h3>
+                <p className="text-gray-500">{t('no_applications_message')}</p>
               </div>
             )}
           </div>
@@ -486,13 +390,13 @@ export function ScholarshipChecker() {
                             daysLeft <= 7 ? 'text-red-600' : 
                             daysLeft <= 30 ? 'text-orange-600' : 'text-green-600'
                           }`}>
-                            {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
+                            {daysLeft > 0 ? t('days_left', { days: daysLeft }) : t('deadline_passed')}
                           </div>
                           <Badge className={
                             daysLeft <= 7 ? 'bg-red-100 text-red-800' :
                             daysLeft <= 30 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
                           }>
-                            {daysLeft <= 7 ? 'Urgent' : daysLeft <= 30 ? 'Soon' : 'Open'}
+                            {daysLeft <= 7 ? t('label_urgent') : daysLeft <= 30 ? t('label_soon') : t('label_open')}
                           </Badge>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   Bell, 
   CheckCircle, 
@@ -17,14 +17,16 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
 
 export function NotificationCenter() {
+  const { t } = useLocalization();
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState([
     {
       id: '1',
-      title: 'CUET Application Open',
-      message: 'Common University Entrance Test (CUET) applications are now open. Last date to apply: March 15, 2024',
+      title: t('notif_cuet_title'),
+      message: t('notif_cuet_message'),
       type: 'exam',
       priority: 'high',
       timestamp: new Date('2024-02-20T10:00:00'),
@@ -33,8 +35,8 @@ export function NotificationCenter() {
     },
     {
       id: '2',
-      title: 'PMSSS Scholarship Deadline Approaching',
-      message: 'Only 10 days left to apply for Prime Minister Special Scholarship Scheme. Don\'t miss this opportunity!',
+      title: t('notif_pmsss_title'),
+      message: t('notif_pmsss_message'),
       type: 'scholarship',
       priority: 'urgent',
       timestamp: new Date('2024-02-19T14:30:00'),
@@ -43,8 +45,8 @@ export function NotificationCenter() {
     },
     {
       id: '3',
-      title: 'New College Added: GDC Kupwara',
-      message: 'Government Degree College Kupwara has been added to our database with course details and admission information.',
+      title: t('notif_gdc_title'),
+      message: t('notif_gdc_message'),
       type: 'info',
       priority: 'normal',
       timestamp: new Date('2024-02-18T16:45:00'),
@@ -53,8 +55,8 @@ export function NotificationCenter() {
     },
     {
       id: '4',
-      title: 'Application Status Update',
-      message: 'Your application to Government Degree College Srinagar has been updated to "Under Review".',
+      title: t('notif_app_status_title'),
+      message: t('notif_app_status_message'),
       type: 'application',
       priority: 'normal',
       timestamp: new Date('2024-02-17T11:20:00'),
@@ -63,8 +65,8 @@ export function NotificationCenter() {
     },
     {
       id: '5',
-      title: 'JEE Main Registration Started',
-      message: 'Joint Entrance Examination (Main) registration for April session has started. Register now!',
+      title: t('notif_jee_title'),
+      message: t('notif_jee_message'),
       type: 'exam',
       priority: 'high',
       timestamp: new Date('2024-02-16T09:15:00'),
@@ -73,8 +75,8 @@ export function NotificationCenter() {
     },
     {
       id: '6',
-      title: 'Career Quiz Completed',
-      message: 'Congratulations! You have successfully completed your career assessment quiz. View your personalized results.',
+      title: t('notif_quiz_complete_title'),
+      message: t('notif_quiz_complete_message'),
       type: 'achievement',
       priority: 'normal',
       timestamp: new Date('2024-02-15T13:30:00'),
@@ -83,8 +85,8 @@ export function NotificationCenter() {
     },
     {
       id: '7',
-      title: 'NSP Scholarship Portal Updated',
-      message: 'National Scholarship Portal has been updated with new schemes for J&K students. Check eligibility now.',
+      title: t('notif_nsp_title'),
+      message: t('notif_nsp_message'),
       type: 'scholarship',
       priority: 'normal',
       timestamp: new Date('2024-02-14T12:00:00'),
@@ -93,8 +95,8 @@ export function NotificationCenter() {
     },
     {
       id: '8',
-      title: 'Profile Completion Reminder',
-      message: 'Your profile is 75% complete. Complete it to get more accurate career recommendations.',
+      title: t('notif_profile_rem_title'),
+      message: t('notif_profile_rem_message'),
       type: 'reminder',
       priority: 'low',
       timestamp: new Date('2024-02-13T08:45:00'),
@@ -123,17 +125,27 @@ export function NotificationCenter() {
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
+  
+  const getTranslatedPriority = (priority: string) => {
+      return t(`priority_${priority}`);
+  };
+
+  const getTranslatedType = (type: string) => {
+      return t(`notif_type_${type}`);
+  };
 
   const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
     
     if (diffInMinutes < 60) {
-      return `${diffInMinutes} minutes ago`;
+      return t('time_minutes_ago', { count: diffInMinutes });
     } else if (diffInMinutes < 1440) {
-      return `${Math.floor(diffInMinutes / 60)} hours ago`;
+      const hours = Math.floor(diffInMinutes / 60);
+      return t('time_hours_ago', { count: hours });
     } else {
-      return `${Math.floor(diffInMinutes / 1440)} days ago`;
+      const days = Math.floor(diffInMinutes / 1440);
+      return t('time_days_ago', { count: days });
     }
   };
 
@@ -173,13 +185,13 @@ export function NotificationCenter() {
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center justify-center space-x-3">
           <Bell className="w-8 h-8 text-blue-600" />
-          <span>Notifications</span>
+          <span>{t('notif_header_title')}</span>
           {unreadCount > 0 && (
-            <Badge className="bg-red-500 text-white">{unreadCount} new</Badge>
+            <Badge className="bg-red-500 text-white">{unreadCount} {t('notif_header_new_badge')}</Badge>
           )}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Stay updated with exams, scholarships, and important announcements
+          {t('notif_header_subtitle')}
         </p>
       </motion.div>
 
@@ -195,20 +207,20 @@ export function NotificationCenter() {
               <div className="flex items-center space-x-4">
                 <Select value={filter} onValueChange={setFilter}>
                   <SelectTrigger className="w-48">
-                    <SelectValue placeholder="Filter notifications" />
+                    <SelectValue placeholder={t('notif_filter_placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Notifications</SelectItem>
-                    <SelectItem value="unread">Unread Only</SelectItem>
-                    <SelectItem value="exam">Exams</SelectItem>
-                    <SelectItem value="scholarship">Scholarships</SelectItem>
-                    <SelectItem value="application">Applications</SelectItem>
-                    <SelectItem value="achievement">Achievements</SelectItem>
+                    <SelectItem value="all">{t('notif_filter_all')}</SelectItem>
+                    <SelectItem value="unread">{t('notif_filter_unread')}</SelectItem>
+                    <SelectItem value="exam">{t('notif_filter_exams')}</SelectItem>
+                    <SelectItem value="scholarship">{t('notif_filter_scholarships')}</SelectItem>
+                    <SelectItem value="application">{t('notif_filter_applications')}</SelectItem>
+                    <SelectItem value="achievement">{t('notif_filter_achievements')}</SelectItem>
                   </SelectContent>
                 </Select>
                 
                 <div className="text-sm text-gray-600">
-                  {filteredNotifications.length} notifications
+                  {t('notif_count', { count: filteredNotifications.length })}
                 </div>
               </div>
               
@@ -220,7 +232,7 @@ export function NotificationCenter() {
                   className="flex items-center space-x-2"
                 >
                   <CheckCircle className="w-4 h-4" />
-                  <span>Mark All as Read</span>
+                  <span>{t('notif_button_mark_all')}</span>
                 </Button>
               )}
             </div>
@@ -277,11 +289,11 @@ export function NotificationCenter() {
                             </div>
                             
                             <Badge className={getPriorityColor(notification.priority)}>
-                              {notification.priority.charAt(0).toUpperCase() + notification.priority.slice(1)}
+                              {getTranslatedPriority(notification.priority)}
                             </Badge>
                             
                             <Badge variant="outline" className="capitalize">
-                              {notification.type}
+                              {getTranslatedType(notification.type)}
                             </Badge>
                           </div>
                         </div>
@@ -324,7 +336,7 @@ export function NotificationCenter() {
                               markAsRead(notification.id);
                             }}
                           >
-                            View Details
+                            {t('notif_view_details_btn')}
                           </Button>
                         </div>
                       )}
@@ -342,12 +354,12 @@ export function NotificationCenter() {
           >
             <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-700 mb-2">
-              {filter === 'unread' ? 'No Unread Notifications' : 'No Notifications'}
+              {filter === 'unread' ? t('notif_empty_unread_title') : t('notif_empty_all_title')}
             </h3>
             <p className="text-gray-500">
               {filter === 'unread' 
-                ? 'You\'re all caught up! All notifications have been read.'
-                : 'You don\'t have any notifications yet. Check back later for updates.'
+                ? t('notif_empty_unread_message')
+                : t('notif_empty_all_message')
               }
             </p>
           </motion.div>
@@ -364,31 +376,31 @@ export function NotificationCenter() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <AlertCircle className="w-5 h-5" />
-              <span>Notification Preferences</span>
+              <span>{t('notif_settings_title')}</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">Exam Notifications</h4>
-                <p className="text-sm text-blue-700">Get notified about important exam dates and registration deadlines</p>
+                <h4 className="font-medium text-blue-900 mb-2">{t('notif_settings_exam_h')}</h4>
+                <p className="text-sm text-blue-700">{t('notif_settings_exam_p')}</p>
               </div>
               <div className="p-4 bg-green-50 rounded-lg">
-                <h4 className="font-medium text-green-900 mb-2">Scholarship Updates</h4>
-                <p className="text-sm text-green-700">Stay informed about new scholarships and application deadlines</p>
+                <h4 className="font-medium text-green-900 mb-2">{t('notif_settings_scholarship_h')}</h4>
+                <p className="text-sm text-green-700">{t('notif_settings_scholarship_p')}</p>
               </div>
               <div className="p-4 bg-purple-50 rounded-lg">
-                <h4 className="font-medium text-purple-900 mb-2">Application Status</h4>
-                <p className="text-sm text-purple-700">Receive updates on your college application status</p>
+                <h4 className="font-medium text-purple-900 mb-2">{t('notif_settings_application_h')}</h4>
+                <p className="text-sm text-purple-700">{t('notif_settings_application_p')}</p>
               </div>
               <div className="p-4 bg-orange-50 rounded-lg">
-                <h4 className="font-medium text-orange-900 mb-2">Career Guidance</h4>
-                <p className="text-sm text-orange-700">Get tips and advice for your career development</p>
+                <h4 className="font-medium text-orange-900 mb-2">{t('notif_settings_guidance_h')}</h4>
+                <p className="text-sm text-orange-700">{t('notif_settings_guidance_p')}</p>
               </div>
             </div>
             <div className="mt-6 text-center">
               <Button variant="outline">
-                Manage Notification Settings
+                {t('notif_settings_button')}
               </Button>
             </div>
           </CardContent>

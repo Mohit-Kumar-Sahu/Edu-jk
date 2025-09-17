@@ -17,18 +17,22 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { useLocalization } from '../hooks/useLocalization';
 
 export function ApplicationTracker() {
+  const { t } = useLocalization();
+
+  // The status strings themselves should also be a translation key for consistency
   const [applications] = useState([
     {
       id: '1',
       collegeName: 'Government Degree College Srinagar',
-      course: 'B.Sc Computer Science',
+      course: t('course_cs'),
       applicationId: 'GDC-SRG-2024-001234',
       submittedDate: '2024-02-15',
-      status: 'Under Review',
+      status: t('status_under_review'),
       lastUpdated: '2024-02-20',
-      documents: ['Class 12 Marks Sheet', 'Domicile Certificate', 'Category Certificate'],
+      documents: [t('doc_marksheet'), t('doc_domicile'), t('doc_category')],
       fees: 2500,
       deadline: '2024-03-15',
       progress: 60
@@ -36,12 +40,12 @@ export function ApplicationTracker() {
     {
       id: '2',
       collegeName: 'Government Degree College Jammu',
-      course: 'B.Com Honours',
+      course: t('course_com'),
       applicationId: 'GDC-JMU-2024-005678',
       submittedDate: '2024-02-10',
-      status: 'Accepted',
+      status: t('status_accepted'),
       lastUpdated: '2024-02-25',
-      documents: ['Class 12 Marks Sheet', 'Domicile Certificate', 'Income Certificate'],
+      documents: [t('doc_marksheet'), t('doc_domicile'), t('doc_income')],
       fees: 2000,
       deadline: '2024-03-01',
       progress: 100
@@ -49,13 +53,13 @@ export function ApplicationTracker() {
     {
       id: '3',
       collegeName: 'Government Degree College Baramulla',
-      course: 'B.A Political Science',
+      course: t('course_pol_sci'),
       applicationId: 'GDC-BAR-2024-009876',
       submittedDate: '2024-02-20',
-      status: 'Documents Required',
+      status: t('status_docs_required'),
       lastUpdated: '2024-02-22',
-      documents: ['Class 12 Marks Sheet', 'Domicile Certificate'],
-      missingDocs: ['Transfer Certificate'],
+      documents: [t('doc_marksheet'), t('doc_domicile')],
+      missingDocs: [t('doc_transfer_certificate')],
       fees: 1800,
       deadline: '2024-03-20',
       progress: 40
@@ -64,27 +68,27 @@ export function ApplicationTracker() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Accepted': return 'bg-green-100 text-green-800';
-      case 'Under Review': return 'bg-blue-100 text-blue-800';
-      case 'Documents Required': return 'bg-orange-100 text-orange-800';
-      case 'Rejected': return 'bg-red-100 text-red-800';
-      case 'Pending': return 'bg-gray-100 text-gray-800';
+      case t('status_accepted'): return 'bg-green-100 text-green-800';
+      case t('status_under_review'): return 'bg-blue-100 text-blue-800';
+      case t('status_docs_required'): return 'bg-orange-100 text-orange-800';
+      case t('status_rejected'): return 'bg-red-100 text-red-800';
+      case t('status_pending'): return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'Accepted': return <CheckCircle className="w-4 h-4 text-green-600" />;
-      case 'Under Review': return <Clock className="w-4 h-4 text-blue-600" />;
-      case 'Documents Required': return <AlertCircle className="w-4 h-4 text-orange-600" />;
-      case 'Rejected': return <XCircle className="w-4 h-4 text-red-600" />;
+      case t('status_accepted'): return <CheckCircle className="w-4 h-4 text-green-600" />;
+      case t('status_under_review'): return <Clock className="w-4 h-4 text-blue-600" />;
+      case t('status_docs_required'): return <AlertCircle className="w-4 h-4 text-orange-600" />;
+      case t('status_rejected'): return <XCircle className="w-4 h-4 text-red-600" />;
       default: return <Clock className="w-4 h-4 text-gray-600" />;
     }
   };
 
-  const acceptedApplications = applications.filter(app => app.status === 'Accepted');
-  const pendingApplications = applications.filter(app => !['Accepted', 'Rejected'].includes(app.status));
+  const acceptedApplications = applications.filter(app => app.status === t('status_accepted'));
+  const pendingApplications = applications.filter(app => ![t('status_accepted'), t('status_rejected')].includes(app.status));
   const totalApplications = applications.length;
 
   return (
@@ -96,28 +100,28 @@ export function ApplicationTracker() {
         className="text-center"
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Application Tracker
+          {t('tracker_title')}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Track your college applications and their status
+          {t('tracker_subtitle')}
         </p>
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-blue-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">{totalApplications}</div>
-            <div className="text-sm text-gray-600">Total Applications</div>
+            <div className="text-sm text-gray-600">{t('total_applications')}</div>
           </div>
           <div className="bg-orange-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-orange-600">{pendingApplications.length}</div>
-            <div className="text-sm text-gray-600">Pending</div>
+            <div className="text-sm text-gray-600">{t('pending')}</div>
           </div>
           <div className="bg-green-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-green-600">{acceptedApplications.length}</div>
-            <div className="text-sm text-gray-600">Accepted</div>
+            <div className="text-sm text-gray-600">{t('accepted')}</div>
           </div>
           <div className="bg-purple-50 p-4 rounded-lg">
             <div className="text-2xl font-bold text-purple-600">₹6,300</div>
-            <div className="text-sm text-gray-600">Total Fees</div>
+            <div className="text-sm text-gray-600">{t('total_fees')}</div>
           </div>
         </div>
       </motion.div>
@@ -125,10 +129,10 @@ export function ApplicationTracker() {
       {/* Applications Tabs */}
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All Applications</TabsTrigger>
-          <TabsTrigger value="pending">Pending ({pendingApplications.length})</TabsTrigger>
-          <TabsTrigger value="accepted">Accepted ({acceptedApplications.length})</TabsTrigger>
-          <TabsTrigger value="deadlines">Deadlines</TabsTrigger>
+          <TabsTrigger value="all">{t('tab_all')}</TabsTrigger>
+          <TabsTrigger value="pending">{t('tab_pending', { count: pendingApplications.length })}</TabsTrigger>
+          <TabsTrigger value="accepted">{t('tab_accepted', { count: acceptedApplications.length })}</TabsTrigger>
+          <TabsTrigger value="deadlines">{t('tab_deadlines')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -149,7 +153,7 @@ export function ApplicationTracker() {
                           <span>{application.collegeName}</span>
                         </CardTitle>
                         <p className="text-gray-600 mb-2">{application.course}</p>
-                        <p className="text-sm text-gray-500">Application ID: {application.applicationId}</p>
+                        <p className="text-sm text-gray-500">{t('application_id')}: {application.applicationId}</p>
                       </div>
                       
                       <div className="text-right">
@@ -158,7 +162,7 @@ export function ApplicationTracker() {
                           <span className="ml-1">{application.status}</span>
                         </Badge>
                         <div className="text-sm text-gray-500 mt-1">
-                          Updated: {new Date(application.lastUpdated).toLocaleDateString()}
+                          {t('last_updated')}: {new Date(application.lastUpdated).toLocaleDateString()}
                         </div>
                       </div>
                     </div>
@@ -168,7 +172,7 @@ export function ApplicationTracker() {
                     {/* Progress Bar */}
                     <div>
                       <div className="flex items-center justify-between text-sm mb-2">
-                        <span>Application Progress</span>
+                        <span>{t('progress_title')}</span>
                         <span>{application.progress}%</span>
                       </div>
                       <Progress value={application.progress} className="w-full" />
@@ -178,20 +182,20 @@ export function ApplicationTracker() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4 text-blue-500" />
-                        <span>Submitted: {new Date(application.submittedDate).toLocaleDateString()}</span>
+                        <span>{t('submitted')}: {new Date(application.submittedDate).toLocaleDateString()}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4 text-orange-500" />
-                        <span>Deadline: {new Date(application.deadline).toLocaleDateString()}</span>
+                        <span>{t('deadline')}: {new Date(application.deadline).toLocaleDateString()}</span>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-green-600 font-medium">Fees: ₹{application.fees.toLocaleString()}</span>
+                        <span className="text-green-600 font-medium">{t('fees')}: ₹{application.fees.toLocaleString()}</span>
                       </div>
                     </div>
 
                     {/* Documents */}
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Documents Submitted</h4>
+                      <h4 className="font-medium text-gray-900 mb-2">{t('docs_submitted')}</h4>
                       <div className="flex flex-wrap gap-1 mb-2">
                         {application.documents.map((doc) => (
                           <Badge key={doc} variant="outline" className="text-xs">
@@ -203,7 +207,7 @@ export function ApplicationTracker() {
                       
                       {application.missingDocs && application.missingDocs.length > 0 && (
                         <div>
-                          <h5 className="text-sm font-medium text-orange-600 mb-1">Missing Documents:</h5>
+                          <h5 className="text-sm font-medium text-orange-600 mb-1">{t('missing_docs')}:</h5>
                           <div className="flex flex-wrap gap-1">
                             {application.missingDocs.map((doc) => (
                               <Badge key={doc} variant="outline" className="text-xs border-orange-300 text-orange-600">
@@ -221,23 +225,23 @@ export function ApplicationTracker() {
                       <div className="flex space-x-2">
                         <Button variant="outline" size="sm">
                           <Eye className="w-4 h-4 mr-2" />
-                          View Details
+                          {t('view_details_button')}
                         </Button>
                         <Button variant="outline" size="sm">
                           <Download className="w-4 h-4 mr-2" />
-                          Download Receipt
+                          {t('download_receipt_button')}
                         </Button>
                       </div>
                       
-                      {application.status === 'Documents Required' && (
+                      {application.status === t('status_docs_required') && (
                         <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                          Upload Documents
+                          {t('upload_docs_button')}
                         </Button>
                       )}
                       
-                      {application.status === 'Accepted' && (
+                      {application.status === t('status_accepted') && (
                         <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                          Confirm Admission
+                          {t('confirm_admission_button')}
                         </Button>
                       )}
                     </div>
@@ -265,8 +269,8 @@ export function ApplicationTracker() {
                   <CardContent>
                     <p className="text-gray-600 mb-4">{application.course}</p>
                     <div className="flex items-center justify-between">
-                      <span>Progress: {application.progress}%</span>
-                      <Button size="sm">View Details</Button>
+                      <span>{t('progress')}: {application.progress}%</span>
+                      <Button size="sm">{t('view_details_button')}</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -274,8 +278,8 @@ export function ApplicationTracker() {
             ) : (
               <div className="text-center py-12">
                 <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Pending Applications</h3>
-                <p className="text-gray-500">All your applications have been processed</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_pending_title')}</h3>
+                <p className="text-gray-500">{t('no_pending_message')}</p>
               </div>
             )}
           </div>
@@ -290,22 +294,22 @@ export function ApplicationTracker() {
                     <CardTitle className="flex items-center space-x-2">
                       <CheckCircle className="w-5 h-5 text-green-600" />
                       <span>{application.collegeName}</span>
-                      <Badge className="bg-green-100 text-green-800">Congratulations! 🎉</Badge>
+                      <Badge className="bg-green-100 text-green-800">{t('congratulations')}</Badge>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-4">{application.course}</p>
                     <div className="bg-white p-4 rounded-lg mb-4">
-                      <h4 className="font-medium text-green-900 mb-2">Next Steps:</h4>
+                      <h4 className="font-medium text-green-900 mb-2">{t('next_steps')}:</h4>
                       <ul className="text-sm text-green-700 space-y-1">
-                        <li>• Confirm your admission by March 31, 2024</li>
-                        <li>• Pay the admission fees: ₹{application.fees.toLocaleString()}</li>
-                        <li>• Submit original documents at the college</li>
-                        <li>• Attend the orientation program</li>
+                        <li>• {t('next_step_1')}</li>
+                        <li>• {t('next_step_2', { fees: application.fees.toLocaleString() })}</li>
+                        <li>• {t('next_step_3')}</li>
+                        <li>• {t('next_step_4')}</li>
                       </ul>
                     </div>
                     <Button className="w-full bg-green-600 hover:bg-green-700">
-                      Confirm Admission
+                      {t('confirm_admission_button')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -313,8 +317,8 @@ export function ApplicationTracker() {
             ) : (
               <div className="text-center py-12">
                 <CheckCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">No Accepted Applications</h3>
-                <p className="text-gray-500">Your accepted applications will appear here</p>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('no_accepted_title')}</h3>
+                <p className="text-gray-500">{t('no_accepted_message')}</p>
               </div>
             )}
           </div>
@@ -340,13 +344,13 @@ export function ApplicationTracker() {
                             daysLeft <= 7 ? 'text-red-600' : 
                             daysLeft <= 14 ? 'text-orange-600' : 'text-green-600'
                           }`}>
-                            {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
+                            {daysLeft > 0 ? t('days_left', { count: daysLeft }) : t('deadline_passed')}
                           </div>
                           <Badge className={
                             daysLeft <= 7 ? 'bg-red-100 text-red-800' :
                             daysLeft <= 14 ? 'bg-orange-100 text-orange-800' : 'bg-green-100 text-green-800'
                           }>
-                            {daysLeft <= 7 ? 'Urgent' : daysLeft <= 14 ? 'Soon' : 'On Time'}
+                            {daysLeft <= 7 ? t('urgent') : daysLeft <= 14 ? t('soon') : t('on_time')}
                           </Badge>
                         </div>
                       </div>

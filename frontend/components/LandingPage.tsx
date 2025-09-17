@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { GraduationCap, MapPin, Award, Users, BookOpen, TrendingUp, X, Sparkles, Zap, DollarSign, CheckCircle, Lightbulb, TrendingUp as TrendingIcon, Trophy } from 'lucide-react';
+import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
+import LanguageSwitcher from '../components/LanguageSwitcher'; // Import the LanguageSwitcher component
 
 // You will need to import your images and videos.
 // Make sure the paths are correct based on your project structure.
@@ -40,6 +42,7 @@ const itemVariants = {
 // Component for the enhanced promotional banner
 const PromoBanner = () => {
   const [isVisible, setIsVisible] = React.useState(true);
+  const { t } = useLocalization(); // Use the t() function
 
   if (!isVisible) return null;
 
@@ -53,13 +56,13 @@ const PromoBanner = () => {
       className="text-white text-center py-3 px-4 flex justify-center items-center gap-4 relative z-50 shadow-md"
     >
       <p className="text-base md:text-lg font-semibold flex items-center">
-        ✨ Get started for FREE today! Your future awaits! 🚀
+        {t('promo')}
       </p>
       <Link 
         to="/auth" 
         className="text-sm md:text-base bg-white text-blue-800 hover:bg-gray-100 px-4 py-2 rounded-full transition-colors font-bold shadow-sm"
       >
-        Start Now <Sparkles size={16} className="inline-block ml-1" />
+        {t('promo_button')} <Sparkles size={16} className="inline-block ml-1" />
       </Link>
       <button 
         onClick={() => setIsVisible(false)} 
@@ -72,70 +75,72 @@ const PromoBanner = () => {
 };
 
 export function LandingPage() {
+  const { t } = useLocalization(); // Get the t function here
+
   const features = [
     {
       image: promoImage,
       icon: <GraduationCap className="w-8 h-8" />,
-      title: "Personalized Career Guidance",
-      description: "Interest + Aptitude quiz based on RIASEC model for tailored career recommendations"
+      title: t("feat_guidance_title"),
+      description: t("feat_guidance_desc")
     },
     {
       image: statsImage,
       icon: <MapPin className="w-8 h-8" />,
-      title: "142 J&K Government Colleges",
-      description: "Complete directory with location, courses, NAAC ratings, and contact details"
+      title: t("feat_colleges_title"),
+      description: t("feat_colleges_desc")
     },
     {
       image: ctaImage,
       icon: <Award className="w-8 h-8" />,
-      title: "Scholarship Checker",
-      description: "PMSSS, NSP & J&K state schemes with auto-eligibility verification"
+      title: t("feat_scholarship_title"),
+      description: t("feat_scholarship_desc")
     },
     {
       image: promoImage,
       icon: <Users className="w-8 h-8" />,
-      title: "AI Career Chatbot",
-      description: "Get instant answers to career questions in English, Hindi & Urdu"
+      title: t("feat_chatbot_title"),
+      description: t("feat_chatbot_desc")
     },
     {
       image: statsImage,
       icon: <BookOpen className="w-8 h-8" />,
-      title: "Application Tracker",
-      description: "Apply to colleges with auto-filled forms and track your status"
+      title: t("feat_tracker_title"),
+      description: t("feat_tracker_desc")
     },
     {
       image: ctaImage,
       icon: <TrendingUp className="w-8 h-8" />,
-      title: "Resume Builder",
-      description: "Auto-generate professional resume PDFs from your profile"
+      title: t("feat_resume_title"),
+      description: t("feat_resume_desc")
     }
   ];
 
   const stats = [
-    { number: "142", label: "Government Colleges", icon: <MapPin size={24} /> },
-    { number: "50+", label: "Career Paths", icon: <TrendingIcon size={24} /> },
-    { number: "25+", label: "Scholarship Schemes", icon: <DollarSign size={24} /> },
-    { number: "100%", label: "Free for Students", icon: <CheckCircle size={24} /> }
+    { number: "142", label: t("stat_142"), icon: <MapPin size={24} /> },
+    { number: "50+", label: t("stat_50+"), icon: <TrendingIcon size={24} /> },
+    { number: "25+", label: t("stat_25+"), icon: <DollarSign size={24} /> },
+    { number: "100%", label: t("stat_100%"), icon: <CheckCircle size={24} /> }
   ];
 
   const howItWorks = [
     {
       image: promoImage,
       icon: <Lightbulb size={48} />,
-      title: "Discover",
-      description: "Start with our personalized quiz to explore your interests and find your perfect career path."
+      title: t("step_discover_title"),
+      description: t("step_discover_desc")
     },
     {
       image: statsImage,
       icon: <TrendingIcon size={48} />,
-      title: "Plan",
-      description: "Access our comprehensive college and scholarship databases to plan your academic journey."
+      title: t("step_plan_title"),
+      description: t("step_plan_desc")
     },
     {
       image: ctaImage,
       icon: <Trophy size={48} />,
-      title: "Achieve",
-      description: "Use our AI chatbot and application tracker to streamline your process and reach your goals."
+      title: t("step_achieve_title"),
+      description: t("step_achieve_desc")
     }
   ];
 
@@ -161,7 +166,7 @@ export function LandingPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold" style={{ color: accentGray }}>Edu2Career J&K</h1>
-                  <p className="text-xs" style={{ color: textGray }}>Career & Education Navigator</p>
+                  <p className="text-xs" style={{ color: textGray }}>{t('header_tagline')}</p>
                 </div>
               </motion.div>
               
@@ -170,17 +175,18 @@ export function LandingPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="flex space-x-4"
               >
+                <LanguageSwitcher /> {/* <-- Add the language switcher here */}
                 <Link 
                   to="/auth"
                   className="px-4 py-2 hover:text-gray-900 transition-colors font-medium" style={{ color: primaryBlue }}
                 >
-                  Login
+                  {t('login')}
                 </Link>
                 <Link 
                   to="/auth"
                   className="px-6 py-2 text-white rounded-lg hover:brightness-110 transition-colors font-semibold shadow-md" style={{ backgroundColor: primaryBlue }}
                 >
-                  Get Started ✨
+                  {t('get_started')}
                 </Link>
               </motion.div>
             </div>
@@ -210,11 +216,10 @@ export function LandingPage() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                Your <span style={{ color: primaryBlue }}>Career Journey</span> Starts Here 🚀
+                {t('hero_title').split(' ')[0]} <span style={{ color: primaryBlue }}>{t('hero_title').split(' ').slice(1, 3).join(' ')}</span> {t('hero_title').split(' ').slice(3).join(' ')}
               </h1>
               <p className="text-xl text-white mb-8 max-w-lg mx-auto">
-                One-stop personalized career & education advisor for students in Jammu & Kashmir. 
-                Discover your path, find the right college, and unlock your potential. 🌟
+                {t('hero_subtitle')}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -222,13 +227,13 @@ export function LandingPage() {
                   to="/auth"
                   className="px-8 py-4 text-white rounded-lg text-lg font-semibold hover:brightness-110 transition-colors shadow-lg flex items-center justify-center" style={{ backgroundColor: primaryBlue }}
                 >
-                  Start Your Journey <Sparkles size={20} className="ml-2" />
+                  {t('hero_cta')} <Sparkles size={20} className="ml-2" />
                 </Link>
                 <button 
                   className="px-8 py-4 border-2 rounded-lg text-lg font-semibold hover:bg-opacity-10 transition-colors flex items-center justify-center" 
                   style={{ borderColor: primaryBlue, color: primaryBlue, backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
                 >
-                  Watch Demo <Zap size={20} className="ml-2" />
+                  {t('hero_demo_cta')} <Zap size={20} className="ml-2" />
                 </button>
               </div>
             </motion.div>
@@ -244,10 +249,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto px-4 text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold" style={{ color: accentGray }}>
-              Facts and Figures
+              {t('stats_title')}
             </h2>
             <p className="text-xl mt-2" style={{ color: textGray }}>
-              Our platform's reach and impact at a glance.
+              {t('stats_subtitle')}
             </p>
           </motion.div>
 
@@ -288,10 +293,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              Your Success, Our Simple Process
+              {t('how_it_works_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              We've broken down your career journey into three simple, powerful steps.
+              {t('how_it_works_subtitle')}
             </p>
           </motion.div>
 
@@ -331,10 +336,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              See Our Platform in Action! 🎬
+              {t('video_chatbot_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              Explore interactive demos of our most powerful features.
+              {t('video_chatbot_desc')}
             </p>
           </motion.div>
           <div className="grid gap-16 max-w-7xl mx-auto">
@@ -348,9 +353,9 @@ export function LandingPage() {
             >
               <video src={videoChatbot} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>AI Career Chatbot 🤖</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('video_chatbot_title')}</h3>
                 <p className="text-base" style={{ color: textGray }}>
-                  Get instant answers and personalized guidance for your career questions in multiple languages.
+                  {t('video_chatbot_desc')}
                 </p>
               </div>
             </motion.div>
@@ -365,9 +370,9 @@ export function LandingPage() {
             >
               <video src={videoTracker} autoPlay loop muted playsInline className="w-full h-auto" />
               <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>Application Tracker 📝</h3>
+                <h3 className="text-2xl font-semibold mb-2" style={{ color: primaryBlue }}>{t('video_tracker_title')}</h3>
                 <p className="text-base" style={{ color: textGray }}>
-                  Seamlessly apply to colleges with auto-filled forms and monitor your application status in real-time.
+                  {t('video_tracker_desc')}
                 </p>
               </div>
             </motion.div>
@@ -383,10 +388,10 @@ export function LandingPage() {
             className="max-w-7xl mx-auto text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: accentGray }}>
-              Unleash Your Potential with Our Core Features! 🌟
+              {t('features_title')}
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: textGray }}>
-              Everything you need to navigate your academic and career path with confidence.
+              {t('features_subtitle')}
             </p>
           </motion.div>
 
@@ -424,16 +429,16 @@ export function LandingPage() {
               viewport={{ once: true, amount: 0.5 }}
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                Ready to Discover Your Perfect Career Path? 🌟
+                {t('cta_title')}
               </h2>
               <p className="text-xl mb-8 text-white opacity-90">
-                Join thousands of J&K students who have already found their direction and success with Edu2Career J&K! 🎓
+                {t('cta_subtitle')}
               </p>
               <Link 
                 to="/auth"
                 className="inline-block px-8 py-4 bg-white text-lg font-semibold rounded-lg hover:bg-gray-100 transition-colors shadow-xl flex items-center justify-center mx-auto max-w-xs" style={{ color: primaryBlue }}
               >
-                Start Free Today <Sparkles size={20} className="ml-2" />
+                {t('cta_button')} <Sparkles size={20} className="ml-2" />
               </Link>
             </motion.div>
           </div>
@@ -451,42 +456,42 @@ export function LandingPage() {
                   <span className="text-lg font-semibold">Edu2Career J&K</span>
                 </div>
                 <p className="text-sm" style={{ color: lightBlue }}>
-                  Empowering students in Jammu & Kashmir with personalized career guidance and educational resources.
+                  {t('footer_tagline')}
                 </p>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Quick Links</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('quick_links')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightBlue }}>Get Started</Link></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>About Us</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>Contact</a></li>
+                  <li><Link to="/auth" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_get_started')}</Link></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_about')}</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors" style={{ color: lightBlue }}>{t('footer_contact')}</a></li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Features</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('features')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightBlue }}>Career Quiz</li>
-                  <li style={{ color: lightBlue }}>College Locator</li>
-                  <li style={{ color: lightBlue }}>Scholarship Checker</li>
-                  <li style={{ color: lightBlue }}>AI Chatbot</li>
+                  <li style={{ color: lightBlue }}>{t('footer_career_quiz')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_college_locator')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_scholarship_checker')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_ai_chatbot')}</li>
                 </ul>
               </div>
               
               <div>
-                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>Support</h4>
+                <h4 className="text-lg font-semibold mb-4" style={{ color: primaryBlue }}>{t('support')}</h4>
                 <ul className="space-y-2 text-sm">
-                  <li style={{ color: lightBlue }}>Help Center</li>
-                  <li style={{ color: lightBlue }}>Privacy Policy</li>
-                  <li style={{ color: lightBlue }}>Terms of Service</li>
-                  <li style={{ color: lightBlue }}>Feedback</li>
+                  <li style={{ color: lightBlue }}>{t('footer_help_center')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_privacy')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_terms')}</li>
+                  <li style={{ color: lightBlue }}>{t('footer_feedback')}</li>
                 </ul>
               </div>
             </div>
             
             <div className="border-t mt-8 pt-8 text-center text-sm" style={{ borderColor: textGray, color: lightBlue }}>
-              <p>&copy; 2024 Edu2Career J&K. Made with ❤️ for J&K students. All rights reserved.</p>
+              <p>{t('copyright')}</p>
             </div>
           </div>
         </footer>

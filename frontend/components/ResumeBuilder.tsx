@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   FileText, 
   Download, 
@@ -17,6 +17,7 @@ import {
   Briefcase
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -26,6 +27,7 @@ import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 export function ResumeBuilder() {
+  const { t } = useLocalization();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('preview');
   const [isEditing, setIsEditing] = useState(false);
@@ -37,7 +39,7 @@ export function ResumeBuilder() {
       phone: user?.user_metadata?.phone || '',
       address: user?.user_metadata?.address || '',
       district: user?.user_metadata?.district || '',
-      objective: 'Seeking opportunities to apply my academic knowledge and skills in a dynamic environment that fosters growth and learning.'
+      objective: t('default_objective')
     },
     education: [
       {
@@ -47,34 +49,34 @@ export function ResumeBuilder() {
         stream: user?.user_metadata?.stream || '',
         year: '2024',
         percentage: '85%',
-        achievements: 'School topper in Mathematics'
+        achievements: t('default_achievement_1')
       }
     ],
     skills: [
-      'Communication Skills',
-      'Computer Literacy',
-      'Problem Solving',
-      'Time Management',
-      'Teamwork'
+      t('skill_communication'),
+      t('skill_computer_literacy'),
+      t('skill_problem_solving'),
+      t('skill_time_management'),
+      t('skill_teamwork')
     ],
     projects: [
       {
         id: '1',
-        title: 'Science Fair Project',
-        description: 'Developed a working model on renewable energy sources',
-        technologies: 'Research, Presentation',
-        duration: '3 months'
+        title: t('default_project_title_1'),
+        description: t('default_project_desc_1'),
+        technologies: t('default_project_tech_1'),
+        duration: t('default_project_duration_1')
       }
     ],
     achievements: [
-      'First Prize in Inter-School Science Competition',
-      'Certificate in Computer Applications',
-      'Volunteer at Local NGO'
+      t('default_achievement_1'),
+      t('default_achievement_2'),
+      t('default_achievement_3')
     ],
     languages: [
-      { name: 'English', proficiency: 'Fluent' },
-      { name: 'Hindi', proficiency: 'Fluent' },
-      { name: 'Urdu', proficiency: 'Fluent' }
+      { name: t('language_english'), proficiency: t('proficiency_fluent') },
+      { name: t('language_hindi'), proficiency: t('proficiency_fluent') },
+      { name: t('language_urdu'), proficiency: t('proficiency_fluent') }
     ]
   });
 
@@ -126,7 +128,7 @@ export function ResumeBuilder() {
 
   const downloadResume = () => {
     // In a real app, this would generate and download a PDF
-    alert('Resume download functionality will be available soon!');
+    alert(t('alert_download_soon'));
   };
 
   return (
@@ -138,10 +140,10 @@ export function ResumeBuilder() {
         className="text-center"
       >
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Resume Builder
+          {t('resume_builder_title')}
         </h1>
         <p className="text-lg text-gray-600 mb-6">
-          Create a professional resume using your profile information
+          {t('resume_builder_subtitle')}
         </p>
         
         <div className="flex justify-center space-x-4 mb-6">
@@ -151,7 +153,7 @@ export function ResumeBuilder() {
             className="flex items-center space-x-2"
           >
             <Eye className="w-4 h-4" />
-            <span>Preview</span>
+            <span>{t('tab_preview')}</span>
           </Button>
           <Button
             onClick={() => setActiveTab('edit')}
@@ -159,14 +161,14 @@ export function ResumeBuilder() {
             className="flex items-center space-x-2"
           >
             <Edit2 className="w-4 h-4" />
-            <span>Edit</span>
+            <span>{t('tab_edit')}</span>
           </Button>
           <Button
             onClick={downloadResume}
             className="flex items-center space-x-2 bg-green-600 hover:bg-green-700"
           >
             <Download className="w-4 h-4" />
-            <span>Download PDF</span>
+            <span>{t('button_download_pdf')}</span>
           </Button>
         </div>
       </motion.div>
@@ -185,7 +187,7 @@ export function ResumeBuilder() {
                 {/* Header Section */}
                 <div className="text-center border-b pb-6 mb-6">
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                    {resumeData.personalInfo.name || 'Your Name'}
+                    {resumeData.personalInfo.name || t('your_name_placeholder')}
                   </h1>
                   <div className="flex flex-wrap justify-center gap-4 text-gray-600">
                     <div className="flex items-center space-x-1">
@@ -198,7 +200,7 @@ export function ResumeBuilder() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <MapPin className="w-4 h-4" />
-                      <span>{resumeData.personalInfo.district}, J&K</span>
+                      <span>{resumeData.personalInfo.district}, {t('jk_label')}</span>
                     </div>
                   </div>
                 </div>
@@ -207,7 +209,7 @@ export function ResumeBuilder() {
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center space-x-2">
                     <User className="w-5 h-5" />
-                    <span>Career Objective</span>
+                    <span>{t('heading_career_objective')}</span>
                   </h2>
                   <p className="text-gray-700 leading-relaxed">
                     {resumeData.personalInfo.objective}
@@ -218,7 +220,7 @@ export function ResumeBuilder() {
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center space-x-2">
                     <BookOpen className="w-5 h-5" />
-                    <span>Education</span>
+                    <span>{t('heading_education')}</span>
                   </h2>
                   <div className="space-y-4">
                     {resumeData.education.map((edu) => (
@@ -228,8 +230,8 @@ export function ResumeBuilder() {
                         </h3>
                         <p className="text-gray-700">{edu.institution}</p>
                         <div className="flex items-center space-x-4 text-sm text-gray-600">
-                          <span>Year: {edu.year}</span>
-                          {edu.percentage && <span>Marks: {edu.percentage}</span>}
+                          <span>{t('label_year', { year: edu.year })}</span>
+                          {edu.percentage && <span>{t('label_marks', { marks: edu.percentage })}</span>}
                         </div>
                         {edu.achievements && (
                           <p className="text-sm text-blue-600 mt-1">{edu.achievements}</p>
@@ -243,7 +245,7 @@ export function ResumeBuilder() {
                 <div className="mb-6">
                   <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center space-x-2">
                     <Award className="w-5 h-5" />
-                    <span>Skills</span>
+                    <span>{t('heading_skills')}</span>
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {resumeData.skills.map((skill, index) => (
@@ -259,7 +261,7 @@ export function ResumeBuilder() {
                   <div className="mb-6">
                     <h2 className="text-xl font-bold text-gray-900 mb-3 flex items-center space-x-2">
                       <Briefcase className="w-5 h-5" />
-                      <span>Projects</span>
+                      <span>{t('heading_projects')}</span>
                     </h2>
                     <div className="space-y-4">
                       {resumeData.projects.map((project) => (
@@ -267,8 +269,8 @@ export function ResumeBuilder() {
                           <h3 className="font-semibold text-gray-900">{project.title}</h3>
                           <p className="text-gray-700 mb-2">{project.description}</p>
                           <div className="flex items-center space-x-4 text-sm text-gray-600">
-                            <span>Duration: {project.duration}</span>
-                            <span>Technologies: {project.technologies}</span>
+                            <span>{t('label_duration', { duration: project.duration })}</span>
+                            <span>{t('label_technologies', { technologies: project.technologies })}</span>
                           </div>
                         </div>
                       ))}
@@ -278,7 +280,7 @@ export function ResumeBuilder() {
 
                 {/* Languages */}
                 <div className="mb-6">
-                  <h2 className="text-xl font-bold text-gray-900 mb-3">Languages</h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-3">{t('heading_languages')}</h2>
                   <div className="grid grid-cols-3 gap-4">
                     {resumeData.languages.map((lang, index) => (
                       <div key={index} className="text-center">
@@ -292,7 +294,7 @@ export function ResumeBuilder() {
                 {/* Achievements */}
                 {resumeData.achievements.length > 0 && (
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900 mb-3">Achievements</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-3">{t('heading_achievements')}</h2>
                     <ul className="space-y-2">
                       {resumeData.achievements.map((achievement, index) => (
                         <li key={index} className="flex items-start space-x-2">
@@ -320,13 +322,13 @@ export function ResumeBuilder() {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <User className="w-5 h-5" />
-                  <span>Personal Information</span>
+                  <span>{t('section_personal_info')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name">{t('label_full_name')}</Label>
                     <Input
                       id="name"
                       value={resumeData.personalInfo.name}
@@ -337,7 +339,7 @@ export function ResumeBuilder() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('label_email')}</Label>
                     <Input
                       id="email"
                       value={resumeData.personalInfo.email}
@@ -348,7 +350,7 @@ export function ResumeBuilder() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">{t('label_phone')}</Label>
                     <Input
                       id="phone"
                       value={resumeData.personalInfo.phone}
@@ -359,7 +361,7 @@ export function ResumeBuilder() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="district">District</Label>
+                    <Label htmlFor="district">{t('label_district')}</Label>
                     <Input
                       id="district"
                       value={resumeData.personalInfo.district}
@@ -371,7 +373,7 @@ export function ResumeBuilder() {
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="objective">Career Objective</Label>
+                  <Label htmlFor="objective">{t('label_career_objective')}</Label>
                   <Textarea
                     id="objective"
                     value={resumeData.personalInfo.objective}
@@ -391,11 +393,11 @@ export function ResumeBuilder() {
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center space-x-2">
                     <BookOpen className="w-5 h-5" />
-                    <span>Education</span>
+                    <span>{t('section_education')}</span>
                   </CardTitle>
                   <Button onClick={addEducation} size="sm">
                     <Plus className="w-4 h-4 mr-2" />
-                    Add Education
+                    {t('button_add_education')}
                   </Button>
                 </div>
               </CardHeader>
@@ -404,7 +406,7 @@ export function ResumeBuilder() {
                   <div key={edu.id} className="p-4 border rounded-lg space-y-3">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label>Institution</Label>
+                        <Label>{t('label_institution')}</Label>
                         <Input
                           value={edu.institution}
                           onChange={(e) => {
@@ -415,7 +417,7 @@ export function ResumeBuilder() {
                         />
                       </div>
                       <div>
-                        <Label>Degree/Class</Label>
+                        <Label>{t('label_degree')}</Label>
                         <Input
                           value={edu.degree}
                           onChange={(e) => {
@@ -426,7 +428,7 @@ export function ResumeBuilder() {
                         />
                       </div>
                       <div>
-                        <Label>Stream</Label>
+                        <Label>{t('label_stream')}</Label>
                         <Input
                           value={edu.stream}
                           onChange={(e) => {
@@ -437,7 +439,7 @@ export function ResumeBuilder() {
                         />
                       </div>
                       <div>
-                        <Label>Year</Label>
+                        <Label>{t('label_year_input')}</Label>
                         <Input
                           value={edu.year}
                           onChange={(e) => {
@@ -458,7 +460,7 @@ export function ResumeBuilder() {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Award className="w-5 h-5" />
-                  <span>Skills</span>
+                  <span>{t('section_skills')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -469,6 +471,7 @@ export function ResumeBuilder() {
                       <button
                         onClick={() => removeSkill(skill)}
                         className="ml-2 text-red-500 hover:text-red-700"
+                        aria-label={t('button_remove_skill')}
                       >
                         ×
                       </button>
@@ -477,7 +480,7 @@ export function ResumeBuilder() {
                 </div>
                 <div className="flex space-x-2">
                   <Input
-                    placeholder="Add a skill"
+                    placeholder={t('placeholder_add_skill')}
                     onKeyPress={(e) => {
                       if (e.key === 'Enter') {
                         addSkill((e.target as HTMLInputElement).value);
@@ -492,7 +495,7 @@ export function ResumeBuilder() {
                       input.value = '';
                     }}
                   >
-                    Add
+                    {t('button_add')}
                   </Button>
                 </div>
               </CardContent>
@@ -502,7 +505,7 @@ export function ResumeBuilder() {
             <div className="flex justify-center">
               <Button className="flex items-center space-x-2" size="lg">
                 <Save className="w-4 h-4" />
-                <span>Save Resume</span>
+                <span>{t('button_save_resume')}</span>
               </Button>
             </div>
           </motion.div>

@@ -1,9 +1,11 @@
 import React from 'react';
 import { useOffline } from '../hooks/useOffline';
-import { motion } from 'motion/react';
+import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
+import { motion } from 'framer-motion';
 
 const OfflineIndicator: React.FC = () => {
   const isOffline = useOffline();
+  const { t } = useLocalization(); // Use the localization hook
 
   if (!isOffline) return null;
 
@@ -16,7 +18,9 @@ const OfflineIndicator: React.FC = () => {
     >
       <div className="flex items-center justify-center space-x-2">
         <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-        <span className="font-medium">You're offline. Some features may be limited.</span>
+        <span className="font-medium">
+          {t('offline_message')}
+        </span>
       </div>
     </motion.div>
   );

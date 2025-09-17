@@ -21,6 +21,8 @@ import OfflineIndicator from './components/OfflineIndicator';
 import { motion, AnimatePresence } from 'motion/react';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { I18nextProvider } from 'react-i18next'; // Import the provider
+import i18n from './i18n'; // Import your i18n configuration
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -58,7 +60,7 @@ function AppContent() {
         </div>
       </div>
     );
-  }
+  } // <-- THIS WAS THE MISSING BRACE
 
   return (
     <Router>
@@ -163,7 +165,9 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <I18nextProvider i18n={i18n}>
+        <AppContent />
+      </I18nextProvider>
     </AuthProvider>
   );
 }

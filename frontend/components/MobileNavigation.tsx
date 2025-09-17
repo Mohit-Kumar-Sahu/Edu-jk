@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   Home, 
   Target, 
@@ -8,16 +8,18 @@ import {
   Award, 
   User
 } from 'lucide-react';
+import { useLocalization } from '../hooks/useLocalization';
 
 export function MobileNavigation() {
+  const { t } = useLocalization();
   const location = useLocation();
 
   const navigationItems = [
-    { name: 'Home', href: '/dashboard', icon: Home },
-    { name: 'Quiz', href: '/quiz', icon: Target },
-    { name: 'Colleges', href: '/colleges', icon: MapPin },
-    { name: 'Scholarships', href: '/scholarships', icon: Award },
-    { name: 'Profile', href: '/profile', icon: User },
+    { name: t('nav_home'), href: '/dashboard', icon: Home },
+    { name: t('nav_quiz'), href: '/quiz', icon: Target },
+    { name: t('nav_colleges'), href: '/colleges', icon: MapPin },
+    { name: t('nav_scholarships'), href: '/scholarships', icon: Award },
+    { name: t('nav_profile'), href: '/profile', icon: User },
   ];
 
   return (

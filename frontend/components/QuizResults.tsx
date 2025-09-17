@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   Target, 
@@ -12,19 +12,22 @@ import {
   Brain,
   Users,
   Briefcase,
-  BookOpen
+  BookOpen,
+  MapPin
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { Badge } from './ui/badge';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
+import { useLocalization } from '../hooks/useLocalization'; // Import the localization hook
 
 interface QuizResultsProps {
   results: any;
 }
 
 export function QuizResults({ results }: QuizResultsProps) {
+  const { t } = useLocalization();
   const [showConfetti, setShowConfetti] = useState(true);
 
   useEffect(() => {
@@ -40,10 +43,10 @@ export function QuizResults({ results }: QuizResultsProps) {
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
           <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No Quiz Results Found</h2>
-          <p className="text-gray-600 mb-6">Take the career quiz to see your personalized results.</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('no_results_title')}</h2>
+          <p className="text-gray-600 mb-6">{t('no_results_message')}</p>
           <Link to="/quiz">
-            <Button>Take Career Quiz</Button>
+            <Button>{t('button_take_quiz')}</Button>
           </Link>
         </div>
       </div>
@@ -52,27 +55,28 @@ export function QuizResults({ results }: QuizResultsProps) {
 
   // Prepare radar chart data
   const radarData = results.topInterests?.map((interest: any) => ({
-    category: interest.name,
+    category: t(`riasec_${interest.name.toLowerCase()}`),
     score: interest.score
   })) || [];
 
-  const riasecDescriptions = {
-    'Realistic': 'Practical, hands-on problem solvers who like working with tools and machines',
-    'Investigative': 'Analytical thinkers who enjoy research, science, and complex problem-solving',
-    'Artistic': 'Creative individuals who value self-expression and artistic pursuits',
-    'Social': 'People-oriented individuals who enjoy helping and working with others',
-    'Enterprising': 'Natural leaders who enjoy persuading, managing, and taking calculated risks',
-    'Conventional': 'Detail-oriented individuals who prefer structured, organized environments'
+  // Use a map of keys to handle descriptions
+  const riasecDescriptions: { [key: string]: string } = {
+    'Realistic': t('riasec_desc_realistic'),
+    'Investigative': t('riasec_desc_investigative'),
+    'Artistic': t('riasec_desc_artistic'),
+    'Social': t('riasec_desc_social'),
+    'Enterprising': t('riasec_desc_enterprising'),
+    'Conventional': t('riasec_desc_conventional')
   };
 
   const getRecommendedCourses = (topInterests: any[]) => {
     const courseDatabase: { [key: string]: string[] } = {
-      'Realistic': ['B.Tech (Civil Engineering)', 'B.Sc (Agriculture)', 'Diploma in Mechanical Engineering'],
-      'Investigative': ['B.Tech (Computer Science)', 'B.Sc (Physics)', 'B.Sc (Mathematics)'],
-      'Artistic': ['B.A (Fine Arts)', 'B.Des (Design)', 'B.A (English Literature)'],
-      'Social': ['B.Ed (Education)', 'B.A (Psychology)', 'B.SW (Social Work)'],
-      'Enterprising': ['BBA (Business Administration)', 'B.Com (Commerce)', 'B.A (Economics)'],
-      'Conventional': ['B.Com (Accounting)', 'BCA (Computer Applications)', 'B.A (Public Administration)']
+      'Realistic': [t('course_btech_civil'), t('course_bsc_agriculture'), t('course_diploma_mech')],
+      'Investigative': [t('course_btech_cs'), t('course_bsc_physics'), t('course_bsc_math')],
+      'Artistic': [t('course_ba_fine_arts'), t('course_bdes'), t('course_ba_english')],
+      'Social': [t('course_bed'), t('course_ba_psychology'), t('course_bsw')],
+      'Enterprising': [t('course_bba'), t('course_bcom'), t('course_ba_economics')],
+      'Conventional': [t('course_bcom_acc'), t('course_bca'), t('course_ba_public_admin')]
     };
 
     const courses: string[] = [];
@@ -128,20 +132,20 @@ export function QuizResults({ results }: QuizResultsProps) {
             </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Your Career Assessment Results! 🎉
+            {t('results_header_title')}
           </h1>
           <p className="text-lg text-gray-600 mb-6">
-            Here's your personalized career guidance based on your interests and aptitude
+            {t('results_header_subtitle')}
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mb-6">
             <Button variant="outline" className="flex items-center space-x-2">
               <Download className="w-4 h-4" />
-              <span>Download Report</span>
+              <span>{t('button_download_report')}</span>
             </Button>
             <Button variant="outline" className="flex items-center space-x-2">
               <Share2 className="w-4 h-4" />
-              <span>Share Results</span>
+              <span>{t('button_share_results')}</span>
             </Button>
           </div>
         </motion.div>
@@ -156,18 +160,18 @@ export function QuizResults({ results }: QuizResultsProps) {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Overall Career Match Score</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('overall_score_title')}</h3>
                   <div className="flex items-center space-x-4">
                     <div className="text-4xl font-bold">{results.totalScore}%</div>
                     <div className="text-blue-100">
-                      <p>Excellent match!</p>
-                      <p className="text-sm">Based on interests & aptitude</p>
+                      <p>{t('overall_score_message')}</p>
+                      <p className="text-sm">{t('overall_score_subtitle')}</p>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
                   <Star className="w-12 h-12 text-yellow-300 mb-2" />
-                  <p className="text-sm text-blue-100">Keep exploring!</p>
+                  <p className="text-sm text-blue-100">{t('overall_score_encouragement')}</p>
                 </div>
               </div>
             </CardContent>
@@ -186,7 +190,7 @@ export function QuizResults({ results }: QuizResultsProps) {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Target className="w-5 h-5 text-blue-600" />
-                  <span>Interest Profile (RIASEC)</span>
+                  <span>{t('interest_profile_title')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -197,7 +201,7 @@ export function QuizResults({ results }: QuizResultsProps) {
                       <PolarAngleAxis dataKey="category" tick={{ fontSize: 12 }} />
                       <PolarRadiusAxis domain={[0, 100]} tick={false} />
                       <Radar
-                        name="Interest Score"
+                        name={t('interest_score_radar_name')}
                         dataKey="score"
                         stroke="#2563eb"
                         fill="#2563eb"
@@ -212,7 +216,7 @@ export function QuizResults({ results }: QuizResultsProps) {
                 {results.topInterests?.[0] && (
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <h4 className="font-semibold text-blue-900 mb-2">
-                      Primary Interest: {results.topInterests[0].name}
+                      {t('primary_interest_title', { name: t(`riasec_${results.topInterests[0].name.toLowerCase()}`)})}
                     </h4>
                     <p className="text-sm text-blue-700">
                       {riasecDescriptions[results.topInterests[0].name as keyof typeof riasecDescriptions]}
@@ -233,7 +237,7 @@ export function QuizResults({ results }: QuizResultsProps) {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Brain className="w-5 h-5 text-green-600" />
-                  <span>Aptitude Assessment</span>
+                  <span>{t('aptitude_title')}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -241,13 +245,13 @@ export function QuizResults({ results }: QuizResultsProps) {
                   <div className="text-3xl font-bold text-green-600 mb-2">
                     {results.aptitudeScore}%
                   </div>
-                  <p className="text-gray-600">Overall Aptitude Score</p>
+                  <p className="text-gray-600">{t('aptitude_overall_score')}</p>
                 </div>
 
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span>Numerical Reasoning</span>
+                      <span>{t('aptitude_numerical')}</span>
                       <span>{Math.max(results.aptitudeScore - 10, 0)}%</span>
                     </div>
                     <Progress value={Math.max(results.aptitudeScore - 10, 0)} />
@@ -255,7 +259,7 @@ export function QuizResults({ results }: QuizResultsProps) {
                   
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span>Verbal Reasoning</span>
+                      <span>{t('aptitude_verbal')}</span>
                       <span>{Math.min(results.aptitudeScore + 5, 100)}%</span>
                     </div>
                     <Progress value={Math.min(results.aptitudeScore + 5, 100)} />
@@ -263,7 +267,7 @@ export function QuizResults({ results }: QuizResultsProps) {
                   
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span>Logical Reasoning</span>
+                      <span>{t('aptitude_logical')}</span>
                       <span>{results.aptitudeScore}%</span>
                     </div>
                     <Progress value={results.aptitudeScore} />
@@ -272,7 +276,7 @@ export function QuizResults({ results }: QuizResultsProps) {
 
                 <div className="bg-green-50 p-4 rounded-lg">
                   <p className="text-sm text-green-700">
-                    <strong>Strength:</strong> You show excellent analytical and problem-solving abilities.
+                    <strong>{t('aptitude_strength_label')}:</strong> {t('aptitude_strength_desc')}
                   </p>
                 </div>
               </CardContent>
@@ -290,7 +294,7 @@ export function QuizResults({ results }: QuizResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-orange-600" />
-                <span>Recommended Career Paths</span>
+                <span>{t('recommended_careers_title')}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -305,7 +309,7 @@ export function QuizResults({ results }: QuizResultsProps) {
                   >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-semibold text-blue-600">{career.title}</h4>
-                      <Badge variant="secondary">{career.match}% match</Badge>
+                      <Badge variant="secondary">{t('match_score', { match: career.match })}</Badge>
                     </div>
                     <p className="text-sm text-gray-600 mb-3">{career.description}</p>
                     <div className="flex items-center justify-between">
@@ -329,7 +333,7 @@ export function QuizResults({ results }: QuizResultsProps) {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <BookOpen className="w-5 h-5 text-purple-600" />
-                <span>Recommended Courses in J&K</span>
+                <span>{t('recommended_courses_title')}</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -345,18 +349,18 @@ export function QuizResults({ results }: QuizResultsProps) {
               </div>
               
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-semibold text-blue-900 mb-2">Next Steps:</h4>
+                <h4 className="font-semibold text-blue-900 mb-2">{t('next_steps_title')}</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <Link to="/colleges">
                     <Button className="w-full flex items-center space-x-2">
                       <MapPin className="w-4 h-4" />
-                      <span>Find Colleges in J&K</span>
+                      <span>{t('button_find_colleges')}</span>
                     </Button>
                   </Link>
                   <Link to="/scholarships">
                     <Button variant="outline" className="w-full flex items-center space-x-2">
                       <Award className="w-4 h-4" />
-                      <span>Check Scholarships</span>
+                      <span>{t('button_check_scholarships')}</span>
                     </Button>
                   </Link>
                 </div>
@@ -375,12 +379,12 @@ export function QuizResults({ results }: QuizResultsProps) {
           <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
             <CardContent className="p-6 text-center">
               <MapPin className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Explore Colleges</h3>
+              <h3 className="font-semibold mb-2">{t('action_explore_colleges_title')}</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Find the perfect college from 142 government institutions in J&K
+                {t('action_explore_colleges_desc')}
               </p>
               <Link to="/colleges">
-                <Button variant="outline" size="sm">Explore Now</Button>
+                <Button variant="outline" size="sm">{t('action_explore_now')}</Button>
               </Link>
             </CardContent>
           </Card>
@@ -388,12 +392,12 @@ export function QuizResults({ results }: QuizResultsProps) {
           <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <CardContent className="p-6 text-center">
               <Award className="w-12 h-12 text-green-600 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Apply for Scholarships</h3>
+              <h3 className="font-semibold mb-2">{t('action_apply_scholarships_title')}</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Check eligibility for PMSSS, NSP and state scholarships
+                {t('action_apply_scholarships_desc')}
               </p>
               <Link to="/scholarships">
-                <Button variant="outline" size="sm">Check Now</Button>
+                <Button variant="outline" size="sm">{t('action_check_now')}</Button>
               </Link>
             </CardContent>
           </Card>
@@ -401,11 +405,11 @@ export function QuizResults({ results }: QuizResultsProps) {
           <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
             <CardContent className="p-6 text-center">
               <Users className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Get Guidance</h3>
+              <h3 className="font-semibold mb-2">{t('action_get_guidance_title')}</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Chat with our AI career counselor for personalized advice
+                {t('action_get_guidance_desc')}
               </p>
-              <Button variant="outline" size="sm">Chat Now</Button>
+              <Button variant="outline" size="sm">{t('action_chat_now')}</Button>
             </CardContent>
           </Card>
         </motion.div>
