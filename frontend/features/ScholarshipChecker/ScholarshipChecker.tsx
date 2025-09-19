@@ -111,7 +111,7 @@ const scholarships: Scholarship[] = [
   }
 ];
 
-export function ScholarshipsChecker() {
+export function ScholarshipChecker() {
   return (
     <div className="p-4 md:p-6 space-y-8 bg-gray-50 min-h-screen">
       <motion.div
