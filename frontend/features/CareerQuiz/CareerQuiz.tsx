@@ -202,7 +202,7 @@ export function CareerQuiz() {
                           {careerPaths[result].jobs.map(job => <li key={job}>{job}</li>)}
                         </ul>
                       </div>
-                    </> 
+                    </div> 
                   ) : (
                     <p className="text-gray-600">No specific recommendation could be made. Please try the quiz again!</p>
                   )}
