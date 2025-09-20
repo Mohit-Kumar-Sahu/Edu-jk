@@ -5,7 +5,7 @@ import { AuthPage } from './components/AuthPage';
 import { CareerQuiz } from './features/CareerQuiz/CareerQuiz';
 import { CollegeLocator } from './features/CollegeLocator/CollegeLocator';
 import { ScholarshipChecker } from './features/ScholarshipChecker/ScholarshipChecker';
-import { ProfilePage } from './features/ProfileManagement/ProfileManagement';
+import  ProfileManagement  from './features/ProfileManagement/ProfileManagement';
 import { SkillGapCourses } from './features/SkillGapCourses/SkillGapCourses';
 import { QuizResults } from './components/QuizResults';
 import Gamification from './features/Gamification/Gamification';
