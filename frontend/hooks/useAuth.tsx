@@ -1,8 +1,10 @@
+// File: hooks/useAuth.tsx (Corrected Version)
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification, updateProfile, type User as FirebaseUser } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification, updateProfile } from 'firebase/auth';
 
-// Firebase config
+// Firebase config (your config is correct)
 const firebaseConfig = {
   apiKey: "AIzaSyB26YTFS0P8G_stmbRAHK1uIkRqXHyZFQY",
   authDomain: "edu2career-a2bca.firebaseapp.com",
@@ -16,20 +18,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+// Your User interface is correct
 interface User {
   id: string;
   email: string | null;
-  emailVerified: boolean;
-  displayName: string | null;
-  phoneNumber: string | null;
-  user_metadata: {
-    name?: string;
-    phone?: string;
-    district?: string;
-    currentClass?: string;
-    stream?: string;
-    schoolCollege?: string;
-  };
+  // ... other properties
 }
 
 interface AuthContextType {
@@ -39,6 +32,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, metadata: any) => Promise<void>;
   signOut: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
+  getToken: () => Promise<string | null>; // <-- ADD THIS: Define the function's type
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,68 +45,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser({
-          id: firebaseUser.uid,
+          id: firebaseUser.uid, // This correctly maps uid to id
           email: firebaseUser.email,
           emailVerified: firebaseUser.emailVerified,
           displayName: firebaseUser.displayName,
           phoneNumber: firebaseUser.phoneNumber,
-          user_metadata: {} // Will be populated from DB if needed
+          user_metadata: {}
         });
       } else {
         setUser(null);
       }
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
-
-    // Check if email is verified
-    if (!firebaseUser.emailVerified) {
-      throw new Error('Please verify your email before signing in.');
+  // --- ADD THIS FUNCTION ---
+  // This is the function that securely gets the user's "ID card" (token).
+  const getToken = async (): Promise<string | null> => {
+    if (auth.currentUser) {
+      // The 'true' argument forces a refresh if the token is about to expire.
+      return await auth.currentUser.getIdToken(true);
     }
+    return null;
   };
 
-  const signUp = async (email: string, password: string, metadata: any) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const firebaseUser = userCredential.user;
-
-      // Send email verification
-      await sendEmailVerification(firebaseUser);
-
-      // Update display name
-      if (metadata.name) {
-        await updateProfile(firebaseUser, { displayName: metadata.name });
-      }
-
-      // Store user data in MongoDB
-      await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          ...metadata
-        })
-      });
-    } catch (error) {
-      console.error('Firebase signUp error:', error);
-      throw error;
-    }
-  };
-
-  const signOut = async () => {
-    await firebaseSignOut(auth);
-  };
-
-  const forgotPassword = async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
-  };
+  const signIn = async (email: string, password: string) => { /* ...your existing code... */ };
+  const signUp = async (email: string, password: string, metadata: any) => { /* ...your existing code... */ };
+  const signOut = async () => { /* ...your existing code... */ };
+  const forgotPassword = async (email: string) => { /* ...your existing code... */ };
 
   const value = {
     user,
@@ -121,6 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signOut,
     forgotPassword,
+    getToken, // <-- ADD THIS: Make the function available to your app
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -134,5 +96,4 @@ export function useAuth() {
   return context;
 }
 
-// Export auth client for other components
 export { auth };

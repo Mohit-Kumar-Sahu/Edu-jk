@@ -1,4 +1,6 @@
-import React from 'react';
+// File: src/components/Dashboard.tsx (Fully Modified Version)
+
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { 
@@ -7,9 +9,7 @@ import {
   MapPin, 
   Award, 
   FileText, 
-  Bell,
   Target,
-  Users,
   BookOpen,
   Calendar,
   ChevronRight,
@@ -26,58 +26,86 @@ interface DashboardProps {
   quizResults: any;
 }
 
+// Define a TypeScript interface for the structure of our fetched profile data.
+// This helps prevent bugs by ensuring we use the correct property names.
+interface ProfileInfo {
+  name?: string;
+  phone?: string;
+  district?: string;
+  currentClass?: string;
+  stream?: string;
+  email?: string; // It's good practice to include all expected fields.
+  [key: string]: any; // Allows for any other properties that might come from the API.
+}
+
 export function Dashboard({ quizResults }: DashboardProps) {
-  const { user } = useAuth();
+  // 1. Get the 'getToken' function and manage new state variables.
+  const { user, getToken } = useAuth();
   const { t } = useLocalization();
-
-  // Assuming these keys and values now exist in your localization file
-  const notifications = [
-    { id: 1, title: t("dashboard.notification_cuet_title"), type: "exam", urgent: true },
-    { id: 2, title: t("dashboard.notification_pmsss_title"), type: "scholarship", urgent: false },
-    { id: 3, title: t("dashboard.notification_college_title"), type: "info", urgent: false }
-  ];
-
-  const quickActions = [
-    {
-      title: t("dashboard.takeQuiz"),
-      description: t("dashboard.takeQuiz_desc"),
-      icon: <Target className="w-6 h-6" />,
-      link: "/quiz",
-      color: "bg-blue-500",
-      completed: !!quizResults
-    },
-    {
-      title: t("dashboard.findColleges"),
-      description: t("dashboard.findColleges_desc"),
-      icon: <MapPin className="w-6 h-6" />,
-      link: "/colleges",
-      color: "bg-green-500",
-      completed: false
-    },
-    {
-      title: t("dashboard.applyScholarships"),
-      description: t("dashboard.applyScholarships_desc"),
-      icon: <Award className="w-6 h-6" />,
-      link: "/scholarships",
-      color: "bg-orange-500",
-      completed: false
-    },
-    {
-      title: t("dashboard.buildResume"),
-      description: t("dashboard.buildResume_desc"),
-      icon: <FileText className="w-6 h-6" />,
-      link: "/resume",
-      color: "bg-purple-500",
-      completed: false
-    }
-  ];
-
-  const upcomingDeadlines = [
-    { name: t("dashboard.deadline_cuet_name"), date: "March 15, 2024", type: t("dashboard.deadline_exam_type") },
-    { name: t("dashboard.deadline_pmsss_name"), date: "March 20, 2024", type: t("dashboard.deadline_scholarship_type") },
-    { name: t("dashboard.deadline_jee_name"), date: "March 25, 2024", type: t("dashboard.deadline_exam_type") }
-  ];
   
+  // State to hold the live profile data fetched from the database.
+  const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
+  // State to show a loading message while data is being fetched.
+  const [loading, setLoading] = useState(true);
+
+  // 2. Fetch the user's live profile data when the component loads.
+  useEffect(() => {
+    async function fetchDashboardProfile() {
+      // We can't fetch data without a logged-in user and the getToken function.
+      if (!user || !getToken) {
+        setLoading(false); // Stop loading if there's no user.
+        return;
+      }
+      
+      try {
+        const token = await getToken();
+        const response = await fetch('/api/profile/me', {
+          headers: {
+            'Authorization': `Bearer ${token}` // Send the auth token for verification.
+          }
+        });
+
+        if (!response.ok) {
+          // If the profile doesn't exist in the DB (e.g., a new user),
+          // we'll use the basic info from the auth object as a fallback.
+          console.warn('Could not fetch profile for dashboard, using default auth info.');
+          setProfileInfo({ name: user.displayName || 'Student' });
+          return;
+        }
+
+        const data: ProfileInfo = await response.json();
+        setProfileInfo(data); // Store the fetched live data in our state.
+      } catch (error) {
+        console.error("Failed to fetch profile for dashboard:", error);
+        // In case of a network error, also use fallback data.
+        setProfileInfo({ name: user.displayName || 'Student' });
+      } finally {
+        setLoading(false); // Stop the loading indicator.
+      }
+    }
+
+    fetchDashboardProfile();
+  }, [user, getToken]); // This code re-runs if the user logs in or out.
+
+  // 3. Update the profile completion logic to use the new, live data.
+  const profileCompletion = () => {
+    // If profileInfo hasn't loaded yet, the completion is 0%.
+    if (!profileInfo) return 0;
+
+    const fields = [
+      profileInfo.name,
+      user?.email, // Email is reliable from the core 'user' object.
+      profileInfo.phone,
+      profileInfo.district,
+      profileInfo.currentClass,
+      profileInfo.stream
+    ];
+    // Count how many of the fields are not empty.
+    const completed = fields.filter(field => field && String(field).trim() !== '').length;
+    return Math.round((completed / fields.length) * 100);
+  };
+
+  // --- No changes needed for the functions and data below ---
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return t("dashboard.greeting_morning");
@@ -85,18 +113,23 @@ export function Dashboard({ quizResults }: DashboardProps) {
     return t("dashboard.greeting_evening");
   };
 
-  const profileCompletion = () => {
-    const fields = [
-      user?.user_metadata?.name,
-      user?.email,
-      user?.user_metadata?.phone,
-      user?.user_metadata?.district,
-      user?.user_metadata?.currentClass,
-      user?.user_metadata?.stream
-    ];
-    const completed = fields.filter(field => field).length;
-    return Math.round((completed / fields.length) * 100);
-  };
+  const quickActions = [
+    { title: t("dashboard.takeQuiz"), description: t("dashboard.takeQuiz_desc"), icon: <Target className="w-6 h-6" />, link: "/quiz", color: "bg-blue-500", completed: !!quizResults },
+    { title: t("dashboard.findColleges"), description: t("dashboard.findColleges_desc"), icon: <MapPin className="w-6 h-6" />, link: "/colleges", color: "bg-green-500", completed: false },
+    { title: t("dashboard.applyScholarships"), description: t("dashboard.applyScholarships_desc"), icon: <Award className="w-6 h-6" />, link: "/scholarships", color: "bg-orange-500", completed: false },
+    { title: t("dashboard.buildResume"), description: t("dashboard.buildResume_desc"), icon: <FileText className="w-6 h-6" />, link: "/resume", color: "bg-purple-500", completed: false }
+  ];
+
+  const upcomingDeadlines = [
+    { name: t("dashboard.deadline_cuet_name"), date: "March 15, 2026", type: t("dashboard.deadline_exam_type") },
+    { name: t("dashboard.deadline_pmsss_name"), date: "March 20, 2026", type: t("dashboard.deadline_scholarship_type") },
+    { name: t("dashboard.deadline_jee_name"), date: "March 25, 2026", type: t("dashboard.deadline_exam_type") }
+  ];
+
+  // Show a loading message while we're fetching the user's data.
+  if (loading) {
+    return <div className="p-6 text-center text-gray-600">Loading your dashboard...</div>;
+  }
 
   return (
     <div className="p-4 md:p-6 space-y-6">
@@ -108,18 +141,15 @@ export function Dashboard({ quizResults }: DashboardProps) {
       >
         <div className="flex items-center justify-between">
           <div>
+            {/* 4. Update the welcome message to use the live name. */}
             <h1 className="text-2xl md:text-3xl font-bold mb-2">
-              {getGreeting()}, {user?.user_metadata?.name || t("dashboard.student")}! 👋
+              {getGreeting()}, {profileInfo?.name || t("dashboard.student")}! 👋
             </h1>
-            <p className="text-blue-100 mb-4">
-              {t("dashboard.subtitle")} {/* Corrected Key */}
-            </p>
+            <p className="text-blue-100 mb-4">{t("dashboard.subtitle")}</p>
             {quizResults && (
               <div className="flex items-center space-x-2">
                 <Star className="w-5 h-5 text-yellow-300" />
-                <span className="text-blue-100">
-                  {t("dashboard.quiz_score", { score: quizResults.totalScore || t("dashboard.completed") })}
-                </span>
+                <span className="text-blue-100">{t("dashboard.quiz_score", { score: quizResults.totalScore || t("dashboard.completed") })}</span>
               </div>
             )}
           </div>
@@ -131,12 +161,8 @@ export function Dashboard({ quizResults }: DashboardProps) {
         </div>
       </motion.div>
 
-      {/* Profile Completion */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
+      {/* Profile Completion (This section now displays the live, accurate percentage) */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
@@ -145,9 +171,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
                 {profileCompletion()}%
               </Badge>
             </CardTitle>
-            <CardDescription>
-              {t("dashboard.profile_completion_subtitle")}
-            </CardDescription>
+            <CardDescription>{t("dashboard.profile_completion_subtitle")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -165,31 +189,17 @@ export function Dashboard({ quizResults }: DashboardProps) {
       </motion.div>
 
       {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
         <h2 className="text-xl font-semibold mb-4">{t("dashboard.quickActions")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {quickActions.map((action, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
+            <motion.div key={index} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link to={action.link}>
                 <Card className="relative overflow-hidden hover:shadow-lg transition-shadow">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
-                      <div className={`p-3 rounded-lg ${action.color} text-white`}>
-                        {action.icon}
-                      </div>
-                      {action.completed && (
-                        <Badge variant="default" className="bg-green-500">
-                          {t("dashboard.badge_done")}
-                        </Badge>
-                      )}
+                      <div className={`p-3 rounded-lg ${action.color} text-white`}>{action.icon}</div>
+                      {action.completed && <Badge variant="default" className="bg-green-500">{t("dashboard.badge_done")}</Badge>}
                     </div>
                     <h3 className="font-semibold mb-1">{action.title}</h3>
                     <p className="text-sm text-gray-600 mb-3">{action.description}</p>
