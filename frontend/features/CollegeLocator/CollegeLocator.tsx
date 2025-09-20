@@ -23,6 +23,7 @@ import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { MapView } from '../../components/MapView';// Make sure the path to MapView is correct
 
 interface College {
   id: string;
@@ -43,180 +44,74 @@ interface College {
   distance?: number;
 }
 
-// Hardcoded mock data with 10 colleges
-const mockColleges: College[] = [
-  {
-    id: '1',
-    'College Name': 'Govt. College for Women, M.A. Road',
-    District: 'Srinagar',
-    'Level (UG/PG/Both)': 'Both',
-    naacGrade: 'A+',
-    affiliation: 'Cluster University Srinagar',
-    streams: ['Arts', 'Science', 'Commerce'],
-    totalSeats: 1200,
-    facultyCount: 150,
-    facilities: ['Library', 'Hostel', 'Auditorium', 'Lab'],
-    website: 'https://gcwmaroad.ac.in/',
-    email: 'info@gcwmaroad.ac.in',
-    phone: '+91-1234567890',
-    latitude: 34.0886,
-    longitude: 74.8080,
-  },
-  {
-    id: '2',
-    'College Name': 'Govt. Degree College, Bemina',
-    District: 'Srinagar',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'A',
-    affiliation: 'Cluster University Srinagar',
-    streams: ['Science', 'Commerce'],
-    totalSeats: 1000,
-    facultyCount: 120,
-    facilities: ['Sports', 'Hostel', 'Canteen'],
-    website: 'https://gdcbemina.edu.in/',
-    email: 'info@gdcbemina.edu.in',
-    phone: '+91-9876543210',
-    latitude: 34.0845,
-    longitude: 74.7677,
-  },
-  {
-    id: '3',
-    'College Name': 'Govt. Gandhi Memorial Science College',
-    District: 'Jammu',
-    'Level (UG/PG/Both)': 'Both',
-    naacGrade: 'A++',
-    affiliation: 'University of Jammu',
-    streams: ['Science'],
-    totalSeats: 2000,
-    facultyCount: 200,
-    facilities: ['Library', 'Auditorium', 'Lab', 'Gym'],
-    website: 'https://ggmsc.in/',
-    email: 'contact@ggmsc.in',
-    phone: '+91-1234512345',
-    latitude: 32.7266,
-    longitude: 74.8570,
-  },
-  {
-    id: '4',
-    'College Name': 'Govt. Degree College, Baramulla',
-    District: 'Baramulla',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'B+',
-    affiliation: 'University of Kashmir',
-    streams: ['Arts', 'Science', 'Commerce'],
-    totalSeats: 800,
-    facultyCount: 90,
-    facilities: ['Library', 'Sports', 'Hostel'],
-    website: 'https://gdcbaramulla.in/',
-    email: 'info@gdcbaramulla.in',
-    phone: '+91-9988776655',
-    latitude: 34.2045,
-    longitude: 74.3644,
-  },
-  {
-    id: '5',
-    'College Name': 'Govt. Degree College, Anantnag',
-    District: 'Anantnag',
-    'Level (UG/PG/Both)': 'Both',
-    naacGrade: 'A',
-    affiliation: 'University of Kashmir',
-    streams: ['Arts', 'Science', 'Commerce'],
-    totalSeats: 1500,
-    facultyCount: 160,
-    facilities: ['Library', 'Hostel', 'Auditorium'],
-    website: 'https://gdcanantnag.edu.in/',
-    email: 'contact@gdcanantnag.edu.in',
-    phone: '+91-1932222345',
-    latitude: 33.7317,
-    longitude: 75.1437,
-  },
-  {
-    id: '6',
-    'College Name': 'Govt. Degree College, Udhampur',
-    District: 'Udhampur',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'B++',
-    affiliation: 'University of Jammu',
-    streams: ['Science', 'Commerce'],
-    totalSeats: 900,
-    facultyCount: 100,
-    facilities: ['Sports', 'Lab', 'Canteen'],
-    website: 'https://gdcudhampur.ac.in/',
-    email: 'info@gdcudhampur.ac.in',
-    phone: '+91-1992270725',
-    latitude: 32.9248,
-    longitude: 75.1472,
-  },
-  {
-    id: '7',
-    'College Name': 'Govt. Degree College, Kathua',
-    District: 'Kathua',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'A',
-    affiliation: 'University of Jammu',
-    streams: ['Arts', 'Commerce'],
-    totalSeats: 1100,
-    facultyCount: 115,
-    facilities: ['Library', 'Canteen'],
-    website: 'https://gdckathua.edu.in/',
-    email: 'chauhanvikrant133@gmail.com',
-    phone: '+916261274005',
-    latitude: 32.3855,
-    longitude: 75.5226,
-  },
-  {
-    id: '8',
-    'College Name': 'Govt. Degree College, Poonch',
-    District: 'Poonch',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'B+',
-    affiliation: 'University of Jammu',
-    streams: ['Arts', 'Science'],
-    totalSeats: 700,
-    facultyCount: 80,
-    facilities: ['Sports', 'Hostel'],
-    website: 'https://gdcpoonch.in/',
-    email: 'info@gdcpoonch.in',
-    phone: '+91-1965220677',
-    latitude: 33.7663,
-    longitude: 74.0934,
-  },
-  {
-    id: '9',
-    'College Name': 'Govt. Degree College, Budgam',
-    District: 'Budgam',
-    'Level (UG/PG/Both)': 'UG',
-    naacGrade: 'B',
-    affiliation: 'University of Kashmir',
-    streams: ['Arts', 'Science'],
-    totalSeats: 950,
-    facultyCount: 110,
-    facilities: ['Library', 'Auditorium'],
-    website: 'https://gdcbudgam.edu.in/',
-    email: 'info@gdcbudgam.edu.in',
-    phone: '+91-1951255432',
-    latitude: 34.0279,
-    longitude: 74.6543,
-  },
-  {
-    id: '10',
-    'College Name': 'Govt. College of Education, Jammu',
-    District: 'Jammu',
-    'Level (UG/PG/Both)': 'PG',
-    naacGrade: 'A',
-    affiliation: 'University of Jammu',
-    streams: ['Education'],
-    totalSeats: 500,
-    facultyCount: 60,
-    facilities: ['Library', 'Auditorium'],
-    website: 'https://gcejammu.ac.in/',
-    email: 'gcejammu@gmail.com',
-    phone: '+91-1912582877',
-    latitude: 32.7266,
-    longitude: 74.8570,
-  },
-];
+// Helper function to create a college object with placeholder data
+const createCollege = (id: string, name: string, lat: number, lng: number, district: string): College => ({
+  id,
+  'College Name': name,
+  latitude: lat,
+  longitude: lng,
+  District: district,
+  'Level (UG/PG/Both)': 'UG', // Placeholder
+  streams: ['Arts', 'Science', 'Commerce'], // Placeholder
+  facilities: ['Library', 'Sports Complex'], // Placeholder
+  naacGrade: 'A', // Placeholder
+  affiliation: 'Govt. Affiliated', // Placeholder
+  totalSeats: 800, // Placeholder
+  facultyCount: 75, // Placeholder
+});
 
+// Cleaned and merged college data you provided
+const mockColleges: College[] = [
+    // Original rich data
+    { id: '1', 'College Name': 'Govt. College for Women, M.A. Road', District: 'Srinagar', 'Level (UG/PG/Both)': 'Both', naacGrade: 'A+', affiliation: 'Cluster University Srinagar', streams: ['Arts', 'Science', 'Commerce'], totalSeats: 1200, facultyCount: 150, facilities: ['Library', 'Hostel', 'Auditorium', 'Lab'], website: 'https://gcwmaroad.ac.in/', email: 'info@gcwmaroad.ac.in', phone: '+91-1234567890', latitude: 34.0886, longitude: 74.8080 },
+    { id: '2', 'College Name': 'Govt. Degree College, Bemina', District: 'Srinagar', 'Level (UG/PG/Both)': 'UG', naacGrade: 'A', affiliation: 'Cluster University Srinagar', streams: ['Science', 'Commerce'], totalSeats: 1000, facultyCount: 120, facilities: ['Sports', 'Hostel', 'Canteen'], website: 'https://gdcbemina.edu.in/', email: 'info@gdcbemina.edu.in', phone: '+91-9876543210', latitude: 34.0845, longitude: 74.7677 },
+    { id: '3', 'College Name': 'Govt. Gandhi Memorial Science College', District: 'Jammu', 'Level (UG/PG/Both)': 'Both', naacGrade: 'A++', affiliation: 'University of Jammu', streams: ['Science'], totalSeats: 2000, facultyCount: 200, facilities: ['Library', 'Auditorium', 'Lab', 'Gym'], website: 'https://ggmsc.in/', email: 'contact@ggmsc.in', phone: '+91-1234512345', latitude: 32.7266, longitude: 74.8570 },
+    { id: '4', 'College Name': 'Govt. Degree College, Baramulla', District: 'Baramulla', 'Level (UG/PG/Both)': 'UG', naacGrade: 'B+', affiliation: 'University of Kashmir', streams: ['Arts', 'Science', 'Commerce'], totalSeats: 800, facultyCount: 90, facilities: ['Library', 'Sports', 'Hostel'], website: 'https://gdcbaramulla.in/', email: 'info@gdcbaramulla.in', phone: '+91-9988776655', latitude: 34.197, longitude: 74.363 },
+    { id: '5', 'College Name': 'Govt. Degree College, Anantnag', District: 'Anantnag', 'Level (UG/PG/Both)': 'Both', naacGrade: 'A', affiliation: 'University of Kashmir', streams: ['Arts', 'Science', 'Commerce'], totalSeats: 1500, facultyCount: 160, facilities: ['Library', 'Hostel', 'Auditorium'], website: 'https://gdcanantnag.edu.in/', email: 'contact@gdcanantnag.edu.in', phone: '+91-1932222345', latitude: 33.729, longitude: 75.149 },
+    // Data from your new list (cleaned and formatted)
+    createCollege('101', 'GDC Sopore', 34.300, 74.470, 'Baramulla'),
+    createCollege('102', 'GDC Bijbehara', 33.7925, 75.1070, 'Anantnag'),
+    createCollege('103', 'Govt. Degree College Kilhotran', 33.16395, 76.25338, 'Doda'),
+    createCollege('104', 'Govt. Degree College Thathri', 33.14528, 75.79111, 'Doda'),
+    createCollege('105', 'Govt. Degree College Bhaderwah', 32.983025, 75.710983, 'Doda'),
+    createCollege('106', 'Govt. Degree College Doda', 33.1492, 75.5475, 'Doda'),
+    createCollege('107', 'Govt. Degree College Kastigarh', 33.146479, 75.548858, 'Doda'),
+    createCollege('108', 'GCW Gandhi Nagar Jammu', 32.7104, 74.85797, 'Jammu'),
+    createCollege('109', 'Govt. College for Women Bhagwati Nagar Jammu', 32.728726, 74.836823, 'Jammu'),
+    createCollege('110', 'Govt. College of Education Jammu', 32.730092, 74.84651, 'Jammu'),
+    createCollege('111', 'Govt. College of Engineering & Technology Jammu', 32.730092, 74.84651, 'Jammu'),
+    createCollege('112', 'Govt. Degree College Bishnah', 32.6108, 74.8595, 'Jammu'),
+    createCollege('113', 'Govt. Degree College Paloura', 32.7420, 74.8580, 'Jammu'),
+    createCollege('114', 'Govt. Degree College Akhnoor', 32.9980, 75.5070, 'Jammu'),
+    createCollege('115', 'Govt. Degree College R.S Pura', 32.6400, 74.8500, 'Jammu'),
+    createCollege('116', 'Govt. Maulana Azad Memorial College, Jammu', 32.7300, 74.8600, 'Jammu'),
+    createCollege('117', 'Govt. SPMR College of Commerce', 32.7300, 74.8600, 'Jammu'),
+    createCollege('118', 'Govt. Women College, Parade Jammu', 32.7300, 74.8600, 'Jammu'),
+    createCollege('119', 'Govt. Degree College for Women Kathua', 32.6000, 75.5000, 'Kathua'),
+    createCollege('120', 'Govt. Degree College Hiranagar', 32.5500, 75.6000, 'Kathua'),
+    createCollege('121', 'Govt. Degree College Kathua', 32.3855, 75.5226, 'Kathua'),
+    createCollege('122', 'Govt. Degree College Kishtwar', 33.0500, 75.7000, 'Kishtwar'),
+    createCollege('123', 'Govt. Degree College Surankote', 33.6000, 74.5800, 'Poonch'),
+    createCollege('124', 'Shri Krishan Chander Govt. Degree College Poonch', 33.7646, 74.0945, 'Poonch'),
+    createCollege('125', 'Govt. Degree College Thanamandi', 33.5630, 74.4270, 'Rajouri'),
+    createCollege('126', 'Govt. Degree College Rajouri', 33.3760, 74.3050, 'Rajouri'),
+    createCollege('127', 'Govt. Degree College Banihal', 33.8270, 75.2200, 'Ramban'),
+    createCollege('128', 'Govt. Degree College Ramban', 33.3180, 75.0460, 'Ramban'),
+    createCollege('129', 'Govt. Degree College Reasi', 33.0560, 75.4720, 'Reasi'),
+    createCollege('130', 'Govt. Degree College Samba', 32.5020, 75.1160, 'Samba'),
+    createCollege('131', 'Govt. Degree College Boys Udhampur', 32.9269, 75.1255, 'Udhampur'),
+    createCollege('132', 'Govt. Women College, Udhampur', 32.9260, 75.1370, 'Udhampur'),
+    createCollege('133', 'Government Degree College Bandipora', 34.4190, 74.6510, 'Bandipora'),
+    createCollege('134', 'Government Degree College Budgam', 34.0279, 74.6543, 'Budgam'),
+    createCollege('135', 'Government Degree College Ganderbal', 34.2333, 74.7833, 'Ganderbal'),
+    createCollege('136', 'Government Degree College Kulgam', 33.6425, 75.0208, 'Kulgam'),
+    createCollege('137', 'Government Degree College Kupwara (Boys)', 34.5262, 74.2572, 'Kupwara'),
+    createCollege('138', 'Government Degree College Pulwama', 33.8741, 74.9197, 'Pulwama'),
+    createCollege('139', 'Government Degree College Shopian', 33.7146, 74.8319, 'Shopian'),
+    createCollege('140', 'Amar Singh College Srinagar', 34.0728, 74.8052, 'Srinagar'),
+    createCollege('141', 'Islamia College of Science and Commerce Srinagar', 34.1030, 74.8015, 'Srinagar'),
+    createCollege('142', 'Sri Pratap College Srinagar', 34.0833, 74.7933, 'Srinagar'),
+];
 
 export function CollegeLocator() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -226,12 +121,9 @@ export function CollegeLocator() {
   const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
   const [savedColleges, setSavedColleges] = useState<string[]>([]);
   const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
-
   const [colleges, setColleges] = useState<College[]>([]);
 
   useEffect(() => {
-    // In a real app, you would fetch data here.
-    // For this example, we use the mock data directly.
     setColleges(mockColleges);
 
     if (!navigator.geolocation) {
@@ -251,10 +143,9 @@ export function CollegeLocator() {
     );
   }, []);
 
-  // Haversine formula to calculate distance between two lat/lng points in km
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const toRad = (value: number) => (value * Math.PI) / 180;
-    const R = 6371; // Earth radius in km
+    const R = 6371;
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
     const a =
@@ -265,23 +156,16 @@ export function CollegeLocator() {
     return R * c;
   };
 
-  // Add distance to each college if user location is available
   const collegesWithDistance = userLocation
     ? colleges.map(college => {
         if (college.latitude && college.longitude) {
-          const distance = calculateDistance(
-            userLocation.latitude,
-            userLocation.longitude,
-            college.latitude,
-            college.longitude
-          );
+          const distance = calculateDistance(userLocation.latitude, userLocation.longitude, college.latitude, college.longitude);
           return { ...college, distance };
         }
         return college;
       })
     : colleges;
 
-  // Sort colleges by distance if available
   const sortedColleges = collegesWithDistance.sort((a, b) => {
     if (a.distance !== undefined && b.distance !== undefined) {
       return a.distance - b.distance;
@@ -309,71 +193,46 @@ export function CollegeLocator() {
     );
   };
 
-  const getNAACColor = (grade: string) => {
+  const getNAACColor = (grade?: string) => {
+    if (!grade) return 'bg-gray-100 text-gray-800';
     if (grade.startsWith('A')) return 'bg-green-100 text-green-800';
     if (grade.startsWith('B')) return 'bg-blue-100 text-blue-800';
     return 'bg-gray-100 text-gray-800';
   };
 
   const getStreamColor = (stream: string) => {
-    const colors = {
+    const colors: { [key: string]: string } = {
       'Science': 'bg-blue-100 text-blue-800',
       'Commerce': 'bg-green-100 text-green-800',
       'Arts': 'bg-purple-100 text-purple-800'
     };
-    return colors[stream as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[stream] || 'bg-gray-100 text-gray-800';
   };
 
   return (
     <div className="p-4 md:p-6 space-y-6">
-      {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          J&K Government Colleges
-        </h1>
-        <p className="text-lg text-gray-600 mb-6">
-          Discover 142 government degree colleges across Jammu & Kashmir
-        </p>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">142</div>
-            <div className="text-sm text-gray-600">Total Colleges</div>
-          </div>
-          <div className="bg-green-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-green-600">20</div>
-            <div className="text-sm text-gray-600">Districts</div>
-          </div>
-          <div className="bg-purple-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">50+</div>
-            <div className="text-sm text-gray-600">Courses</div>
-          </div>
-          <div className="bg-orange-50 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-orange-600">Free</div>
-            <div className="text-sm text-gray-600">Application</div>
-          </div>
-        </div>
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">J&K College Finder</h1>
+        <p className="text-lg text-gray-600">Discover Government Degree Colleges Across Jammu & Kashmir</p>
       </motion.div>
 
-      {/* Search and Filters */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Search className="w-5 h-5" />
+              <Search className="w-5 h-5 text-gray-700" />
               <span>Find Your Perfect College</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Search Bar */}
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
@@ -384,25 +243,18 @@ export function CollegeLocator() {
               />
             </div>
 
-            {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Select value={selectedDistrict} onValueChange={setSelectedDistrict}>
-                <SelectTrigger>
-                  <SelectValue placeholder="District" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="District" /></SelectTrigger>
                 <SelectContent>
                   {districts.map((district) => (
-                    <SelectItem key={district} value={district}>
-                      {district === 'all' ? 'All Districts' : district}
-                    </SelectItem>
+                    <SelectItem key={district} value={district}>{district === 'all' ? 'All Districts' : district}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
 
               <Select value={selectedStream} onValueChange={setSelectedStream}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Stream" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="Stream" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Streams</SelectItem>
                   <SelectItem value="Science">Science</SelectItem>
@@ -412,46 +264,22 @@ export function CollegeLocator() {
               </Select>
 
               <Select value={selectedNAAC} onValueChange={setSelectedNAAC}>
-                <SelectTrigger>
-                  <SelectValue placeholder="NAAC Grade" />
-                </SelectTrigger>
+                <SelectTrigger><SelectValue placeholder="NAAC Grade" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Grades</SelectItem>
+                  <SelectItem value="A++">A++ Grade</SelectItem>
                   <SelectItem value="A+">A+ Grade</SelectItem>
                   <SelectItem value="A">A Grade</SelectItem>
+                  <SelectItem value="B++">B++ Grade</SelectItem>
                   <SelectItem value="B+">B+ Grade</SelectItem>
                   <SelectItem value="B">B Grade</SelectItem>
-                  <SelectItem value="C">C Grade</SelectItem>
                 </SelectContent>
               </Select>
-
-              <div className="flex space-x-2">
-                <Button 
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
-                  onClick={() => setViewMode('grid')}
-                  className="flex-1"
-                >
-                  Grid View
-                </Button>
-                <Button 
-                  variant={viewMode === 'map' ? 'default' : 'outline'}
-                  onClick={() => setViewMode('map')}
-                  className="flex-1"
-                >
-                  Map View
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-sm text-gray-600">
-              <span>Found {filteredColleges.length} colleges</span>
-              <span>{savedColleges.length} saved colleges</span>
             </div>
           </CardContent>
         </Card>
       </motion.div>
 
-      {/* View Toggle */}
       <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as 'grid' | 'map')}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="grid">Grid View</TabsTrigger>
@@ -459,119 +287,64 @@ export function CollegeLocator() {
         </TabsList>
 
         <TabsContent value="grid">
-          {/* College Grid */}
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+              <span>Showing {filteredColleges.length} of {colleges.length} colleges</span>
+              <span className="flex items-center"><Heart className="w-4 h-4 mr-1 text-red-500"/> {savedColleges.length} saved</span>
+          </div>
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            layout
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {filteredColleges.map((college, index) => (
               <motion.div
+                layout
                 key={college.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -2 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ delay: index * 0.05 }}
               >
-                <Card className="h-full hover:shadow-lg transition-shadow">
+                <Card className="h-full flex flex-col hover:shadow-lg transition-shadow duration-300">
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <CardTitle className="text-lg mb-2">{college['College Name']}</CardTitle>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <MapPin className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm text-gray-600">{college.District}</span>
+                      <div className="flex-1 pr-2">
+                        <CardTitle className="text-lg mb-1">{college['College Name']}</CardTitle>
+                        <div className="flex items-center space-x-2 text-sm text-gray-500">
+                          <MapPin className="w-4 h-4" />
+                          <span>{college.District}</span>
+                          {college.distance && (
+                            <>
+                              <span>•</span>
+                              <span>{college.distance.toFixed(1)} km away</span>
+                            </>
+                          )}
                         </div>
                       </div>
-                      <button
-                        onClick={() => toggleSaveCollege(college.id)}
-                        className={`p-2 rounded-full transition-colors ${
-                          savedColleges.includes(college.id)
-                            ? 'text-red-500 bg-red-50'
-                            : 'text-gray-400 hover:text-red-500'
-                        }`}
-                      >
-                        <Heart className={`w-5 h-5 ${savedColleges.includes(college.id) ? 'fill-current' : ''}`} />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Badge className={getNAACColor(college.naacGrade || 'Not Available')}>
-                        NAAC {college.naacGrade || 'Not Available'}
-                      </Badge>
-                      <Badge variant="outline">{college.affiliation || 'Government'}</Badge>
+                      <Button variant="ghost" size="icon" onClick={() => toggleSaveCollege(college.id)}>
+                        <Heart className={`w-5 h-5 transition-colors ${savedColleges.includes(college.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
+                      </Button>
                     </div>
                   </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    {/* Streams */}
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Streams Available:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {(college.streams || []).map((stream: string) => (
-                          <Badge key={stream} className={getStreamColor(stream)} variant="secondary">
-                            {stream}
-                          </Badge>
-                        ))}
-                      </div>
+                  <CardContent className="flex-grow flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                            <Badge className={getNAACColor(college.naacGrade)}>NAAC {college.naacGrade || 'N/A'}</Badge>
+                            <Badge variant="outline">{college.affiliation}</Badge>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                            {(college.streams || []).map((stream) => (
+                                <Badge key={stream} className={getStreamColor(stream)} variant="secondary">{stream}</Badge>
+                            ))}
+                        </div>
                     </div>
-
-                    {/* Quick Info */}
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="flex items-center space-x-2">
-                        <Users className="w-4 h-4 text-blue-500" />
-                        <span>{college.totalSeats || 'N/A'} seats</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <BookOpen className="w-4 h-4 text-green-500" />
-                        <span>{college.facultyCount || 'N/A'} faculty</span>
-                      </div>
-                    </div>
-
-                    {/* Facilities */}
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Facilities:</p>
-                      <div className="flex flex-wrap gap-1">
-                        {(college.facilities || []).slice(0, 3).map((facility: string) => (
-                          <Badge key={facility} variant="outline" className="text-xs">
-                            {facility}
-                          </Badge>
-                        ))}
-                        {(college.facilities || []).length > 3 && (
-                          <Badge variant="outline" className="text-xs">
-                            +{(college.facilities || []).length - 3} more
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Contact Info */}
-                    <div className="flex items-center justify-between pt-4 border-t">
-                      <div className="flex space-x-2">
-                        {college.website && (
-                          <a href={college.website} target="_blank" rel="noopener noreferrer" className="p-2 text-blue-600 hover:bg-blue-50 rounded-full">
-                            <Globe className="w-4 h-4" />
-                          </a>
-                        )}
-                        {college.email && (
-                          <a href={`mailto:${college.email}`} className="p-2 text-green-600 hover:bg-green-50 rounded-full">
-                            <Mail className="w-4 h-4" />
-                          </a>
-                        )}
-                        {college.phone && (
-                          <a href={`tel:${college.phone}`} className="p-2 text-orange-600 hover:bg-orange-50 rounded-full">
-                            <Phone className="w-4 h-4" />
-                          </a>
-                        )}
-                      </div>
-
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
-                          View Details
-                        </Button>
-                        <Button size="sm">
-                          Apply Now
-                        </Button>
+                    <div className="pt-3 border-t">
+                      <div className="flex items-center justify-between">
+                        <div className="flex space-x-1">
+                          {college.website && <Button asChild variant="outline" size="icon" className="h-8 w-8"><a href={college.website} target="_blank" rel="noopener noreferrer"><Globe className="w-4 h-4" /></a></Button>}
+                          {college.email && <Button asChild variant="outline" size="icon" className="h-8 w-8"><a href={`mailto:${college.email}`}><Mail className="w-4 h-4" /></a></Button>}
+                          {college.phone && <Button asChild variant="outline" size="icon" className="h-8 w-8"><a href={`tel:${college.phone}`}><Phone className="w-4 h-4" /></a></Button>}
+                        </div>
+                        <Button size="sm">Apply Now</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -582,27 +355,10 @@ export function CollegeLocator() {
         </TabsContent>
 
         <TabsContent value="map">
-          <Card>
-            <CardContent className="p-6">
-              <div className="h-96 bg-gray-100 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-700 mb-2">Interactive Map</h3>
-                  <p className="text-gray-500 mb-4">
-                    Map view will show all {filteredColleges.length} colleges with their exact locations
-                  </p>
-                  <Button variant="outline">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    Open in Google Maps
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <MapView colleges={filteredColleges} userLocation={userLocation} />
         </TabsContent>
       </Tabs>
 
-      {/* No Results */}
       {filteredColleges.length === 0 && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -610,10 +366,8 @@ export function CollegeLocator() {
           className="text-center py-12"
         >
           <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">No colleges found</h3>
-          <p className="text-gray-500 mb-4">
-            Try adjusting your search criteria or filters
-          </p>
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">No Colleges Found</h3>
+          <p className="text-gray-500 mb-4">Try adjusting your search or filter criteria.</p>
           <Button 
             variant="outline" 
             onClick={() => {
@@ -623,7 +377,7 @@ export function CollegeLocator() {
               setSelectedNAAC('all');
             }}
           >
-            Clear Filters
+            Clear All Filters
           </Button>
         </motion.div>
       )}
