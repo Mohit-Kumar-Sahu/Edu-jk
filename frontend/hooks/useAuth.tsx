@@ -1,10 +1,19 @@
-// File: hooks/useAuth.tsx (Corrected Version)
+// File: hooks/useAuth.tsx (Full, Corrected, and Final Version)
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged, sendPasswordResetEmail, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut as firebaseSignOut, 
+  onAuthStateChanged, 
+  sendPasswordResetEmail, 
+  sendEmailVerification, 
+  updateProfile 
+} from 'firebase/auth';
 
-// Firebase config (your config is correct)
+// Your Firebase configuration is correct and remains unchanged.
 const firebaseConfig = {
   apiKey: "AIzaSyB26YTFS0P8G_stmbRAHK1uIkRqXHyZFQY",
   authDomain: "edu2career-a2bca.firebaseapp.com",
@@ -15,16 +24,20 @@ const firebaseConfig = {
   measurementId: "G-7PWES2NN46"
 };
 
+// Initialize Firebase services
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Your User interface is correct
+// This interface defines the shape of our user object, based on Firebase's auth state.
 interface User {
-  id: string;
+  id: string; // Firebase's UID
   email: string | null;
-  // ... other properties
+  emailVerified: boolean;
+  displayName: string | null;
+  phoneNumber: string | null;
 }
 
+// This interface defines all the values and functions our AuthProvider will share.
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -32,49 +45,91 @@ interface AuthContextType {
   signUp: (email: string, password: string, metadata: any) => Promise<void>;
   signOut: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
-  getToken: () => Promise<string | null>; // <-- ADD THIS: Define the function's type
+  getToken: () => Promise<string | null>; // The crucial function to get the auth token
 }
 
+// Create the context that components will consume.
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// The AuthProvider component wraps your entire application to provide auth state.
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // This effect listens for changes in Firebase's authentication state.
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
+        // When a user logs in, create our simplified user object.
         setUser({
-          id: firebaseUser.uid, // This correctly maps uid to id
+          id: firebaseUser.uid,
           email: firebaseUser.email,
           emailVerified: firebaseUser.emailVerified,
           displayName: firebaseUser.displayName,
           phoneNumber: firebaseUser.phoneNumber,
-          user_metadata: {}
         });
       } else {
+        // When a user logs out, set the user to null.
         setUser(null);
       }
+      // We are finished checking the auth state.
       setLoading(false);
     });
+
+    // Clean up the listener when the component unmounts.
     return () => unsubscribe();
   }, []);
 
-  // --- ADD THIS FUNCTION ---
-  // This is the function that securely gets the user's "ID card" (token).
-  const getToken = async (): Promise<string | null> => {
+  // --- THIS IS THE KEY ADDITION ---
+  // This function gets the user's ID token, which is needed to authenticate with your backend.
+  // We wrap it in `useCallback` to make it stable and prevent re-renders in other components.
+  const getToken = useCallback(async (): Promise<string | null> => {
     if (auth.currentUser) {
-      // The 'true' argument forces a refresh if the token is about to expire.
+      // The 'true' argument forces a token refresh if the current one is expired.
       return await auth.currentUser.getIdToken(true);
     }
-    return null;
+    return null; // Return null if no user is logged in.
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const firebaseUser = userCredential.user;
+    if (!firebaseUser.emailVerified) {
+      throw new Error('Please verify your email before signing in.');
+    }
   };
 
-  const signIn = async (email: string, password: string) => { /* ...your existing code... */ };
-  const signUp = async (email: string, password: string, metadata: any) => { /* ...your existing code... */ };
-  const signOut = async () => { /* ...your existing code... */ };
-  const forgotPassword = async (email: string) => { /* ...your existing code... */ };
+  const signUp = async (email: string, password: string, metadata: any) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const firebaseUser = userCredential.user;
 
+    await sendEmailVerification(firebaseUser);
+
+    if (metadata.name) {
+      await updateProfile(firebaseUser, { displayName: metadata.name });
+    }
+
+    // This call to your backend creates the user's profile in MongoDB.
+    await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firebaseUid: firebaseUser.uid, // Use firebaseUid to match your backend model
+        email: firebaseUser.email,
+        ...metadata
+      })
+    });
+  };
+
+  const signOut = async () => {
+    await firebaseSignOut(auth);
+  };
+
+  const forgotPassword = async (email: string) => {
+    await sendPasswordResetEmail(auth, email);
+  };
+
+  // This is the "value" object that all other components in your app will receive.
   const value = {
     user,
     loading,
@@ -82,12 +137,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signOut,
     forgotPassword,
-    getToken, // <-- ADD THIS: Make the function available to your app
+    getToken, // We've added getToken here, making it available everywhere.
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// This is the custom hook that your components will use to easily access auth state.
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -96,4 +152,5 @@ export function useAuth() {
   return context;
 }
 
+// Export the auth instance if it's needed directly elsewhere.
 export { auth };
