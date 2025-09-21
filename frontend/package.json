@@ -72,7 +72,7 @@
     "vite": "^6.3.6"
   },
   "scripts": {
-    "api": "node backend/server.js",
+    "api": "node backend/server.ts",
     "dev": "vite",
     "build": "vite build",
     "dev:frontend": "vite",
