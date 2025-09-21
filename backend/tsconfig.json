@@ -1,4 +1,4 @@
-// File: backend/tsconfig.json
+// File: backend/tsconfig.json (Updated Version)
 
 {
   "compilerOptions": {
@@ -7,6 +7,7 @@
     "rootDir": "./",
     "outDir": "./dist",
     "esModuleInterop": true,
+    "resolveJsonModule": true, // <-- THIS IS THE FIX! Tells TypeScript to understand JSON files.
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true
