@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { Collection, MongoClient } from 'mongodb';
 import { authMiddleware } from './middleware/auth';
+import { admin } from './firebase-admin'; // <-- The Fix!
 
 type Variables = {
   uid: string; // 👈 tell Hono that c.get("uid") will return a string

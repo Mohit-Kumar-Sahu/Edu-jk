@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import * as admin from 'firebase-admin';
+import { admin } from './src/firebase-admin'; // <-- The Fix!
 
 const achievements = new Hono();
 
