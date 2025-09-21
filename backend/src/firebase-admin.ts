@@ -1,21 +1,26 @@
-// File: backend/src/firebase-admin.ts (Final, Production-Ready Version)
+// File: backend/src/firebase-admin.ts (Final, Most Robust Version)
 
 import * as admin from 'firebase-admin';
 
 if (!admin.apps.length) {
   try {
-    // 1. Get the secret JSON string from the environment variable we just created in Render.
+    // 1. Get the secret JSON string from the environment variable.
     const credsJson = process.env.FIREBASE_CREDENTIALS;
 
-    // 2. Safety check: If the variable doesn't exist, stop and throw an error.
     if (!credsJson) {
       throw new Error('FIREBASE_CREDENTIALS environment variable not set.');
     }
 
-    // 3. Parse the JSON string back into a usable object.
+    // 2. Parse the JSON string into an object.
     const serviceAccount = JSON.parse(credsJson);
 
-    // 4. Initialize Firebase with the credentials from the environment.
+    // --- THIS IS THE FINAL FIX ---
+    // 3. Find and "un-scramble" the private key's newline characters.
+    // This replaces the literal '\\n' text with actual newline characters '\n'.
+    // This is a common and necessary fix for many hosting environments.
+    serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+
+    // 4. Initialize Firebase with the corrected credentials.
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
@@ -24,8 +29,7 @@ if (!admin.apps.length) {
 
   } catch (error) {
     console.error("❌ [Firebase] FAILED to initialize Admin SDK:", error);
-    // We explicitly exit if Firebase can't initialize, as the app cannot run without it.
-    process.exit(1); 
+    process.exit(1);
   }
 }
 
