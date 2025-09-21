@@ -155,7 +155,12 @@
     "stats_ai_label": "دستیاب",
     "notification_cuet_title": "CUET 2024 درخواست کی آخری تاریخ قریب ہے۔",
     "notification_pmsss_title": "PMSSS 2024 درخواست کا دورانیہ اب کھل گیا ہے!",
-    "notification_college_title": "نیا کالج شامل کیا گیا: IIT جموں"
+    "notification_college_title": "نیا کالج شامل کیا گیا: IIT جموں",
+    "deadline_cuet_name": "CUET UG 2026 درخاس",
+    "deadline_pmsss_name": "PMSSS جۄم تہٕ کٔشیر سکالرشپ",
+    "deadline_jee_name": "JEE Main 2026 رجسٹریشن",
+    "deadline_exam_type": "امتحان درخاس",
+    "deadline_scholarship_type": "سکالرشپ"
   },
   "careerQuiz": {
     "title": "کیریئر کی تشخیص کا کوئز",

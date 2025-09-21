@@ -155,6 +155,11 @@
     "notification_cuet_title": "CUET 2024 Application Deadline is approaching.",
     "notification_pmsss_title": "PMSSS 2024 Application Window is now open!",
     "notification_college_title": "New College Added: IIT Jammu"
+    "deadline_cuet_name": "CUET UG 2026 Application",
+    "deadline_pmsss_name": "PMSSS J&K Scholarship",
+    "deadline_jee_name": "JEE Main 2026 Registration",
+    "deadline_exam_type": "Exam Application",
+    "deadline_scholarship_type": "Scholarship"
   },
   "careerQuiz": {
     "title": "Career Assessment Quiz",

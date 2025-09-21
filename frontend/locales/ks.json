@@ -154,7 +154,12 @@
     "stats_ai_label": "دَستیاب",
     "notification_cuet_title": "CUET 2024 دَرخاسَت چھُ اَتھ پَتہٕ پَتہٕ گٔژِھوِش.",
     "notification_pmsss_title": "PMSSS 2024 دَرخاسَتُک دور چُھہُ وٕتِیوٕش!",
-    "notification_college_title": "نئون کالج چُھہُ شٲمِل کٔرِتھ: IIT جموں"
+    "notification_college_title": "نئون کالج چُھہُ شٲمِل کٔرِتھ: IIT جموں",
+    "deadline_cuet_name": "CUET UG 2026 درخواست",
+    "deadline_pmsss_name": "PMSSS جموں و کشمیر اسکالرشپ",
+    "deadline_jee_name": "JEE Main 2026 رجسٹریشن",
+    "deadline_exam_type": "امتحان کی درخواست",
+    "deadline_scholarship_type": "اسکالرشپ"
   },
   "careerQuiz": {
     "title": "کیریئَر اَسیسِمَنت کُیِز",

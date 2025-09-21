@@ -103,6 +103,11 @@
     "passwordReset": "पासवर्ड रीसेट ईमेल भेजा गया"
   },
 "dashboard": {
+   "deadline_cuet_name": "सीयूईटी यूजी 2026 आवेदन",
+    "deadline_pmsss_name": "पीएमट्रिपलएस जम्मू-कश्मीर छात्रवृत्ति",
+    "deadline_jee_name": "जेईई मेन 2026 पंजीकरण",
+    "deadline_exam_type": "परीक्षा आवेदन",
+    "deadline_scholarship_type": "छात्रवृत्ति",
     "welcome": "एजुपाथ नेविगेटर में आपका स्वागत है",
     "subtitle": "आपका व्यक्तिगत करियर मार्गदर्शन प्लेटफ़ॉर्म",
     "quickActions": "त्वरित कार्य",
