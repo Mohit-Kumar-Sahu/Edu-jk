@@ -7,8 +7,8 @@ import LanguageSwitcher from '../components/LanguageSwitcher'; // Import the Lan
 
 // You will need to import your images and videos.
 // Make sure the paths are correct based on your project structure.
-import promoImage from '../images/image1.png'; 
-import statsImage from '../images/image2.png'; 
+import promoImage from '../images/image1.png';
+import statsImage from '../images/image2.png';
 import heroVideo from '../videos/video1.mp4';
 import ctaImage from '../images/image3.png';
 import videoChatbot from '../videos/video2.mp4';
