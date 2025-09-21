@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "../../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card";
+import { Badge } from "../../components/ui/badge";
 import { Briefcase, Microscope, Palette, Users, Building, DollarSign, GraduationCap, Star, BarChart3, Repeat } from 'lucide-react';
 
 // --- TYPE DEFINITIONS & CONSTANTS ---
@@ -151,14 +152,6 @@ const hardcodedQuestions: Question[] = [
   ]},
 ];
 
-// --- NEW: Color styles for the option buttons ---
-const optionColors = [
-    "bg-sky-100 text-sky-900 border-sky-200 hover:bg-sky-200 hover:border-sky-400",
-    "bg-teal-100 text-teal-900 border-teal-200 hover:bg-teal-200 hover:border-teal-400",
-    "bg-indigo-100 text-indigo-900 border-indigo-200 hover:bg-indigo-200 hover:border-indigo-400",
-    "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 hover:bg-fuchsia-200 hover:border-fuchsia-400",
-];
-
 // --- MAIN QUIZ COMPONENT ---
 
 export function CareerQuiz() {
@@ -196,10 +189,9 @@ export function CareerQuiz() {
   const progress = ((currentQuestion + 1) / hardcodedQuestions.length) * 100;
 
   return (
-    // NEW: More vibrant background gradient
-    <div className="p-4 md:p-6 min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-100 to-purple-100">
-      {/* NEW: Wider card for more space */}
-      <Card className="w-full max-w-5xl rounded-2xl shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
+    <div className="p-4 md:p-6 min-h-screen flex items-center justify-center bg-slate-100">
+      {/* CHANGED: Made the card narrower for a more focused, vertical layout */}
+      <Card className="w-full max-w-3xl rounded-2xl shadow-2xl bg-white/60 backdrop-blur-sm overflow-hidden border">
         <AnimatePresence mode="wait">
           {!showResult ? (
             <motion.div
@@ -209,36 +201,38 @@ export function CareerQuiz() {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
             >
-              {/* NEW: Increased padding for more breathing room */}
               <div className="p-8 md:p-12">
                 <CardHeader className="p-0 mb-8 text-center">
-                  <p className="text-md font-semibold text-blue-600 mb-2 tracking-wide">
+                  {/* NEW: Styled the progress text as a badge */}
+                  <Badge variant="outline" className="mb-4 mx-auto">
                     Question {currentQuestion + 1} of {hardcodedQuestions.length}
-                  </p>
-                  <CardTitle className="text-3xl md:text-4xl font-bold text-slate-800 leading-tight">
+                  </Badge>
+                  <CardTitle className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
                     {hardcodedQuestions[currentQuestion].questionText}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-0 grid grid-cols-1 md:grid-cols-2 gap-5">
+                {/* CHANGED: Switched to a single-column grid for options */}
+                <CardContent className="p-0 grid grid-cols-1 gap-4">
                   {hardcodedQuestions[currentQuestion].options.map((option, index) => (
-                    <motion.div key={option.optionId} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                    <motion.div key={option.optionId} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button
                         variant="outline"
-                        // NEW: Classes to fix text wrapping and apply colors
-                        className={`w-full h-auto text-base font-medium rounded-lg transition-all duration-200 shadow-sm text-left p-5 whitespace-normal ${optionColors[index % optionColors.length]}`}
+                        // NEW: Completely new styling for the option buttons
+                        className="w-full h-auto text-base font-medium rounded-xl transition-all duration-200 shadow-sm text-left p-4 whitespace-normal bg-slate-50 border border-slate-200 text-slate-700 hover:bg-blue-100 hover:border-blue-300 hover:text-blue-900"
                         onClick={() => handleAnswer(option.scores)}
                       >
-                        {option.text}
+                        {/* NEW: Added an alphabetical prefix (A, B, C, D) */}
+                        <span className="font-bold mr-4 text-blue-600">{String.fromCharCode(65 + index)}</span>
+                        <span>{option.text}</span>
                       </Button>
                     </motion.div>
                   ))}
                 </CardContent>
               </div>
-              {/* Progress Bar (no changes) */}
-              <div className="bg-gray-200 h-2 w-full">
+              <div className="bg-slate-200 h-2.5 w-full">
                 <motion.div
-                  className="bg-blue-600 h-2"
-                  initial={{ width: `${(currentQuestion / hardcodedQuestions.length) * 100}%` }}
+                  className="bg-blue-600 h-2.5"
+                  initial={{ width: `0%` }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                 />
