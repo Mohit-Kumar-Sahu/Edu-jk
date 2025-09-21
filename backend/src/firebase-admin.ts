@@ -1,34 +1,34 @@
-// File: backend/src/firebase-admin.ts (Final, Most Robust Version)
+// File: backend/src/firebase-admin.ts (Final, Production-Ready Version)
 
 import * as admin from 'firebase-admin';
 
 if (!admin.apps.length) {
   try {
-    // 1. Get the secret JSON string from the environment variable.
-    const credsJson = process.env.FIREBASE_CREDENTIALS;
+    // 1. Read the three separate, secure environment variables from Render.
+    const projectId = process.env.FIREBASE_PROJECT_ID;
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    // 2. We need to replace the '\\n' characters in the private key from the env var.
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-    if (!credsJson) {
-      throw new Error('FIREBASE_CREDENTIALS environment variable not set.');
+    // 3. Safety check: If any of them are missing, the app cannot start.
+    if (!projectId || !clientEmail || !privateKey) {
+      throw new Error('Firebase environment variables (PROJECT_ID, CLIENT_EMAIL, PRIVATE_KEY) are not set.');
     }
 
-    // 2. Parse the JSON string into an object.
-    const serviceAccount = JSON.parse(credsJson);
-
-    // --- THIS IS THE FINAL FIX ---
-    // 3. Find and "un-scramble" the private key's newline characters.
-    // This replaces the literal '\\n' text with actual newline characters '\n'.
-    // This is a common and necessary fix for many hosting environments.
-    serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-
-    // 4. Initialize Firebase with the corrected credentials.
+    // 4. Assemble the credentials object from the variables.
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+      credential: admin.credential.cert({
+        projectId,
+        clientEmail,
+        privateKey,
+      }),
     });
 
-    console.log("✅ [Firebase] Admin SDK Initialized SUCCESSFULLY from environment variable.");
+    console.log("✅ [Firebase] Admin SDK Initialized SUCCESSFULLY from separate environment variables.");
 
   } catch (error) {
     console.error("❌ [Firebase] FAILED to initialize Admin SDK:", error);
+    // Exit the process if Firebase fails, because the app is non-functional.
     process.exit(1);
   }
 }

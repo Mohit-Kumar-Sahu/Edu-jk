@@ -27,7 +27,7 @@ const careerPaths = {
   C: { name: "Conventional (Organizers)", icon: <DollarSign className="h-8 w-8 text-white" />, color: "bg-green-600", courses: ["Bachelor of Commerce (B.Com)", "Chartered Accountancy (CA)", "Company Secretary (CS)", "Data Analytics Certification"], jobs: ["Accountant", "Financial Analyst", "Logistics Manager", "Web Developer (Backend)"] },
 };
 
-// --- NEW HARD-CODED QUESTION BANK ---
+// --- HARD-CODED QUESTION BANK (No Changes) ---
 const hardcodedQuestions: Question[] = [
   { questionId: 'q1', questionText: "When a new gadget comes out, I'm more likely to:", options: [
     { optionId: '1a', text: "Take it apart to see how it works.", scores: { R: 2, I: 1 } },
@@ -151,6 +151,14 @@ const hardcodedQuestions: Question[] = [
   ]},
 ];
 
+// --- NEW: Color styles for the option buttons ---
+const optionColors = [
+    "bg-sky-100 text-sky-900 border-sky-200 hover:bg-sky-200 hover:border-sky-400",
+    "bg-teal-100 text-teal-900 border-teal-200 hover:bg-teal-200 hover:border-teal-400",
+    "bg-indigo-100 text-indigo-900 border-indigo-200 hover:bg-indigo-200 hover:border-indigo-400",
+    "bg-fuchsia-100 text-fuchsia-900 border-fuchsia-200 hover:bg-fuchsia-200 hover:border-fuchsia-400",
+];
+
 // --- MAIN QUIZ COMPONENT ---
 
 export function CareerQuiz() {
@@ -188,8 +196,10 @@ export function CareerQuiz() {
   const progress = ((currentQuestion + 1) / hardcodedQuestions.length) * 100;
 
   return (
-    <div className="p-4 md:p-6 min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-100">
-      <Card className="w-full max-w-3xl rounded-2xl shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
+    // NEW: More vibrant background gradient
+    <div className="p-4 md:p-6 min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-blue-100 to-purple-100">
+      {/* NEW: Wider card for more space */}
+      <Card className="w-full max-w-5xl rounded-2xl shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
         <AnimatePresence mode="wait">
           {!showResult ? (
             <motion.div
@@ -199,21 +209,23 @@ export function CareerQuiz() {
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
             >
-              <div className="p-6 md:p-8">
-                <CardHeader className="p-0 mb-6">
-                  <p className="text-sm font-semibold text-blue-600 mb-2">
+              {/* NEW: Increased padding for more breathing room */}
+              <div className="p-8 md:p-12">
+                <CardHeader className="p-0 mb-8 text-center">
+                  <p className="text-md font-semibold text-blue-600 mb-2 tracking-wide">
                     Question {currentQuestion + 1} of {hardcodedQuestions.length}
                   </p>
-                  <CardTitle className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
+                  <CardTitle className="text-3xl md:text-4xl font-bold text-slate-800 leading-tight">
                     {hardcodedQuestions[currentQuestion].questionText}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-0 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {hardcodedQuestions[currentQuestion].options.map((option) => (
+                <CardContent className="p-0 grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {hardcodedQuestions[currentQuestion].options.map((option, index) => (
                     <motion.div key={option.optionId} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
                       <Button
                         variant="outline"
-                        className="w-full h-auto text-base font-medium rounded-lg border-gray-300 bg-white hover:bg-blue-50 hover:border-blue-500 transition-all duration-200 shadow-sm text-gray-700 hover:text-gray-900 flex text-left p-4"
+                        // NEW: Classes to fix text wrapping and apply colors
+                        className={`w-full h-auto text-base font-medium rounded-lg transition-all duration-200 shadow-sm text-left p-5 whitespace-normal ${optionColors[index % optionColors.length]}`}
                         onClick={() => handleAnswer(option.scores)}
                       >
                         {option.text}
@@ -222,7 +234,7 @@ export function CareerQuiz() {
                   ))}
                 </CardContent>
               </div>
-              {/* Progress Bar */}
+              {/* Progress Bar (no changes) */}
               <div className="bg-gray-200 h-2 w-full">
                 <motion.div
                   className="bg-blue-600 h-2"
@@ -233,7 +245,7 @@ export function CareerQuiz() {
               </div>
             </motion.div>
           ) : (
-            // --- NEW RESULTS UI ---
+            // --- Results UI (No changes needed here) ---
             <motion.div
               key="results"
               initial={{ opacity: 0, scale: 0.9 }}
@@ -248,14 +260,12 @@ export function CareerQuiz() {
               <CardContent className="p-0">
                 {topResult && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-                    {/* Left Side: Top Result & Details */}
                     <div className={`p-6 rounded-xl text-white flex flex-col items-center justify-center ${careerPaths[topResult].color}`}>
                       <div className="mb-4">{careerPaths[topResult].icon}</div>
                       <h3 className="text-sm font-bold tracking-widest uppercase">Your Top Match</h3>
                       <h2 className="text-3xl font-bold mt-1">{careerPaths[topResult].name}</h2>
                     </div>
                     
-                    {/* Right Side: Full Score Breakdown */}
                     <div className="bg-slate-50 p-6 rounded-lg">
                       <h3 className="text-lg font-semibold text-gray-700 flex items-center mb-4 text-left">
                         <BarChart3 className="h-5 w-5 mr-2 text-blue-600" />
