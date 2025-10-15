@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LandingPage } from './components/LandingPage';
+import { ViksitShikshaLandingPage } from './pages/ViksitShikshaLandingPage'; // Use the new landing page
 import { AuthPage } from './components/AuthPage';
 import { CareerQuiz } from './features/CareerQuiz/CareerQuiz';
 import { CollegeLocator } from './features/CollegeLocator/CollegeLocator';
 import { ScholarshipChecker } from './features/ScholarshipChecker/ScholarshipChecker';
-import  ProfileManagement  from './features/ProfileManagement/ProfileManagement';
+import ProfileManagement from './features/ProfileManagement/ProfileManagement';
 import { SkillGapCourses } from './features/SkillGapCourses/SkillGapCourses';
 import { QuizResults } from './components/QuizResults';
 import Gamification from './features/Gamification/Gamification';
@@ -16,13 +16,13 @@ import { AICareerChatbot } from './components/AICareerChatbot';
 import { ResumeBuilder } from './components/ResumeBuilder';
 import { ApplicationTracker } from './components/ApplicationTracker';
 import { NotificationCenter } from './components/NotificationCenter';
-import { Dashboard } from './components/Dashboard';
+import { DashboardController } from './components/DashboardController'; // <-- STEP 1: Import the new controller
 import OfflineIndicator from './components/OfflineIndicator';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { I18nextProvider } from 'react-i18next'; // Import the provider
-import i18n from './i18n'; // Import your i18n configuration
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -39,7 +39,6 @@ function AppContent() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // PWA Installation prompt
   useEffect(() => {
     let deferredPrompt;
     const handleBeforeInstallPrompt = (e: any) => {
@@ -56,11 +55,12 @@ function AppContent() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-blue-600">Loading Edu2Career J&K...</p>
+          {/* STEP 2: Update branding for pan-India context */}
+          <p className="text-blue-600">Loading Viksit Shiksha...</p>
         </div>
       </div>
     );
-  } // <-- THIS WAS THE MISSING BRACE
+  }
 
   return (
     <Router>
@@ -73,16 +73,19 @@ function AppContent() {
             <Routes>
               <Route 
                 path="/" 
-                element={user ? <Navigate to="/dashboard" /> : <LandingPage />} 
+                element={user ? <Navigate to="/dashboard" /> : <ViksitShikshaLandingPage />} 
               />
               <Route 
                 path="/auth" 
                 element={user ? <Navigate to="/dashboard" /> : <AuthPage />} 
               />
+              
+              {/* STEP 3: Update the dashboard route to use the controller */}
               <Route 
                 path="/dashboard" 
-                element={user ? <Dashboard quizResults={quizResults} /> : <Navigate to="/auth" />} 
+                element={user ? <DashboardController /> : <Navigate to="/auth" />} 
               />
+              
               <Route
                 path="/quiz"
                 element={user ? <CareerQuiz onComplete={setQuizResults} /> : <Navigate to="/auth" />}
@@ -115,11 +118,6 @@ function AppContent() {
                 path="/profile"
                 element={user ? <ProfileManagement /> : <Navigate to="/auth" />}
               />
-              {/* Catch-all route for unknown paths */}
-              <Route 
-                path="*" 
-                element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />} 
-              />
               <Route
                 path="/skill-gap-courses"
                 element={user ? <SkillGapCourses /> : <Navigate to="/auth" />}
@@ -131,6 +129,12 @@ function AppContent() {
               <Route
                 path="/college-comparison"
                 element={user ? <CollegeComparison /> : <Navigate to="/auth" />}
+              />
+
+              {/* Catch-all route for unknown paths */}
+              <Route 
+                path="*" 
+                element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />} 
               />
             </Routes>
           </main>
