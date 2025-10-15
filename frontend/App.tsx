@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ViksitShikshaLandingPage } from './pages/ViksitShikshaLandingPage'; // Use the new landing page
+import { LandingPage } from './components/LandingPage'; // Use the new landing page
 import { AuthPage } from './components/AuthPage';
 import { CareerQuiz } from './features/CareerQuiz/CareerQuiz';
 import { CollegeLocator } from './features/CollegeLocator/CollegeLocator';
