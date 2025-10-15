@@ -96,7 +96,7 @@ export function Dashboard({ quizResults }: DashboardProps) {
       profileInfo.name,
       user?.email, // Email is reliable from the core 'user' object.
       profileInfo.phone,
-      profileInfo.district,
+      profileInfo.state, 
       profileInfo.currentClass,
       profileInfo.stream
     ];
