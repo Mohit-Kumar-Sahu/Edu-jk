@@ -159,7 +159,7 @@ const CorePrinciplesSection = () => {
 };
 
 
-export function ViksitShikshaLandingPage() {
+export function LandingPage() {
   const { t } = useLocalization();
 
   const features = [
