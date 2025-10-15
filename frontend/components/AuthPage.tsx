@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useLocalization } from '../hooks/useLocalization';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command';
-import { cn } from '../lib/utils'; // shadcn utility
+
 
 // Data extracted from the provided PDF for the combobox
 const institutions = [
@@ -73,11 +73,8 @@ const InstitutionCombobox = ({ value, onSelect }: { value: string; onSelect: (va
                   }}
                 >
                   <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === inst.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
+  className={`mr-2 h-4 w-4 ${value === inst.value ? "opacity-100" : "opacity-0"}`}
+/>
                   {inst.label}
                 </CommandItem>
               ))}
