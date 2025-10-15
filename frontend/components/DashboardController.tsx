@@ -27,26 +27,19 @@ export function DashboardController() {
         const response = await fetch('/api/profile/me', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
+
         if (response.ok) {
           const data: ProfileInfo = await response.json();
-          // For now, we will manually set the role for demonstration
-          // In a real app, 'data.role' would come from your database
-          
-          // ---- FOR TESTING ----
-          // Uncomment one of these lines to test different dashboards
-          data.role = 'student'; 
-          // data.role = 'teacher';
-          // data.role = 'institution';
-          // -------------------
-
-          setProfile(data);
+          // The 'data.role' from your database will now be used directly.
+          setProfile(data); 
         } else {
-          // Default to student if profile fetch fails
+          // Default to student if profile fetch fails or doesn't exist
+          console.warn("Could not fetch user profile. Defaulting to student role.");
           setProfile({ role: 'student' });
         }
       } catch (error) {
         console.error("Failed to fetch profile role:", error);
-        setProfile({ role: 'student' }); // Default to student on error
+        setProfile({ role: 'student' }); // Default to student on any error
       } finally {
         setLoading(false);
       }
@@ -56,11 +49,10 @@ export function DashboardController() {
   }, [user, getToken]);
 
   if (loading) {
-    return <div className="p-6 text-center text-gray-600">Loading dashboard...</div>;
+    return <div className="p-6 text-center text-gray-600">Loading Your Personalized Dashboard...</div>;
   }
 
-  // This is where the magic happens!
-  // We check the role and render the correct component.
+  // This will now correctly check the role from the database and render the right dashboard.
   switch (profile?.role) {
     case 'teacher':
       return <TeacherDashboard />;
@@ -68,7 +60,7 @@ export function DashboardController() {
       return <InstitutionDashboard />;
     case 'student':
     default:
-      // We pass the `quizResults` prop to the student dashboard as it expects it
+      // We pass `quizResults={null}` as a placeholder prop as the student dashboard expects it.
       return <StudentDashboard quizResults={null} />;
   }
 }
