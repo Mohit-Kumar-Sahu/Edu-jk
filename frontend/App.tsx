@@ -73,7 +73,7 @@ function AppContent() {
             <Routes>
               <Route 
                 path="/" 
-                element={user ? <Navigate to="/dashboard" /> : <ViksitShikshaLandingPage />} 
+                element={user ? <Navigate to="/dashboard" /> : <LandingPage />} 
               />
               <Route 
                 path="/auth" 
