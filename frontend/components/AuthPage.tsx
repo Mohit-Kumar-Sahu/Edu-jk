@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, GraduationCap, Mail, Lock, User, Phone, MapPin, Check, ChevronsUpDown } from 'lucide-react';
+import { 
+    Eye, EyeOff, GraduationCap, Mail, Lock, User, Phone, Briefcase, Building, ArrowLeft,
+    Check, ChevronsUpDown, FileBadge, Hash 
+} from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -9,25 +12,22 @@ import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { useLocalization } from '../hooks/useLocalization';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command';
+import { useLocalization } from '../hooks/useLocalization';
 
+// --- DATA (Keep this at the top) ---
+type UserRole = 'student' | 'teacher' | 'institution';
 
-// Data extracted from the provided PDF for the combobox
+// This should be populated from your database or a larger static file in a real app
 const institutions = [
   { value: 'U-0688', label: 'All India Institute of Medical Sciences Bhubaneswar' },
   { value: 'U-0096', label: 'All India Institute of Medical Sciences Delhi' },
-  { value: 'U-0689', label: 'All India Institute of Medical Sciences Jodhpur' },
   { value: 'U-1017', label: 'Indian Institute of Management Raipur' },
-  { value: 'U-0690', label: 'All India Institute of Medical Sciences Raipur' },
-  { value: 'U-0497', label: 'Amity University' },
   { value: 'U-0456', label: 'Indian Institute of Technology Madras' },
-  // ... Add all other institutions from the PDF here in the same format
-  // For brevity, only a few are listed. You should populate this fully.
+  // Populate with all institutions from the PDF
 ];
 
-// List of states and UTs for the pan-India context
 const statesOfIndia = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana',
   'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
@@ -37,44 +37,26 @@ const statesOfIndia = [
   'Lakshadweep', 'Puducherry'
 ];
 
+// --- REUSABLE COMPONENTS (for clean code) ---
 
-// Institution Combobox Component
 const InstitutionCombobox = ({ value, onSelect }: { value: string; onSelect: (value: string) => void; }) => {
-    const { t } = useLocalization();
     const [open, setOpen] = useState(false);
-  
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-full justify-between font-normal"
-          >
-            {value
-              ? institutions.find((inst) => inst.value === value)?.label
-              : t('authPage.select_institution')}
+          <Button variant="outline" role="combobox" className="w-full justify-between font-normal">
+            {value ? institutions.find((inst) => inst.value === value)?.label : "Select institution..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[350px] p-0">
           <Command>
-            <CommandInput placeholder={t('authPage.select_institution')} />
+            <CommandInput placeholder="Search institution..." />
             <CommandEmpty>No institution found.</CommandEmpty>
             <CommandGroup className="max-h-60 overflow-y-auto">
               {institutions.map((inst) => (
-                <CommandItem
-                  key={inst.value}
-                  value={inst.label}
-                  onSelect={() => {
-                    onSelect(inst.value === value ? "" : inst.value);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-  className={`mr-2 h-4 w-4 ${value === inst.value ? "opacity-100" : "opacity-0"}`}
-/>
+                <CommandItem key={inst.value} value={inst.label} onSelect={() => { onSelect(inst.value); setOpen(false); }}>
+                  <Check className={`mr-2 h-4 w-4 ${value === inst.value ? "opacity-100" : "opacity-0"}`} />
                   {inst.label}
                 </CommandItem>
               ))}
@@ -83,282 +65,180 @@ const InstitutionCombobox = ({ value, onSelect }: { value: string; onSelect: (va
         </PopoverContent>
       </Popover>
     );
-  };
-  
+};
+
+// --- AUTH FORMS FOR EACH ROLE ---
+
+const StudentRegisterForm = ({ onRegister, isLoading }: { onRegister: (data: any) => void; isLoading: boolean; }) => {
+    const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', state: '', currentClass: '', stream: '', schoolCollege: '' });
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onRegister(form);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <div className="space-y-2"><Label htmlFor="s-name">Full Name</Label><Input id="s-name" value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} required placeholder="Your Name" /></div>
+            <div className="space-y-2"><Label htmlFor="s-email">Email</Label><Input id="s-email" type="email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} required placeholder="you@example.com" /></div>
+            <div className="space-y-2"><Label htmlFor="s-phone">Phone</Label><Input id="s-phone" type="tel" value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} required placeholder="9876543210" /></div>
+            <div className="space-y-2 relative"><Label htmlFor="s-password">Password</Label><Input id="s-password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} required /><Button type="button" variant="ghost" size="icon" className="absolute right-1 bottom-1 h-7 w-7" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}</Button></div>
+            <div className="space-y-2"><Label>State</Label><Select onValueChange={(v) => setForm({...form, state: v})}><SelectTrigger><SelectValue placeholder="Select your state" /></SelectTrigger><SelectContent>{statesOfIndia.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent></Select></div>
+            <div className="space-y-2"><Label>Institution</Label><InstitutionCombobox value={form.schoolCollege} onSelect={(v) => setForm({...form, schoolCollege: v})} /></div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2"><Label>Class</Label><Select onValueChange={(v) => setForm({...form, currentClass: v})}><SelectTrigger><SelectValue placeholder="Select Class" /></SelectTrigger><SelectContent><SelectItem value="10th">10th</SelectItem><SelectItem value="12th">12th</SelectItem><SelectItem value="Graduate">Graduate</SelectItem></SelectContent></Select></div>
+                <div className="space-y-2"><Label>Stream</Label><Select onValueChange={(v) => setForm({...form, stream: v})}><SelectTrigger><SelectValue placeholder="Select Stream" /></SelectTrigger><SelectContent><SelectItem value="Science">Science</SelectItem><SelectItem value="Commerce">Commerce</SelectItem><SelectItem value="Arts">Arts</SelectItem></SelectContent></Select></div>
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Create Student Account'}</Button>
+        </form>
+    );
+};
+
+const TeacherRegisterForm = ({ onRegister, isLoading }: { onRegister: (data: any) => void; isLoading: boolean; }) => {
+    const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', aparId: '', schoolCollege: '' });
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onRegister(form);
+    };
+    
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <div className="space-y-2"><Label htmlFor="t-name">Full Name</Label><Input id="t-name" value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} required placeholder="Your Name" /></div>
+            <div className="space-y-2"><Label htmlFor="t-email">Email</Label><Input id="t-email" type="email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} required placeholder="you@example.com" /></div>
+            <div className="space-y-2"><Label htmlFor="t-phone">Phone</Label><Input id="t-phone" type="tel" value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} required placeholder="9876543210" /></div>
+            <div className="space-y-2 relative"><Label htmlFor="t-password">Password</Label><Input id="t-password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} required /><Button type="button" variant="ghost" size="icon" className="absolute right-1 bottom-1 h-7 w-7" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}</Button></div>
+            <div className="space-y-2"><Label htmlFor="t-apar">APAR ID (Optional)</Label><Input id="t-apar" value={form.aparId} onChange={(e) => setForm({...form, aparId: e.target.value})} placeholder="Your APAR ID" /></div>
+            <div className="space-y-2"><Label>Institution</Label><InstitutionCombobox value={form.schoolCollege} onSelect={(v) => setForm({...form, schoolCollege: v})} /></div>
+            <Button type="submit" className="w-full" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Create Teacher Account'}</Button>
+        </form>
+    );
+};
+
+const InstitutionRegisterForm = ({ onRegister, isLoading }: { onRegister: (data: any) => void; isLoading: boolean; }) => {
+    const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', schoolCollege: '' });
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onRegister(form);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
+            <div className="space-y-2"><Label htmlFor="i-name">Administrator Name</Label><Input id="i-name" value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} required placeholder="Registrar's Name" /></div>
+            <div className="space-y-2"><Label htmlFor="i-email">Official Email</Label><Input id="i-email" type="email" value={form.email} onChange={(e) => setForm({...form, email: e.target.value})} required placeholder="admin@institution.edu" /></div>
+            <div className="space-y-2"><Label htmlFor="i-phone">Official Phone</Label><Input id="i-phone" type="tel" value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} required placeholder="Official Contact Number" /></div>
+            <div className="space-y-2 relative"><Label htmlFor="i-password">Password</Label><Input id="i-password" type={showPassword ? "text" : "password"} value={form.password} onChange={(e) => setForm({...form, password: e.target.value})} required /><Button type="button" variant="ghost" size="icon" className="absolute right-1 bottom-1 h-7 w-7" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}</Button></div>
+            <div className="space-y-2"><Label>Select Your Institution</Label><InstitutionCombobox value={form.schoolCollege} onSelect={(v) => setForm({...form, schoolCollege: v})} /></div>
+            <Button type="submit" className="w-full" disabled={isLoading}>{isLoading ? 'Creating Account...' : 'Create Institution Account'}</Button>
+        </form>
+    );
+};
+
+// --- MAIN AUTH PAGE COMPONENT ---
 
 export function AuthPage() {
-  const { t } = useLocalization();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, forgotPassword } = useAuth();
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { signIn, signUp } = useAuth();
+    const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+    const [showPassword, setShowPassword] = useState(false);
 
-  const API_BASE = import.meta.env.VITE_API_BASE;
+    const handleRegistration = async (formData: any) => {
+        setIsLoading(true);
+        try {
+            await signUp(formData.email, formData.password, { displayName: formData.name });
+            await fetch(`${import.meta.env.VITE_API_BASE}/users`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...formData, role: selectedRole, createdAt: new Date() }),
+            });
+            alert('Registration successful! Please proceed to login.');
+            // Ideally, switch to the login tab here
+        } catch (error) {
+            console.error('Registration error:', error);
+            alert('Registration failed. The email might already be in use.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
-  const [registerForm, setRegisterForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    phone: '',
-    state: '',
-    currentClass: '',
-    stream: '',
-    schoolCollege: '' // This will now store the AISHE code
-  });
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        try {
+            await signIn(loginForm.email, loginForm.password);
+            navigate('/dashboard');
+        } catch (error) {
+            alert('Login failed. Please check your credentials.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      await signIn(loginForm.email, loginForm.password);
-      navigate('/dashboard');
-    } catch (error: any) {
-      console.error('Login error:', error);
-      alert(t('authPage.alerts.login_failed'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    return (
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+            <div className="w-full max-w-md">
+                <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+                    <div className="flex items-center justify-center space-x-2"><div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center"><GraduationCap className="w-7 h-7 text-white" /></div><h1 className="text-2xl font-bold text-gray-900">Viksit Shiksha</h1></div>
+                </motion.div>
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      await signUp(registerForm.email, registerForm.password, {
-        name: registerForm.name,
-        phone: registerForm.phone,
-        state: registerForm.state,
-        currentClass: registerForm.currentClass,
-        stream: registerForm.stream,
-        schoolCollege: registerForm.schoolCollege
-      });
-
-      // Store user data in MongoDB
-      const response = await fetch(`${API_BASE}/users`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...registerForm, createdAt: new Date() })
-      });
-      if (!response.ok) throw new Error('Failed to store user data in DB');
-      
-      // Send welcome SMS
-      const smsResponse = await fetch(`${API_BASE}/send-sms`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: registerForm.phone,
-            message: t('authPage.alerts.welcome_sms', { name: registerForm.name })
-          })
-      });
-      if (!smsResponse.ok) console.error('Failed to send welcome SMS');
-
-      alert(t('authPage.alerts.registration_success'));
-    } catch (error: any) {
-      console.error('Registration error:', error);
-      alert(t('authPage.alerts.registration_failed'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleForgotPassword = async () => {
-    if (!loginForm.email) {
-      alert(t('authPage.alerts.forgot_password_no_email'));
-      return;
-    }
-    try {
-      await forgotPassword(loginForm.email);
-      alert(t('authPage.alerts.forgot_password_success'));
-    } catch (error) {
-      console.error('Forgot password error:', error);
-      alert(t('authPage.alerts.forgot_password_failed'));
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-      <div className="w-full max-w-md">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-              <GraduationCap className="w-7 h-7 text-white" />
+                {!selectedRole ? (
+                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+                        <Card>
+                            <CardHeader><CardTitle className="text-2xl text-center">Select Your Role</CardTitle><CardDescription className="text-center">Choose how you want to join our platform.</CardDescription></CardHeader>
+                            <CardContent className="space-y-4">
+                                <RoleCard icon={<User size={24} />} title="Student" description="Explore career paths, colleges, and scholarships." onClick={() => setSelectedRole('student')} />
+                                <RoleCard icon={<Briefcase size={24} />} title="Teacher / Faculty" description="Access resources and manage student performance." onClick={() => setSelectedRole('teacher')} />
+                                <RoleCard icon={<Building size={24} />} title="Institution" description="Manage institutional data and view analytics." onClick={() => setSelectedRole('institution')} />
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                ) : (
+                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+                        <Card>
+                            <CardHeader>
+                                <div className="relative text-center">
+                                    <Button variant="ghost" size="icon" className="absolute left-0 top-1" onClick={() => setSelectedRole(null)}><ArrowLeft className="w-5 h-5" /></Button>
+                                    <CardTitle className="text-2xl capitalize">{selectedRole} Account</CardTitle>
+                                    <CardDescription>Welcome! Sign in or create an account.</CardDescription>
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <Tabs defaultValue="login" className="w-full">
+                                    <TabsList className="grid w-full grid-cols-2"><TabsTrigger value="login">Login</TabsTrigger><TabsTrigger value="register">Register</TabsTrigger></TabsList>
+                                    <TabsContent value="login">
+                                        <form onSubmit={handleLogin} className="space-y-4 pt-4">
+                                            <div className="space-y-2"><Label htmlFor="login-email">Email</Label><Input id="login-email" type="email" value={loginForm.email} onChange={(e) => setLoginForm({...loginForm, email: e.target.value})} required placeholder="you@example.com" /></div>
+                                            <div className="space-y-2 relative"><Label htmlFor="login-password">Password</Label><Input id="login-password" type={showPassword ? "text" : "password"} value={loginForm.password} onChange={(e) => setLoginForm({...loginForm, password: e.target.value})} required /><Button type="button" variant="ghost" size="icon" className="absolute right-1 bottom-1 h-7 w-7" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}</Button></div>
+                                            <Button type="submit" className="w-full" disabled={isLoading}>{isLoading ? 'Signing In...' : 'Sign In'}</Button>
+                                        </form>
+                                    </TabsContent>
+                                    <TabsContent value="register">
+                                        {selectedRole === 'student' && <StudentRegisterForm onRegister={handleRegistration} isLoading={isLoading} />}
+                                        {selectedRole === 'teacher' && <TeacherRegisterForm onRegister={handleRegistration} isLoading={isLoading} />}
+                                        {selectedRole === 'institution' && <InstitutionRegisterForm onRegister={handleRegistration} isLoading={isLoading} />}
+                                    </TabsContent>
+                                </Tabs>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                )}
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Viksit Shiksha</h1>
-              <p className="text-sm text-gray-600">{t('authPage.header_tagline')}</p>
-            </div>
-          </div>
-          <h2 className="text-xl text-gray-700">{t('authPage.welcome_message')}</h2>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card>
-            <CardHeader className="space-y-1">
-              <CardTitle className="text-2xl text-center">{t('authPage.signInTitle')}</CardTitle>
-              <CardDescription className="text-center">
-                {t('authPage.signInSubtitle')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="login">{t('authPage.signIn')}</TabsTrigger>
-                  <TabsTrigger value="register">{t('authPage.signUp')}</TabsTrigger>
-                </TabsList>
-
-                {/* Login Tab */}
-                <TabsContent value="login" className="space-y-4 pt-4">
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    {/* Email and Password fields remain the same */}
-                    <div className="space-y-2">
-                      <Label htmlFor="login-email">{t('authPage.email')}</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input id="login-email" type="email" placeholder={t('authPage.email')} className="pl-10" value={loginForm.email} onChange={(e) => setLoginForm({...loginForm, email: e.target.value})} required />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="login-password">{t('authPage.password')}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input id="login-password" type={showPassword ? "text" : "password"} placeholder={t('authPage.password')} className="pl-10 pr-10" value={loginForm.password} onChange={(e) => setLoginForm({...loginForm, password: e.target.value})} required />
-                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex justify-end">
-                      <button type="button" onClick={handleForgotPassword} className="text-sm text-blue-600 hover:text-blue-800">{t('authPage.forgotPassword')}</button>
-                    </div>
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? t('authPage.buttons.loading_signin') : t('authPage.signIn')}
-                    </Button>
-                  </form>
-                </TabsContent>
-
-                {/* Register Tab */}
-                <TabsContent value="register" className="space-y-4 pt-4">
-                  <form onSubmit={handleRegister} className="space-y-4">
-                    {/* Name, Email, Password, Phone fields remain similar */}
-                    <div className="space-y-2">
-                        <Label htmlFor="register-name">{t('authPage.name')}</Label>
-                        <div className="relative">
-                            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input id="register-name" type="text" placeholder={t('authPage.name')} className="pl-10" value={registerForm.name} onChange={(e) => setRegisterForm({...registerForm, name: e.target.value})} required />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="register-email">{t('authPage.email')}</Label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input id="register-email" type="email" placeholder={t('authPage.email')} className="pl-10" value={registerForm.email} onChange={(e) => setRegisterForm({...registerForm, email: e.target.value})} required />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="register-password">{t('authPage.password')}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                        <Input id="register-password" type={showPassword ? "text" : "password"} placeholder={t('authPage.password')} className="pl-10 pr-10" value={registerForm.password} onChange={(e) => setRegisterForm({...registerForm, password: e.target.value})} required />
-                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </button>
-                      </div>
-                    </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="register-phone">{t('authPage.phone')}</Label>
-                        <div className="relative">
-                            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input id="register-phone" type="tel" placeholder={t('authPage.phone')} className="pl-10" value={registerForm.phone} onChange={(e) => setRegisterForm({...registerForm, phone: e.target.value})} required />
-                        </div>
-                    </div>
-
-                    {/* NEW State Dropdown */}
-                    <div className="space-y-2">
-                        <Label>{t('authPage.state')}</Label>
-                        <Select value={registerForm.state} onValueChange={(value: string) => setRegisterForm({...registerForm, state: value})}>
-                            <SelectTrigger>
-                                <SelectValue placeholder={t('authPage.select_state')} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {statesOfIndia.map((state) => (
-                                    <SelectItem key={state} value={state}>{state}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    {/* NEW Institution Combobox */}
-                    <div className="space-y-2">
-                      <Label>{t('authPage.schoolCollege')}</Label>
-                      <InstitutionCombobox 
-                        value={registerForm.schoolCollege}
-                        onSelect={(value) => setRegisterForm({ ...registerForm, schoolCollege: value })}
-                      />
-                    </div>
-
-                    {/* Class and Stream Dropdowns */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label>{t('authPage.currentClass')}</Label>
-                        <Select value={registerForm.currentClass} onValueChange={(value: string) => setRegisterForm({...registerForm, currentClass: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t('authPage.currentClass')} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="10th">{t('authPage.data.class.10th')}</SelectItem>
-                            <SelectItem value="11th">{t('authPage.data.class.11th')}</SelectItem>
-                            <SelectItem value="12th">{t('authPage.data.class.12th')}</SelectItem>
-                            <SelectItem value="Graduate">{t('authPage.data.class.graduate')}</SelectItem>
-                            <SelectItem value="Post Graduate">{t('authPage.data.class.post_graduate')}</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label>{t('authPage.stream')}</Label>
-                        <Select value={registerForm.stream} onValueChange={(value: string) => setRegisterForm({...registerForm, stream: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t('authPage.stream')} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Science">{t('authPage.data.stream.science')}</SelectItem>
-                            <SelectItem value="Commerce">{t('authPage.data.stream.commerce')}</SelectItem>
-                            <SelectItem value="Arts">{t('authPage.data.stream.arts')}</SelectItem>
-                            <SelectItem value="Vocational">{t('authPage.data.stream.vocational')}</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? t('authPage.buttons.loading_create_account') : t('authPage.signUp')}
-                    </Button>
-                  </form>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </motion.div>
-        
-        {/* Footer */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-center text-sm text-gray-600 mt-6"
-        >
-          {t('authPage.terms_and_privacy')}
-        </motion.p>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
+
+const RoleCard = ({ icon, title, description, onClick }: { icon: React.ReactNode; title: string; description: string; onClick: () => void; }) => (
+    <div onClick={onClick} className="p-4 border rounded-lg flex items-center space-x-4 cursor-pointer hover:bg-gray-100 transition-colors">
+        <div className="p-3 bg-gray-100 rounded-full">{icon}</div>
+        <div>
+            <h3 className="font-semibold">{title}</h3>
+            <p className="text-sm text-gray-500">{description}</p>
+        </div>
+    </div>
+);
