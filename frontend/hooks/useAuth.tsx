@@ -1,156 +1,72 @@
-// File: hooks/useAuth.tsx (Full, Corrected, and Final Version)
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import { initializeApp } from 'firebase/app';
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut as firebaseSignOut, 
-  onAuthStateChanged, 
-  sendPasswordResetEmail, 
-  sendEmailVerification, 
-  updateProfile 
-} from 'firebase/auth';
-
-// Your Firebase configuration is correct and remains unchanged.
-const firebaseConfig = {
-  apiKey: "AIzaSyB26YTFS0P8G_stmbRAHK1uIkRqXHyZFQY",
-  authDomain: "edu2career-a2bca.firebaseapp.com",
-  projectId: "edu2career-a2bca",
-  storageBucket: "edu2career-a2bca.firebasestorage.app",
-  messagingSenderId: "780465557538",
-  appId: "1:780465557538:web:e19dda74960888eb2efa7b",
-  measurementId: "G-7PWES2NN46"
-};
-
-// Initialize Firebase services
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// This interface defines the shape of our user object, based on Firebase's auth state.
+// Define the shape of our user object, including the role
 interface User {
-  id: string; // Firebase's UID
-  email: string | null;
-  emailVerified: boolean;
-  displayName: string | null;
-  phoneNumber: string | null;
+  email: string;
+  name: string;
+  role: 'student' | 'teacher' | 'institution';
 }
 
-// This interface defines all the values and functions our AuthProvider will share.
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, metadata: any) => Promise<void>;
-  signOut: () => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
-  getToken: () => Promise<string | null>; // The crucial function to get the auth token
+  signIn: (email: string, role: UserRole) => void;
+  signUp: (formData: any, role: UserRole) => void;
+  signOut: () => void;
 }
 
-// Create the context that components will consume.
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | null>(null);
 
-// The AuthProvider component wraps your entire application to provide auth state.
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // This effect listens for changes in Firebase's authentication state.
+  // On initial load, check if a user is saved in localStorage
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        // When a user logs in, create our simplified user object.
-        setUser({
-          id: firebaseUser.uid,
-          email: firebaseUser.email,
-          emailVerified: firebaseUser.emailVerified,
-          displayName: firebaseUser.displayName,
-          phoneNumber: firebaseUser.phoneNumber,
-        });
-      } else {
-        // When a user logs out, set the user to null.
-        setUser(null);
-      }
-      // We are finished checking the auth state.
-      setLoading(false);
-    });
-
-    // Clean up the listener when the component unmounts.
-    return () => unsubscribe();
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+    setLoading(false);
   }, []);
 
-  // --- THIS IS THE KEY ADDITION ---
-  // This function gets the user's ID token, which is needed to authenticate with your backend.
-  // We wrap it in `useCallback` to make it stable and prevent re-renders in other components.
-  const getToken = useCallback(async (): Promise<string | null> => {
-    if (auth.currentUser) {
-      // The 'true' argument forces a token refresh if the current one is expired.
-      return await auth.currentUser.getIdToken(true);
-    }
-    return null; // Return null if no user is logged in.
-  }, []);
-
-  const signIn = async (email: string, password: string) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
-    if (!firebaseUser.emailVerified) {
-      throw new Error('Please verify your email before signing in.');
-    }
+  // DUMMY SIGN-IN: Ignores password, saves user to state and localStorage
+  const signIn = (email: string, role: UserRole) => {
+    const mockUser: User = { 
+        email, 
+        role,
+        name: email.split('@')[0] // Simple name for demo
+    };
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    setUser(mockUser);
   };
 
-  const signUp = async (email: string, password: string, metadata: any) => {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
-
-    await sendEmailVerification(firebaseUser);
-
-    if (metadata.name) {
-      await updateProfile(firebaseUser, { displayName: metadata.name });
-    }
-
-    // This call to your backend creates the user's profile in MongoDB.
-    await fetch('/api/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firebaseUid: firebaseUser.uid, // Use firebaseUid to match your backend model
-        email: firebaseUser.email,
-        ...metadata
-      })
-    });
+  // DUMMY SIGN-UP: Same as sign-in for this demo
+  const signUp = (formData: any, role: UserRole) => {
+    const mockUser: User = {
+        email: formData.email,
+        name: formData.name,
+        role: role
+    };
+    localStorage.setItem('user', JSON.stringify(mockUser));
+    setUser(mockUser);
   };
 
-  const signOut = async () => {
-    await firebaseSignOut(auth);
+  const signOut = () => {
+    localStorage.removeItem('user');
+    setUser(null);
   };
 
-  const forgotPassword = async (email: string) => {
-    await sendPasswordResetEmail(auth, email);
-  };
-
-  // This is the "value" object that all other components in your app will receive.
-  const value = {
-    user,
-    loading,
-    signIn,
-    signUp,
-    signOut,
-    forgotPassword,
-    getToken, // We've added getToken here, making it available everywhere.
-  };
+  const value = { user, loading, signIn, signUp, signOut };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-// This is the custom hook that your components will use to easily access auth state.
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}
-
-// Export the auth instance if it's needed directly elsewhere.
-export { auth };
+};
