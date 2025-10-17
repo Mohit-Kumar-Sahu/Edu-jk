@@ -1,99 +1,92 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
-import { User, Users, BookOpen, Star, Target } from 'lucide-react';
+import { Presentation, Star, BookOpen, Target, ChevronRight } from 'lucide-react';
+import { Progress } from './ui/progress';
+import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
-// Hardcoded data for the Teacher Dashboard
 const teacherData = {
-  name: "Dr. Anil Kumar",
-  institutionName: "Indian Institute of Management Bangalore",
-  studentFacultyRatio: "15:1",
-  researchPublications: [
-    { title: "Quantum Computing Models", journal: "IEEE Spectrum", year: 2024 },
-    { title: "Market Dynamics in Web3", journal: "Journal of Finance", year: 2023 },
-  ],
-  projectsGuided: 5,
-  performance: {
-    studentFeedback: 4.8,
-    contributionScore: 92
-  }
+    courses: [
+        { name: "Quantum Computing Models", code: "CS701", students: 45, avgPerformance: 88 },
+        { name: "Market Dynamics in Web3", code: "FIN605", students: 62, avgPerformance: 91 },
+        { name: "Advanced Algorithms", code: "CS502", students: 50, avgPerformance: 82 },
+    ],
+    performance: { studentFeedback: 4.8 },
+    publications: 12,
+    projectsGuided: 5,
 };
 
 export function TeacherDashboard() {
+  const { user } = useAuth();
+
   return (
-    <div className="p-4 md:p-8 space-y-6">
-      <div className="flex items-center space-x-4">
-        <User className="w-10 h-10 text-blue-600" />
-        <div>
-          <h1 className="text-3xl font-bold">Welcome, {teacherData.name}!</h1>
-          <p className="text-muted-foreground">{teacherData.institutionName}</p>
+    <div className="p-4 md:p-6 space-y-6 bg-gray-50/50 min-h-screen">
+        <div className="flex justify-between items-start">
+            <div>
+                <h1 className="text-3xl font-bold text-gray-800">Welcome, {user?.displayName || "Professor"}!</h1>
+                <p className="text-muted-foreground">Here is your teaching and research summary.</p>
+            </div>
         </div>
-      </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Student Feedback</CardTitle>
-            <Star className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{teacherData.performance.studentFeedback} / 5.0</div>
-          </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Publications</CardTitle>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{teacherData.researchPublications.length}</div>
-            </CardContent>
-        </Card>
-         <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Student-Faculty Ratio</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{teacherData.studentFacultyRatio}</div>
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Projects Guided</CardTitle>
-                <Target className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-                <div className="text-2xl font-bold">{teacherData.projectsGuided}</div>
-            </CardContent>
-        </Card>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatCard icon={<Presentation />} title="Active Courses" value={teacherData.courses.length} />
+            <StatCard icon={<Star />} title="Avg. Student Feedback" value={`${teacherData.performance.studentFeedback} / 5.0`} />
+            <StatCard icon={<BookOpen />} title="Total Publications" value={teacherData.publications} />
+            <StatCard icon={<Target />} title="Projects Guided" value={teacherData.projectsGuided} />
+        </div>
 
-       <Card>
-          <CardHeader>
-            <CardTitle>Recent Research Publications</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Publication Title</TableHead>
-                  <TableHead>Journal</TableHead>
-                  <TableHead className="text-right">Year</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {teacherData.researchPublications.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="font-medium">{item.title}</TableCell>
-                    <TableCell>{item.journal}</TableCell>
-                    <TableCell className="text-right">{item.year}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <Card className="lg:col-span-3">
+                <CardHeader>
+                    <CardTitle>My Courses</CardTitle>
+                    <CardDescription>Overview of your currently assigned courses and student performance.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader><TableRow><TableHead>Course</TableHead><TableHead>Students</TableHead><TableHead>Avg. Performance</TableHead></TableRow></TableHeader>
+                        <TableBody>
+                            {teacherData.courses.map((course) => (
+                                <TableRow key={course.code}>
+                                    <TableCell><div className="font-medium">{course.name}</div><div className="text-sm text-muted-foreground">{course.code}</div></TableCell>
+                                    <TableCell>{course.students}</TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={course.avgPerformance} className="w-20" />
+                                            <span className="text-sm font-semibold">{course.avgPerformance}%</span>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            <Card className="lg:col-span-2">
+                <CardHeader><CardTitle>Quick Actions</CardTitle></CardHeader>
+                <CardContent className="space-y-2">
+                    <ActionItem title="Upload New Study Material" />
+                    <ActionItem title="Schedule a Test" />
+                    <ActionItem title="View Student Analytics" />
+                    <ActionItem title="Submit Research Paper" />
+                </CardContent>
+            </Card>
+        </div>
     </div>
   );
 }
+
+// Helper components
+const StatCard = ({ icon, title, value }: { icon: React.ReactNode, title: string, value: string | number }) => (
+    <Card><CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"><CardTitle className="text-sm font-medium">{title}</CardTitle><div className="text-muted-foreground">{icon}</div></CardHeader><CardContent><div className="text-2xl font-bold">{value}</div></CardContent></Card>
+);
+
+const ActionItem = ({ title }: { title: string }) => (
+    <Link to="#" className="block p-3 rounded-md hover:bg-gray-100 transition-colors">
+        <div className="flex items-center justify-between">
+            <span className="font-medium text-sm">{title}</span>
+            <ChevronRight className="text-muted-foreground" size={16} />
+        </div>
+    </Link>
+);
